@@ -1,7 +1,7 @@
 <template>
   <tm-sheet
     :color="props.color"
-    class="flex "
+    class="flex flex-col"
     :height="props.height"
     :padding="[0, 0]"
   >

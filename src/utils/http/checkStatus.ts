@@ -1,4 +1,4 @@
-import {toast} from '@/tmui/tool/function/util';
+import { Toast } from '@/utils/uniapi/prompt';
 
 export function checkStatus(status: number, msg: string): void {
     let errMessage = null;
@@ -46,6 +46,6 @@ export function checkStatus(status: number, msg: string): void {
     }
 
     if (errMessage) {
-        toast(errMessage);
+        Toast(errMessage);
     }
 }

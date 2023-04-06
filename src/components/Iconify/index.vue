@@ -1,52 +1,44 @@
 <script lang="ts" setup name="Iconify">
-import { computed } from 'vue'
-import { isNumber } from '@/utils/is'
-import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
+import { computed, ref, unref } from 'vue';
+import { assign } from 'lodash-es';
+import { isBoolean } from '@/utils/is';
+
 const props = defineProps({
-  icon: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: [Number, String],
-    default: '44rpx',
-  },
-  color: {
-    type: String,
-  },
-})
+    icon: {
+        type: String,
+    },
+    size: {
+        type: [Number, String],
+    },
+    color: {
+        type: String,
+    },
+});
 
-const emit = defineEmits(['click'])
+const iconSize = ref<string | boolean>(props.size ? `${props.size}rpx` : false);
+let style = computed(() => {
+    let ISize = unref(iconSize);
+    return assign({ width: isBoolean(ISize) ? '' : ISize, height: isBoolean(ISize) ? '' : ISize }, { color: props.color });
+});
 
-const store = useTmpiniaStore()
-
-const _size = computed(() => {
-  return isNumber(props.size) ? `${props.size}px` : props.size
-})
-
-const _color = computed(() => {
-  return props.color ? props.color : store.tmStore.dark ? '#fff' : ''
-})
-
+const emit = defineEmits(['click']);
 const onClick = () => {
-  emit('click')
-}
+    emit('click');
+};
 </script>
-
 <template>
-  <view ref="elRef" class="iconify" :class="[icon]" @click="onClick" />
+    <view ref="elRef" @click="onClick" :class="['iconify', icon]" :style="style"></view>
 </template>
-
 <style lang="scss" scoped>
-  .iconify {
+.iconify {
     display: inline-block;
     vertical-align: middle;
-    height: v-bind('_size');
-    width: v-bind('_size');
-    color: v-bind('_color');
+    height: 44rpx;
+    width: 44rpx;
+    color: inherit;
     &:hover {
-      cursor: pointer;
-      opacity: 0.8;
+        cursor: pointer;
+        opacity: 0.8;
     }
-  }
+}
 </style>

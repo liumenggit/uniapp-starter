@@ -167,21 +167,14 @@ export default {
 			useTmRouterBefore(obj)
 		}
 		options =util.deepObjectMerge($tm.config, options)
-		const pinia = app.config.globalProperties.$pinia || null
-		const tmPiniaPlugin = (context: Pinia.PiniaPluginContext) => {
-			if (context.store.$id === 'tmpinia') {
-				context.store.tmuiConfig = options
-				context.store.$state.tmuiConfig = options
-			}
-		};
-		if (pinia) {
-			pinia.use(tmPiniaPlugin)
-		} else {
-			const pinia = Pinia.createPinia()
-			pinia.use(tmPiniaPlugin)
-			app.use(pinia)
-		}
-
+		const pinia = Pinia.createPinia();
+		pinia.use((context: Pinia.PiniaPluginContext)=>{
+			// context.store.tmuiConfig = options;
+			context.store.tmuiConfig =options
+			context.store.$state.tmuiConfig = options
+		})
+		app.use(pinia);
+		
 		// #ifndef APP-NVUE
 		app.use(languageByGlobal())
 		// #endif
@@ -193,19 +186,6 @@ export default {
 
 		app.mixin({
 			...appconfig,
-			onShow(){
-				// $mpType
-				
-				// setTimeout(function() {
-				// 	if(app.config.globalProperties.$pinia.state.value?.tmpinia?.tmStore){
-				// 		const {dark} = app.config.globalProperties.$pinia.state.value.tmpinia.tmStore;
-				// 		console.log(dark)
-				// 		if(dark){
-				// 			//暂不实现。
-				// 		}
-				// 	}
-				// }, 10);
-			}
 		})
 
 

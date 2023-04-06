@@ -1,57 +1,261 @@
 <template>
-    <tm-app>
-        <tm-carousel dot-position="right" model="rect" :height="300" rangKey="banner_img"
-                     :list="bannerList"></tm-carousel>
-        <tm-roll-notice :margin="[0,0]" list="测试滚动测试滚动测试滚动测试滚动测试滚动"/>
-        <tm-grid :width="750" :col="2" showBorder>
-            <tm-grid-item @click="router.go(gridItem.url)" v-for="gridItem in gridList">
-                <view class="flex-wrap flex-row-center-center">
-                    <tm-icon :name="gridItem.icon" :font-size="50" class="pr-40" color="primary"></tm-icon>
-                    <tm-text :label="gridItem.title"></tm-text>
-                </view>
-            </tm-grid-item>
-        </tm-grid>
-    </tm-app>
+  <tm-app v-model:show-menu="showf" ref="app">
+    <template v-slot:menu="{sys}">
+      <tm-sheet :margin="[0,0]" :padding="[0,0]" color="indigo" linearDeep="accent" linear="bottom">
+        <image class="opacity-1" :style="{width:`${sys.width}px`,height:`${sys.height}px`}"
+               :src="`https://picsum.photos/${sys.width}/${sys.height}?id=${Math.random()}`"
+               mode="scaleToFill" />
+        <view class="absolute l-0 t-0" :style="{width:`${sys.width}px`,height:`${sys.height}px`}">
+          <view :style="{height:sysinfo.sysinfo.statusBarHeight+'px'}"></view>
+          <view class="flex flex-row flex-row-center-between py-24 px-16">
+            <tm-text label="TMUI 3.0.88"></tm-text>
+            <tm-icon @click="showf=false" color="white" :font-size="32" name="tmicon-times"></tm-icon>
+          </view>
+          <tm-cell url="/pages/changyong/index" color="primary" :transprent="true" :margin="[10,0]"
+                   title="通用组件"></tm-cell>
+          <tm-cell url="/pages/layout/index" color="primary" :transprent="true" :margin="[10,0]"
+                   title="布局组件">
+          </tm-cell>
+          <tm-cell url="/pages/showdata/index" color="primary" :transprent="true" :margin="[10,0]"
+                   title="展示组件"></tm-cell>
+          <tm-cell url="/pages/form/index" color="primary" :transprent="true" :margin="[10,0]"
+                   title="表单录入">
+          </tm-cell>
+        </view>
+      </tm-sheet>
+    </template>
+
+    <tm-navbar title="主页" :shadow="0" hide-home color="primary">
+      <template v-slot:left>
+        <view class="flex flex-center flex-row">
+          <tm-icon @click="showf=true" :color="store.tmStore.dark?'yellow':'white'" _class="px-24"
+                   :font-size="32"
+                   name="tmicon-menu"></tm-icon>
+          <navigator url="settheme" class="px-12">
+            <tm-icon :font-size="32" name="tmicon-cog-fill"
+                     :color="store.tmStore.dark?'yellow':'white'"></tm-icon>
+          </navigator>
+          <tm-icon _class="px-24" @click="onChangeDark" :color="store.tmStore.dark?'yellow':'white'"
+                   :font-size="32" name="tmicon-ios-sunny"></tm-icon>
+        </view>
+      </template>
+    </tm-navbar>
+    <tm-sheet :margin="[0, 0]" color="primary">
+      <tm-input :placeholder="language('index.search.tips')" :border="1" showClear prefix="tmicon-search"
+                v-model="str" @search="search" :searchLabel="language('index.search.btntext')"
+                class="guide2"></tm-input>
+    </tm-sheet>
+    <tm-tabs swiper @change="(index:string)=>{tabsIndex = index;}" showTabsLineAni :item-width="110"
+             :width="750"
+             :height="paneHeight"
+             :default-name="tabsIndex" :activeFontSize="32" class="ceshi" id="222">
+      <tm-tabs-pane name="commend" title="推荐" icon="td-fire-fill">
+        <tm-xima :lazy="tabsIndex === 'commend'" @pull-start="pullStart()" :firstLoad="true" :load="commendGet"
+                 :width="750" :height="paneHeight"
+                 :data="commendData">
+          <template v-slot:top="{status}">
+            <tm-text :label="status"></tm-text>
+          </template>
+          <template v-slot:default="{data}">
+            <tm-carousel autoplay dotPosition="right" model="rect" :round="3" :height="280" :width="720"
+                         :margin="[16,16]"
+                         :list="data.carousel"></tm-carousel>
+            <tm-grid :col="5">
+              <tm-grid-item v-for="(gridItem,gridIndex) in data.grid" :key="gridIndex" :height="0"
+                            :url="gridItem.url"
+                            :class="'grid' + gridItem.title">
+                <tm-avatar :img="gridItem.image" :font-size="80" :round="26"></tm-avatar>
+                <tm-text :label="'返送的'+ gridItem.title" color="grey"></tm-text>
+              </tm-grid-item>
+            </tm-grid>
+            <tm-roll-notice @click="guide" :list="data.notice" :margin="[24,24,24,0]" />
+            <tm-coupon v-for="(couponItem,couponIndex) in data.list" :key="couponIndex"
+                       :rightDetail="couponItem.rightDetail"
+                       :margin="[0,0]">
+              <template v-slot:thumb>
+                <tm-image :src="couponItem.thumb" :width="120" :height="120" :round="4">
+                  <template v-slot:extra>
+                    <tm-sheet :margin="[0, 0]" :padding="[12, 10]" _class="flex-row flex-between "
+                              parenClass="opacity-6">
+                      <view class="flex flex-row flex-center pl-16">
+                        <tm-icon :font-size="24" name="tmicon-comment-dots"></tm-icon>
+                        <tm-text _class="pl-10" :font-size="24" label="125"></tm-text>
+                      </view>
+                    </tm-sheet>
+                  </template>
+                </tm-image>
+              </template>
+              <template v-slot:btn>
+                <tm-text :label="couponItem.type" font-size="18" color="grey"></tm-text>
+              </template>
+            </tm-coupon>
+            <!--            <tm-text :label="data.list"></tm-text>-->
+          </template>
+        </tm-xima>
+      </tm-tabs-pane>
+      <tm-tabs-pane name="shop" title="商品" icon="td-shopping-fill">
+        <tm-xima :lazy="tabsIndex === 'shop'" :firstLoad="true" :load="shopGet"
+                 :width="750" :height="paneHeight"
+                 :data="shopData">
+          <template v-slot:default="{data}">
+            <tm-carousel autoplay :margin="[16,16]" :round="3" :width="720" :height="280"
+                         dotPosition="bottom"
+                         model="dot"
+                         :list="data.carousel" />
+            <tm-cell showAvatar avatar="https://picsum.photos/200" :round="3" :titleFontSize="24"
+                     title="完善会员信息为您推荐合适您的"
+                     rightText="免费领取7天会员" :margin="[16,0]" :padding="[12,12]" color="grey-4" />
+            <tm-image src="https://picsum.photos/700/120" :width="720" :height="150" :margin="[16,16]"
+                      :round="4" />
+            <tm-card :margin="[0,0]" status="查看全部" title="热播新品，用故事点亮成长指挥">
+              <template v-slot:content>
+                <tm-grid :col="3" :width="710">
+                  <tm-grid-item :height="0" v-for="(gridItem,gridIndex) in 6" :key="gridIndex">
+                    <tm-image src="https://picsum.photos/120/120" :round="6" class="mb-10" />
+                    <tm-text label="热播新品用故事点亮成长指挥" :font-size="24"></tm-text>
+                  </tm-grid-item>
+                </tm-grid>
+              </template>
+            </tm-card>
+            <tm-card :margin="[0,0]" status="查看全部" title="热播新品，用故事点亮成长指挥">
+              <template v-slot:content>
+                <tm-grid :col="3" :width="710">
+                  <tm-grid-item :height="0" v-for="(gridItem,gridIndex) in 6" :key="gridIndex">
+                    <tm-image src="https://picsum.photos/120/120" :round="6" class="mb-10" />
+                    <tm-text label="热播新品用故事点亮成长指挥" :font-size="24"></tm-text>
+                  </tm-grid-item>
+                </tm-grid>
+              </template>
+            </tm-card>
+          </template>
+        </tm-xima>
+      </tm-tabs-pane>
+    </tm-tabs>
+    <!--    <tm-guide ref="easyGuide"></tm-guide>-->
+  </tm-app>
 </template>
+
 <script lang="ts" setup>
+
 import {
-    computed,
-    ref,
-    Ref
-} from 'vue';
-import {useRouter} from '@/hooks/router';
-import {useRequest} from 'alova';
-import {getBannerList} from '@/services/api/common';
+  ref,
+  getCurrentInstance,
+  Ref
+} from "vue";
+import {
+  onShow,
+  onLoad,
+  onReady
+} from "@dcloudio/uni-app";
+import {
+  language
+} from "@/tmui/tool/lib/language";
+import {
+  useTmpiniaStore
+} from "@/tmui/tool/lib/tmpinia";
+import tmApp from "@/tmui/components/tm-app/tm-app.vue";
+import tmMessage from "@/tmui/components/tm-message/tm-message.vue";
+import TmGuide from "@/components/tm-guide/tm-guide.vue";
+import TmXima from "@/components/tm-xima/tm-xima.vue";
+import { getWindow, topx, torpx } from "@/tmui/tool/function/util";
+import { indexCommend } from "@/services/api/index-commend";
+import { indexShop } from "@/services/api/index-shop";
+import { useRequest } from "alova";
 
-const router = useRouter();
-const gridList = [
-    {title: '我的账号', url: '/pages/account/account-list', icon: 'td-bug'},
-    {title: '充值缴费', url: '/pages/info/info?key=price', icon: 'td-bug'},
-    {title: '账单信息', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '预约办理', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '在线开户', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '在线过户', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '在线销户', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '意见建议', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '配件商城', url: '/pages/goods/goods-after-list', icon: 'td-bug'},
-    {title: '开户商城', url: '/pages/goods/goods-open-list', icon: 'td-bug'},
-    {title: '燃气保险', url: '/pages/info/info?key=stop', icon: 'td-bug'},
-    {title: '开具发票', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '停气信息', url: '/pages/info/info?key=stop', icon: 'td-bug'},
-    {title: '错误url', url: '/pages/booking/booking-create22', icon: 'td-bug'},
-    {title: '文章', url: '/pages/article/article-list', icon: 'td-bug'},
-];
+const { send: sendIndexCommend } = useRequest(indexCommend, { immediate: false });
+const { send: sendIndexShop } = useRequest(indexShop, { immediate: false });
+const paneHeight = ref(0);
+const store = useTmpiniaStore();
+const app = ref<InstanceType<typeof tmApp> | null>(null);
+const msg = ref<InstanceType<typeof tmMessage> | null>(null);
+const showf = ref(false);
+const sysinfo = uni.$tm.u.getWindow();
+const proxy = getCurrentInstance()?.proxy ?? null;
+const parentNameId = "tmWaterfallId";
+defineExpose({ parentNameId: parentNameId });
+const tabsIndex = ref("commend");
+let commendData: Ref<IndexShopModel> = ref({});
+const commendGet = () => {
+  return new Promise((resolve, reject) => {
+    sendIndexCommend().then((res) => {
+      commendData.value = res;
+      resolve(true);
+      // setTimeout(guide, 5000);
+    }).catch(function(err: any) {
+      console.log("indexCommendError", err);
+      reject(false);
+    });
+  });
+};
+let shopData: Ref<IndexShopModel> = ref({});
+const shopGet = () => {
+  return new Promise((resolve, reject) => {
+    sendIndexShop().then(function(res) {
+      console.log("商品", res);
+      shopData.value = res;
+      resolve(true);
+    }).catch((err: any) => {
+      reject(false);
+    });
+  });
+};
 
-
-const {
-    data: bannerList,
-} = useRequest(
-    () => getBannerList(),
+function guide() {
+  proxy.$refs.easyGuide.startGuide([
     {
-        immediate: true
+      queryClass: ".grid2",
+      style: {
+        borderRadius: "10rpx",
+        border: "8rpx solid yellow"
+      },
+      img: [
+        {
+          width: 60,
+          height: 60,
+          left: 45,
+          top: 150,
+          src: "/static/up.png",
+          isNextButton: true,
+          clickEvent: () => {
+            console.log("clickEvent");
+          }
+        },
+        {
+          width: 650,
+          height: 350,
+          left: -100,
+          top: 220,
+          src: "/static/Xnip2023-03-24_18-35-38.png",
+          round: 4,
+          isNextButton: true,
+          clickEvent: () => {
+            console.log("clickEvent");
+          }
+        }
+      ]
     }
-);
+  ], 0);
+}
 
+function onChangeDark() {
+  app.value?.setDark();
+}
+
+onLoad(() => {
+});
+onShow(() => {
+});
+onReady(() => {
+  const query = uni.createSelectorQuery().in(proxy);
+  query.select(".ceshi").boundingClientRect((result: any) => {
+    paneHeight.value = torpx(getWindow().height - result.top);
+  }).exec();
+});
 </script>
 <style>
+scroll-view ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: transparent;
+}
 </style>

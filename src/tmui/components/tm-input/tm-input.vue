@@ -556,9 +556,7 @@ function confirm() {
   emits("confirm", _value.value);
 }
 function inputHandler(e: CustomEvent) {
-  // #ifndef MP-WEIXIN
-  _value.value = e.detail.value;
-  // #endif 
+  // _value.value = e.detail.value;
   emits("input", e.detail.value);
   emits("update:modelValue", e.detail.value);
 

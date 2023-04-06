@@ -1,6 +1,6 @@
-import {Navigates} from '@/utils/router/navigates';
-import {useRouterStore} from '@/state/modules/router';
-import type {RouteLocationNormalized} from '@/types/router/route';
+import { Navigates } from '@/utils/router/navigates';
+import { useRouterStore } from '@/state/modules/router';
+import { RouteLocationNormalized } from '@/types/router/route';
 
 const router = new Navigates();
 
@@ -23,18 +23,17 @@ export function useRoute(): RouteLocationNormalized {
     const currentPage = currentPages[currentPages.length - 1];
     const path = currentPage?.route || '';
     const routerStore = useRouterStore();
-    const currentRoute = routerStore.getRoutes?.get(path);
+    const currentRoute = routerStore.getRoutes?.get(path as string);
     let query = {};
-
-    // #ifndef MP-WEIXIN
-    // @ts-expect-error
+    /* #ifndef MP-WEIXIN */
+    // @ts-ignore
     query = currentPage?.$page?.options || {};
-    // #endif
+    /* #endif */
 
-    // #ifdef MP-WEIXIN
-    // @ts-expect-error
+    /* #ifdef MP-WEIXIN */
+    // @ts-ignore
     query = currentPage?.options || {};
-    // #endif
+    /* #endif */
     return {
         currentPages,
         currentPage,

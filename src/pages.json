@@ -8,133 +8,10 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "业务办理",
+        "navigationBarTitleText": "",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/business/business",
-      "style": {
-        "navigationBarTitleText": "业务查询",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/booking/booking-create",
-      "style": {
-        "navigationBarTitleText": "开户预约",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/booking/booking-list",
-      "style": {
-        "navigationBarTitleText": "我的预约",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/booking/booking-info",
-      "style": {
-        "navigationBarTitleText": "预约详情",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/outlets/outlets-list",
-      "style": {
-        "navigationBarTitleText": "网点列表",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/outlets/outlets-info",
-      "style": {
-        "navigationBarTitleText": "网点信息",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/cart/cart-list",
-      "style": {
-        "navigationBarTitleText": "购物车",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/info/info",
-      "style": {
-        "navigationBarTitleText": "信息",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/feedback/feedback-create",
-      "style": {
-        "navigationBarTitleText": "意见建议",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/feedback/feedback-list",
-      "style": {
-        "navigationBarTitleText": "意见建议列表",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
       }
     },
     {
@@ -143,229 +20,202 @@
         "navigationBarTitleText": "个人中心",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
+        "transparentTitle": "always",
+        "disableScroll": true,
+        "app-plus": {
+          "bounce": "none"
+        }
       }
     },
     {
-      "path": "pages/message/message-create",
-      "style": {
-        "navigationBarTitleText": "我要留言",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/message/message-list",
-      "style": {
-        "navigationBarTitleText": "留言列表",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/concerning/concerning",
-      "style": {
-        "navigationBarTitleText": "关于我们",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/message/message-info",
-      "style": {
-        "navigationBarTitleText": "留言详情",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/notice/notice-list",
-      "style": {
-        "navigationBarTitleText": "通知列表",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/notice/notice-info",
-      "style": {
-        "navigationBarTitleText": "通知详情",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/demo/upload",
-      "style": {
-        "navigationBarTitleText": "上传测试",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/account/account-list",
-      "style": {
-        "navigationBarTitleText": "我的账户",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/account/account-add",
-      "style": {
-        "navigationBarTitleText": "添加新账户",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/my/perfect_info",
-      "style": {
-        "navigationBarTitleText": "完善用户信息",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": false
-      }
-    },
-    {
-      "path": "pages/login/login",
+      "path": "pages/my/login",
       "style": {
         "navigationBarTitleText": "登录",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
       }
     },
     {
-      "path": "pages/goods/goods-after-list",
+      "path": "pages/my/feedback",
       "style": {
-        "navigationBarTitleText": "配件商城",
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "反馈",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
       }
     },
     {
-      "path": "pages/article/article-list",
+      "path": "pages/my/revise",
       "style": {
-        "navigationBarTitleText": "文章列表",
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "修改信息",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
       }
     },
     {
-      "path": "pages/article/article-info",
+      "path": "pages/my/set/phone",
       "style": {
-        "navigationBarTitleText": "文章详情",
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "设置手机号",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
       }
     },
+//    {
+//      "path": "pages/my/set/nickname",
+//      "style": {
+//        "navigationBarTitleText": "昵称",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    },
+//    {
+//      "path": "pages/my/set/avatar",
+//      "style": {
+//        "navigationBarTitleText": "头像",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    },
+//    {
+//      "path": "pages/my/set/card",
+//      "style": {
+//        "navigationBarTitleText": "实名认证",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    },
     {
-      "path": "pages/goods/goods-open-list",
+      "path": "pages/message/message",
       "style": {
-        "navigationBarTitleText": "开户商城",
+        "navigationBarTitleText": "消息",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/goods/goods-info",
-      "style": {
-        "navigationBarTitleText": "商品信息",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/login/auth",
-      "style": {
-        "navigationBarTitleText": "授权",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
-      }
-    },
-    {
-      "path": "pages/notFound/404",
-      "style": {
-        "navigationBarTitleText": "404",
-        "navigationStyle": "custom",
-        "titlePenetrate": "YES",
-        "transparentTitle": "always"
-      },
-      "meta": {
-        "ignoreAuth": true
       }
     }
+//    {
+//      "path": "pages/my/bespeak/bespeak",
+//      "style": {
+//        "navigationBarTitleText": "预约",
+//        "disableScroll": true,
+//        "navigationStyle": "custom",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    },
+//    {
+//      "path": "pages/my/bespeak/bespeakList",
+//      "style": {
+//        "navigationBarTitleText": "记录查询",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    },
+//    {
+//      "path": "pages/Demo/README",
+//      "style": {
+//        "navigationBarTitleText": "Demo",
+//        "titlePenetrate": "YES",
+//        "transparentTitle": "always"
+//      }
+//    }
   ],
+//  "subPackages": [
+//    {
+//      "root": "pagesA",
+//      "pages": [
+//        {
+//          "path": "list/test1/index",
+//          "style": {
+//            "navigationBarTitleText": "test1"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        },
+//        {
+//          "path": "list/test2/index",
+//          "style": {
+//            "navigationBarTitleText": "test2",
+//            "navigationStyle": "custom"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        }
+//      ]
+//    },
+//    {
+//      "root": "pagesB",
+//      "pages": [
+//        {
+//          "path": "detail/index",
+//          "style": {
+//            "navigationBarTitleText": "Detail"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        }
+//      ]
+//    },
+//    {
+//      "root": "pagesC",
+//      "pages": [
+//        {
+//          "path": "index/index",
+//          "style": {
+//            "navigationBarTitleText": "Home"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        },
+//        {
+//          "path": "demo/index",
+//          "style": {
+//            "navigationBarTitleText": "Demo"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        },
+//        {
+//          "path": "about/index",
+//          "style": {
+//            "navigationBarTitleText": "关于"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        },
+//        {
+//          "path": "login/index",
+//          "style": {
+//            "navigationBarTitleText": "登录"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        },
+//        {
+//          "path": "log/index",
+//          "style": {
+//            "navigationBarTitleText": "日志"
+//          }
+//        },
+//        {
+//          "path": "notFound/404",
+//          "style": {
+//            "navigationBarTitleText": "Not Found"
+//          },
+//          "meta": {
+//            "ignoreAuth": true
+//          }
+//        }
+//      ]
+//    }
+//  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
@@ -377,7 +227,7 @@
   },
   "tabBar": {
     "color": "#9a9a9a",
-    "selectedColor": "#4ec752",
+    "selectedColor": "#3E7DFE",
     "borderStyle": "black",
     "backgroundColor": "white",
     "list": [
@@ -385,31 +235,20 @@
         "pagePath": "pages/index/index",
         "iconPath": "static/tabar/compass-of.png",
         "selectedIconPath": "static/tabar/compass-on.png",
-        "text": "业务办理"
+        "text": "首页"
       },
       {
-        "pagePath": "pages/business/business",
+        "pagePath": "pages/message/message",
         "iconPath": "static/tabar/compass-of.png",
         "selectedIconPath": "static/tabar/compass-on.png",
-        "text": "业务查询"
+        "text": "消息"
       },
       {
         "pagePath": "pages/my/my",
         "iconPath": "static/tabar/compass-of.png",
         "selectedIconPath": "static/tabar/compass-on.png",
-        "text": "个人中心"
-      }
-    ]
-  },
-  "condition": {
-    "current": 1,
-    "list": [
-      {
-        "name": "个人中心",
-        "path": "pages/my/my",
-        "query": ""
+        "text": "我的"
       }
     ]
   }
 }
-

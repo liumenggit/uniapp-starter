@@ -1,0 +1,74 @@
+<template>
+  <tm-app ref="app">
+    <tm-form @submit="confirm" ref="form" v-model="phoneFrom" :label-width="190" layout="vertical">
+      <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
+                    :border="false" showTopErrorGap>
+        <tm-input placeholder="请输入手机号" v-model.lazy="phoneFrom.phone" :showBottomBotder="false"
+                  prefix="td-phone"></tm-input>
+      </tm-form-item>
+      <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+                    :border="false" showTopErrorGap>
+        <tm-input placeholder="请输入验证码" @search="sendCode" v-model.lazy="phoneFrom.code"
+                  :showBottomBotder="false"
+                  prefix="td-number" searchLabel="获取验证码" />
+      </tm-form-item>
+      <tm-form-item :border="false">
+        <tm-button form-type="submit" label="绑定手机号" block></tm-button>
+      </tm-form-item>
+    </tm-form>
+    <tm-message ref="msg"></tm-message>
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import { useUserInfo } from "@/state/modules/user-info";
+import { getCurrentInstance, ref } from "vue";
+import { isPhone, toast } from "@/tmui/tool/function/util";
+import { sendPhoneCode } from "@/services/api/phone-verify";
+import { useRequest } from "alova";
+import { userLogin } from "@/services/api/user/login";
+
+const { send: sendCodes } = useRequest(phone => sendPhoneCode(phone), { immediate: false });
+const proxy = getCurrentInstance()?.proxy ?? null;
+const phoneFrom = ref({
+  phone: null,
+  code: null
+});
+
+
+function sendCode() {
+  if (phoneFrom.value.phone) {
+    if (!isPhone(phoneFrom.value.phone as number)) {
+      toast("请输入正确的手机号");
+    } else {
+      sendCodes(phoneFrom.value.phone).then((res) => {
+        console.log("发送成功", res);
+      }).catch((error) => {
+        console.log("发送错误", error);
+      });
+      // toast(data)
+      // sendPhoneCode(phoneFrom.value.phone).then(function (res) {
+      //     toast(res.data.msg)
+      // })
+    }
+  } else {
+    toast("请输入手机号");
+  }
+}
+
+
+const confirm = (e: any) => {
+  if (e.validate) {
+    useUserInfo().setPhone(e.data).then((res) => {
+      console.log(res.phone);
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1300);
+    }).catch((err) => {
+      console.log("页面接收错误", err);
+    });
+  }
+};
+</script>
+
+<style>
+</style>

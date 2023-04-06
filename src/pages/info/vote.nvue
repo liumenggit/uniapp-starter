@@ -1,0 +1,53 @@
+<template>
+  <tm-app ref="app">
+    <tm-table :table-data="demoData" :showHeader="true" :height="650" :width="638"></tm-table>
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import {
+  ref,
+  nextTick,
+  getCurrentInstance,
+  computed
+} from "vue";
+
+const demoData = {
+  fields: {
+    columns: ['province', 'city', 'type', 'price', 'cost'],
+  },
+  header: [
+    {
+      field: 'index',
+      name: '排名',
+    },
+    {
+      field: 'user',
+      name: '用户',
+    },
+    {
+      field: 'number',
+      name: '票数',
+    }
+  ],
+  data: [
+    {
+      "index": "https://picsum.photos/200/300",
+      "user": {
+        "username":'漳州',
+        "avatar": "https://picsum.photos/200/300",
+      },
+      "number": 22,
+      "opts": {
+        "user": {
+          iconSize: 50,
+          type: 'avatar',
+        },
+        "index": {
+          type: 'ranking',
+          iconSize: 50,
+        },
+      }
+    },
+  ]
+}
+</script>

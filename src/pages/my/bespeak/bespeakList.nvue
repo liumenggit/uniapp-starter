@@ -1,0 +1,33 @@
+<template>
+  <tm-app ref="app">
+    <tm-tabs swiper showTabsLineAni :item-width="110" :width="750" :height="1000" :activeFontSize="32">
+      <tm-tabs-pane :title="bespeakTypeItem.title" :name="bespeakTypeItem.type"
+                    v-for="(bespeakTypeItem, bespeakTypeIndex) in bespeakType"
+                    :key="bespeakTypeIndex" class="hei">
+        <tm-scrolly :round="3" @refresh="getBespeakList" :modelValue="topFresh" :width="0" :height="scrollHeight">
+        </tm-scrolly>
+      </tm-tabs-pane>
+    </tm-tabs>
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import {getCurrentInstance, ref} from "vue";
+import {onReady} from "@dcloudio/uni-app";
+import {getWindow, torpx} from "@/tmui/tool/function/util";
+
+const proxy = getCurrentInstance()?.proxy ?? null;
+const scrollHeight = ref(0)
+const bespeakType = ref([
+  {title: '全部', type: 0},
+  {title: '待支付', type: 1}
+])
+onReady(() => {
+  const query = uni.createSelectorQuery().in(proxy);
+  query.select('.hei').boundingClientRect((result: any) => {
+    scrollHeight.value = torpx(getWindow().height - result.top - 32)
+  }).exec();
+})
+</script>
+
+<style>
+</style>

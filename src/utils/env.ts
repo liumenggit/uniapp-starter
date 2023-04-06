@@ -1,115 +1,75 @@
 import pkg from '../../package.json';
-import {judgePlatform} from '@/utils/platform';
-import {PLATFORMS} from '@/enums/platformEnum';
+import { judgePlatform } from '@/utils/platform';
+import { PLATFORMS } from '@/enums/platformEnum';
 
 /**
- * @description: 根据版本生成缓存键
+ * @description: Generate cache key according to version
  */
 export function getPkgVersion() {
-    return `__${pkg.version}__`.toUpperCase();
+    return `${`__${pkg.version}`}__`.toUpperCase();
 }
 
 /**
- * @description: 开发者模式
+ * @description: Development mode
  */
 export const devMode = 'development';
 
 /**
- * @description: 生产模式
+ * @description: Production mode
  */
 export const prodMode = 'production';
 
 /**
- * @description: 获取环境模式
+ * @description: Get environment mode
  * @returns:
  * @example:
  */
 export function getEnvMode(): string {
-    return isDevMode() ? devMode : prodMode;
+    return getEnvValue('VITE_ENV');
 }
 
 /**
- * @description: 获取环境变量
+ * @description: Get environment variables
  * @returns:
  * @example:
  */
-export function getEnvValue<T = any>(key: string): T {
-    return (import.meta.env as any)[key] as T;
+export function getEnvValue<T = string>(key: keyof ImportMetaEnv): T {
+    return import.meta.env[key] as unknown as T;
 }
 
 /**
- * @description: 是否为开发环境
+ * @description: Is it a development mode
  * @returns:
  * @example:
  */
 export function isDevMode(): boolean {
-    return getEnvValue<boolean>('VITE_DEV');
+    return getEnvMode() === devMode;
 }
 
 /**
- * @description: 是否为生产环境
+ * @description: Is it a production mode
  * @returns:
  * @example:
  */
 export function isProdMode(): boolean {
-    return getEnvValue<boolean>('VITE_PROD');
+    return getEnvMode() === prodMode;
 }
 
 /**
- * @description: 获取环境变量 VITE_BASE_URL 的值
+ * @description: Get environment VITE_BASE_URL value
  * @returns:
  * @example:
  */
 export function getBaseUrl(): string {
-    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
-    //   return ''
     return getEnvValue<string>('VITE_BASE_URL');
 }
 
-
 /**
- * @description: 获取环境变量 VUE_APP_ID 的值
- * @returns:
- * @example:
- */
-export function getAppid(): string {
-    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
-    //   return ''
-    return getEnvValue<string>('VITE_APP_ID');
-}
-
-/**
- * @description: 获取环境变量 VITE_AUTH_URL 的值
- * @returns:
- * @example:
- */
-export function getAuthUrl(): string {
-    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
-    //   return ''
-    return getEnvValue<string>('VITE_AUTH_URL');
-}
-
-
-/**
- * @description: 获取环境变量 VITE_PLATFORM_ID 的值
- * @returns:
- * @example:
- */
-export function getPlatformId(): string {
-    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
-    //   return ''
-    return getEnvValue<string>('VITE_PLATFORM_ID');
-}
-
-
-/**
- * @description: 获取环境变量 VITE_UPLOAD_URL 的值
+ * @description: Get environment VITE_UPLOAD_URL value
  * @returns:
  * @example:
  */
 export function getUploadUrl(): string {
-    // if (judgePlatform(PLATFORMS.H5) && isDevMode()) {
-    //     return '/upload';
-    // }
+    if (judgePlatform(PLATFORMS.H5) && isDevMode()) return '/upload';
     return getEnvValue<string>('VITE_UPLOAD_URL');
 }

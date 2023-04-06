@@ -37,7 +37,6 @@
           :unit="props.unit"
         ></tm-text>
         <tm-icon
-          :color="props.iconColor"
           :userInteractionEnabled="false"
           v-if="!props.label && props.icon && !props.img"
           :name="props.icon"
@@ -79,7 +78,6 @@
           :name="props.triggerIcon"
           :font-size="triggSize.fontSize"
           :unit="props.unit"
-          :color="props.iconColor"
         ></tm-icon>
       </tm-sheet>
     </view>
@@ -109,10 +107,6 @@ const props = defineProps({
     default: false,
   },
   triggerColor: {
-    type: [String],
-    default: "",
-  },
-  iconColor: {
     type: [String],
     default: "",
   },

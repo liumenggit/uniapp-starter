@@ -1,6 +1,5 @@
 <template>
   <view class="flex relative flex-col" :style="{ height: props.height + 'rpx' }">
-	<!-- #ifndef MP-ALIPAY -->
     <picker-view
       v-if="show"
       :value="colIndex"
@@ -10,36 +9,18 @@
       :immediateChange="props.immediateChange"
       indicator-style="height:50px"
     >
-	<!-- #endif -->
-	<!-- #ifdef MP-ALIPAY -->
-	<picker-view
-	  v-if="show"
-	  :value="colIndex"
-	  @change="colchange"
-	  :style="{ height: props.height + 'rpx' }"
-	  :mask-style="maskStyle"
-	  :immediateChange="props.immediateChange"
-	>
-	<!-- #endif -->
       <picker-view-column v-if="showCol.year">
         <view
           v-for="(item, index) in _col.year"
           :key="index"
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[0] == index ? '' : 'UnitemSelected']"
-		  
         >
-		<!-- #ifdef APP-NVUE -->
           <TmText
             :font-size="30"
             :dark="isDark"
             :label="item + showSuffix['year']"
           ></TmText>
-		  <!-- #endif -->
-		  <!-- #ifndef APP-NVUE -->
-		  <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + showSuffix['year']}}</text>
-		  <!-- #endif -->
-		  
         </view>
       </picker-view-column>
       <picker-view-column v-if="showCol.month">
@@ -49,18 +30,11 @@
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[1] == index ? '' : 'UnitemSelected']"
         >
-         
-		  <!-- #ifdef APP-NVUE -->
-		   <TmText
-		     :font-size="30"
-		     :dark="isDark"
-		     :label="item + 1 + showSuffix['month']"
-		   ></TmText>
-		    <!-- #endif -->
-		    <!-- #ifndef APP-NVUE -->
-		    <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + 1 + showSuffix['month']}}</text>
-		    <!-- #endif -->
-		  
+          <TmText
+            :font-size="30"
+            :dark="isDark"
+            :label="item + 1 + showSuffix['month']"
+          ></TmText>
         </view>
       </picker-view-column>
       <picker-view-column v-if="showCol.day">
@@ -70,17 +44,11 @@
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[2] == index ? '' : 'UnitemSelected']"
         >
-          
-		  <!-- #ifdef APP-NVUE -->
-		   <TmText
-		     :font-size="30"
-		     :dark="isDark"
-		     :label="item + showSuffix['date']"
-		   ></TmText>
-		    <!-- #endif -->
-		    <!-- #ifndef APP-NVUE -->
-		    <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + showSuffix['date']}}</text>
-		    <!-- #endif -->
+          <TmText
+            :font-size="30"
+            :dark="isDark"
+            :label="item + showSuffix['date']"
+          ></TmText>
         </view>
       </picker-view-column>
       <picker-view-column v-if="showCol.hour">
@@ -90,17 +58,11 @@
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[3] == index ? '' : 'UnitemSelected']"
         >
-          
-		  <!-- #ifdef APP-NVUE -->
-		   <TmText
-		     :font-size="30"
-		     :dark="isDark"
-		     :label="item + showSuffix['hour']"
-		   ></TmText>
-		    <!-- #endif -->
-		    <!-- #ifndef APP-NVUE -->
-		    <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + showSuffix['hour']}}</text>
-		    <!-- #endif -->
+          <TmText
+            :font-size="30"
+            :dark="isDark"
+            :label="item + showSuffix['hour']"
+          ></TmText>
         </view>
       </picker-view-column>
       <picker-view-column v-if="showCol.minute">
@@ -110,17 +72,11 @@
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[4] == index ? '' : 'UnitemSelected']"
         >
-          
-		  <!-- #ifdef APP-NVUE -->
-		   <TmText
-		     :font-size="30"
-		     :dark="isDark"
-		     :label="item + showSuffix['minute']"
-		   ></TmText>
-		    <!-- #endif -->
-		    <!-- #ifndef APP-NVUE -->
-		    <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + showSuffix['minute']}}</text>
-		    <!-- #endif -->
+          <TmText
+            :font-size="30"
+            :dark="isDark"
+            :label="item + showSuffix['minute']"
+          ></TmText>
         </view>
       </picker-view-column>
       <picker-view-column v-if="showCol.second">
@@ -130,17 +86,11 @@
           class="flex itemcel flex-row flex-row-center-center"
           :class="[colIndex[5] == index ? '' : 'UnitemSelected']"
         >
-          
-		  <!-- #ifdef APP-NVUE -->
-		  <TmText
-		    :font-size="30"
-		    :dark="isDark"
-		    :label="item + showSuffix['second']"
-		  ></TmText>
-		    <!-- #endif -->
-		    <!-- #ifndef APP-NVUE -->
-		    <text :style="{color:store.tmStore.dark?'white':'black'}">{{item + showSuffix['second']}}</text>
-		    <!-- #endif -->
+          <TmText
+            :font-size="30"
+            :dark="isDark"
+            :label="item + showSuffix['second']"
+          ></TmText>
         </view>
       </picker-view-column>
     </picker-view>

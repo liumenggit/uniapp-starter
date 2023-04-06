@@ -3,7 +3,7 @@
 	<root-portal>
 	<!-- #endif -->
 	<!-- #ifdef H5 -->
-	<teleport to="body" :disabled="!props.teleport">
+	<teleport to="#app">
 	<!-- #endif -->
 
 		<view
@@ -23,12 +23,7 @@
 		>
 			<view
 				ref="overlay"
-				:class="[
-					bgColor_rp && !props.transprent && ani ? 'blurOnOpacity' : 'blurOffOpacity', 
-				'overlay',
-				store.tmuiConfig?.themeConfig.overflowBlur&&bgColor_rp && !props.transprent && ani?'blurOn':'',
-				store.tmuiConfig?.themeConfig.overflowBlur&&bgColor_rp && !props.transprent && !ani?'blurOff':'',
-				]"
+				:class="[bgColor_rp && !props.transprent && ani ? 'blurOn' : 'blurOff', 'overlay']"
 				:style="[
 					bgColor_rp && !props.transprent ? { backgroundColor: showMask ? bgColor_rp : '' } : '',
 					_inContent && !isNvue ? { width: '100%', height: '100%' } : { width: width + 'px', height: height + 'px' },
@@ -38,6 +33,7 @@
 			<!-- #ifndef APP-NVUE -->
 			<view
 				@click.stop="closeByclick"
+				@touchmove.stop="touchmove"
 				:class="[
 					align_rpx,
 					' absolute flex flex-col  l-0 t-0 ',
@@ -62,7 +58,7 @@
 			</view>
 			<!-- #endif -->
 		</view>
-
+	
 	<!-- #ifdef MP-WEIXIN || MP-ALIPAY -->
 	</root-portal>
 	<!-- #endif -->
@@ -90,12 +86,10 @@ import {
 } from "vue";
 import { cssstyle, tmVuetify } from "../../tool/lib/interface";
 import { custom_props, computedClass, computedStyle } from "../../tool/lib/minxs";
-import { useTmpiniaStore } from "../../tool/lib/tmpinia";
 // #ifdef APP-PLUS-NVUE
 const dom = uni.requireNativePlugin("dom");
 const animation = uni.requireNativePlugin("animation");
 // #endif
-const store = useTmpiniaStore();
 const defaultBgColor = "rgba(0,0,0,0.24)";
 // 混淆props共有参数
 const props = defineProps({
@@ -138,11 +132,6 @@ const props = defineProps({
   inContent: {
     type: Boolean,
     default: false,
-  },
-  /** 是否使用teleport */
-  teleport:{
-    type: Boolean,
-    default: true,
   },
 });
 const emits = defineEmits(["click", "open", "close", "update:show"]);
@@ -340,20 +329,17 @@ defineExpose({
 	transition-delay: 0;
 	opacity: 0;
 }
-.blur{
-	
-}
 .blurOn {
 	/* #ifndef APP-PLUS-NVUE */
 	backdrop-filter: blur(2px);
 	/* #endif */
-	/* opacity: 1; */
+	opacity: 1;
 }
 .blurOff {
 	/* #ifndef APP-PLUS-NVUE */
 	backdrop-filter: blur(0px);
 	/* #endif */
-	/* opacity: 0; */
+	opacity: 0;
 }
 
 .blurOnOpacity {

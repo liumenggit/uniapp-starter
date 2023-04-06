@@ -1,0 +1,36 @@
+<template>
+  <tm-app ref="app">
+    <tm-navbar color="primary" :leftWidth="200" hide-home>
+      <template v-slot:default>
+        <view class="flex-row flex-row-center-center">
+          <tm-text label="消息(11)" color="white" font-size="30"></tm-text>
+          <tm-icon name="td-trash" font-size="36" color="white" class="pl-20"></tm-icon>
+        </view>
+      </template>
+    </tm-navbar>
+    <tm-sheet :margin="[0,0]" color="primary">
+      <tm-input prefix="tmicon-search" searchLabel="搜索"></tm-input>
+    </tm-sheet>
+    <!--    <tm-scrolly :height="1400">-->
+    <tm-cell title="头像 Avatar" label="描述揭西县" bottomBorder showAvatar avatar="https://picsum.photos/200"
+             :avatarRound="2" :avatarSize="80" :margin="[0, 0]" v-for="(item,index) in 30">
+      <template v-slot:avatar>
+        <tm-badge :count="5" :maxCount="99" color="red" linear="top" :top="-10" :right="-10">
+          <tm-image src="https://picsum.photos/80" :width="90" :height="90" :round="2" :margin="[0,0]" :padding="[0,0]"></tm-image>
+        </tm-badge>
+
+      </template>
+      <template v-slot:right>
+        <view class="flex-col-top-end">
+          <tm-text :label="getDateToNewData(1679904000)" font-size="18" color="grey"></tm-text>
+        </view>
+      </template>
+    </tm-cell>
+    <!--    </tm-scrolly>-->
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import {getDateToNewData, getWindow} from "@/tmui/tool/function/util";
+
+console.log(getWindow())
+</script>

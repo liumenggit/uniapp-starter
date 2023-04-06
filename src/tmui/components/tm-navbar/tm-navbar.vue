@@ -214,10 +214,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  //返回首页的路径，默认/pages/index/index
+  //返回首页的路径，默认/pagesC/index/index
   homePath: {
     type: [String],
-    default: "/pages/index/index",
+    default: "/pagesC/index/index",
   },
   beforeBack: {
     type: [Boolean, Function],

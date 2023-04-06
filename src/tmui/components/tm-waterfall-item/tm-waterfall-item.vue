@@ -1,6 +1,5 @@
 <template>
   <view
-	@click="onClick"
     ref="itemWall"
     class="absolute itemWall"
     :style="[
@@ -18,10 +17,9 @@
       unit="px"
       :color="props.color"
       _class="flex flex-col flex-col-top-start"
-	  :eventPenetrationEnabled="true"
     >
 
-		<tm-image
+    <tm-image
           v-if="!imgerror&&props.img"
           @click="onImgClick"
           :round="props.round"
@@ -32,13 +30,13 @@
           :height="_nodeInfo.imgHeight"
           :width="_nodeInfo.imgWidth"
         ></tm-image>
-		  <view class="flex flex-row flex-row-center-center" :userInteractionEnabled="false" v-if="imgerror" :style="[imgerror?{height:_nodeInfo.imgWidth+'px',width:_nodeInfo.imgWidth+'px'}:'']" >
-			<tm-icon name="tmicon-exclamation-circle"></tm-icon>
-		  </view>
-		  
-		  <view class="flex flex-col flex-1 flex-col-top-start">
-			<slot></slot>
-		  </view>
+      <view class="flex flex-row flex-row-center-center" :userInteractionEnabled="false" v-if="imgerror" :style="[imgerror?{height:_nodeInfo.imgWidth+'px',width:_nodeInfo.imgWidth+'px'}:'']" >
+        <tm-icon name="tmicon-exclamation-circle"></tm-icon>
+      </view>
+      
+      <view class="flex flex-col flex-1 flex-col-top-start">
+        <slot></slot>
+      </view>
     </tm-sheet>
   </view>
 </template>
@@ -69,7 +67,7 @@ import { itemParenSG } from "../tm-waterfall/interface";
 const dom = uni.requireNativePlugin("dom");
 // #endif
 const proxy = getCurrentInstance()?.proxy ?? null;
-const emits = defineEmits(["img-click",'click']);
+const emits = defineEmits(["img-click"]);
 const imgerror = ref(false)
 const props = defineProps({
     //封面图片。
@@ -206,11 +204,7 @@ async function pushKey() {
     _nodeInfo.value = pos;
   }
 }
-function onImgClick(e:TouchEvent) {
-  emits("img-click", _nodeInfo.value);
-}
-/** 整个项目被点击。 */
-function onClick(e:TouchEvent){
- emits("click",_nodeInfo.value)
+function onImgClick(e) {
+  emits("img-click", e);
 }
 </script>

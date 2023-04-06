@@ -105,9 +105,6 @@ const proxy = getCurrentInstance()?.proxy ?? null;
 const emits = defineEmits(["update:modelValue", "change", "click"]);
 const props = defineProps({
   ...custom_props,
-  /**
-	 * 是否跟随全局主题的变换而变换
-	 */
   followTheme: {
     type: [Boolean, String],
     default: true,
@@ -128,6 +125,10 @@ const props = defineProps({
   transprent: {
     type: Boolean,
     default: false,
+  },
+  color: {
+    type: String,
+    default: "primary",
   },
   round: {
     type: Number,
@@ -194,12 +195,12 @@ const props = defineProps({
     type: String,
     default: "opacity-5",
   },
-  margin: {
-    type: Array as PropType<number[]>,
-    default: () => [16, 8],
-  },
+  margin:{
+    type:Array as PropType<number[]>,
+    default:()=>[16, 8]
+  }
 });
-let timed: any = NaN;
+let timed:any = NaN;
 const _checked = ref(props.defaultChecked ?? false);
 const _groupCheckedVal: ComputedRef<Array<string | number | boolean>> = inject(
   "tmCheckedBoxVal",
@@ -296,5 +297,5 @@ if (parent) {
   parent.pushKey(props.value);
 }
 
-defineExpose({ hanlerClick });
+defineExpose({hanlerClick})
 </script>

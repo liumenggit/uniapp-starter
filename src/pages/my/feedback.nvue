@@ -1,0 +1,91 @@
+<template>
+  <tm-app ref="app">
+    <tm-form @submit="confirm" ref="form" v-model="formData" :label-width="190" :border="false" layout="vertical">
+      <tm-form-item label="反馈类别" required field="types">
+        <view class="flex-row flex flex-wrap">
+          <tm-tag v-for="(typeItem,typeIndex) in formData.types" checkable color="primary" size="n"
+                  :label="typeItem.label" :checked="typeItem.is"/>
+        </view>
+      </tm-form-item>
+      <tm-form-item label="反馈内容" desc="你可以点击提交表单来验证" required field="content">
+        <tm-input placeholder="文本域，输入自动增高。" confirm-hold confirm-type="换行"
+                  :height="200" showCharNumber :maxlength="100" :border="1" color="grey-5" type="textarea"
+                  :inputPadding="[12,0]" v-model.lazy="formData.content" :showBottomBotder="false"></tm-input>
+      </tm-form-item>
+      <tm-form-item label="添加反馈图片（选填）" field="images">
+        <tm-upload :rows="4" v-model="formData.images" showSort :default-value="formData.images"
+                   ref="up" :width="636"
+                   url="https://mockapi.eolink.com/tNYKNA7ac71aa90bcbe83c5815871a5b419601e96a5524d/upload">
+        </tm-upload>
+      </tm-form-item>
+      <tm-form-item label="联系人信息" field="username">
+        <tm-input prefixLabel="联系姓名" placeholder="请输入内容" :inputPadding="[12,0]"
+                  v-model.lazy="formData.username"
+                  :showBottomBotder="false"></tm-input>
+      </tm-form-item>
+      <tm-form-item field="phone">
+        <tm-input prefixLabel="联系方式" placeholder="请输入内容" :inputPadding="[12,0]" v-model.lazy="formData.phone"
+                  :showBottomBotder="false"></tm-input>
+      </tm-form-item>
+      <tm-form-item :border="false">
+        <tm-button form-type="submit" label="提交表单" block></tm-button>
+      </tm-form-item>
+    </tm-form>
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import {
+  ref,
+  nextTick,
+  getCurrentInstance,
+  computed
+} from "vue";
+
+const formData = ref({
+  username: null,
+  phone: null,
+  content: null,
+  images: [],
+  types: [
+    {
+      id: 1,
+      label: '选项',
+      is: true
+    },
+    {
+      id: 2,
+      label: '选项一',
+      is: true
+    },
+    {
+      id: 3,
+      label: '选项一',
+      is: true
+    },
+    {
+      id: 4,
+      label: '选项一',
+      is: true
+    },
+    {
+      id: 4,
+      label: '选项一',
+      is: true
+    },
+    {
+      id: 4,
+      label: '选项一',
+      is: true
+    },
+    {
+      id: 4,
+      label: '选项一',
+      is: true
+    }, {
+      id: 4,
+      label: '选项一',
+      is: true
+    }
+  ]
+})
+</script>

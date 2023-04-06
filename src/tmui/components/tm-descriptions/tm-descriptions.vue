@@ -28,10 +28,8 @@
         :font-size="30"
       ></tm-text>
     </slot>
-	
     <view
-      class=" tmDescriptions   "
-	  :class="[ _cellWidth == 'auto' ? '' : 'flex flex-wrap flex-row-top-start']"
+      class="flex tmDescriptions flex-wrap "
       :style="[{ flexDirection: _cellWidth == 'auto' ? 'column' : 'row' }]"
     >
       <slot>

@@ -8,14 +8,13 @@ export const config: Tmui.tmuiConfig = {
   // 比如："primary": "#FF0000"
   // 名称如果与自带主题相同，将会覆盖。
     tnt: ['#009fe8', '#007fba'],
-    primary: "#4ec752"
   },
   router: {
     useTmRouterBefore(arg) {
-      // console.log('tmui.config.route.useTmRouterBefore', arg)
+      console.log('tmui.config.route.useTmRouterBefore', arg)
     },
     useTmRouterAfter(arg) {
-      // console.log('tmui.config.route.useTmRouterAfter', arg)
+      console.log('tmui.config.route.useTmRouterAfter', arg)
     },
   },
 }

@@ -1,0 +1,37 @@
+<template>
+  <tm-app ref="app">
+    <tm-scrolly @refresh="refreshTop" :modelValue="topFresh" @bottom="refreshBottom" :bottom-value="bottomFresh"
+                label="已最近更新">
+      <tm-text label="触摸区域,体验下拉刷新操作."></tm-text>
+      <view v-for="(item,index) in 10" :key="index" style="height: 40px;" class="px-36">
+        <text>{{ item }}</text>
+      </view>
+    </tm-scrolly>
+    <tm-button @click="refreshTop" label="refreshTop"></tm-button>
+    <tm-button @click="refreshBottom" label="refreshBottom"></tm-button>
+  </tm-app>
+</template>
+<script lang="ts" setup>
+import {ref} from "vue"
+
+const bottomFresh = ref(false)
+const topFresh = ref(false)
+
+function refreshTop() {
+  topFresh.value = true;
+  uni.showLoading({title: '...', mask: true})
+  setTimeout(function () {
+    topFresh.value = false
+    uni.hideLoading()
+  }, 1500);
+}
+
+function refreshBottom() {
+  bottomFresh.value = true;
+  uni.showLoading({title: '...', mask: true})
+  setTimeout(function () {
+    bottomFresh.value = false;
+    uni.hideLoading()
+  }, 1500);
+}
+</script>

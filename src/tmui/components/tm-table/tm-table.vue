@@ -107,9 +107,11 @@ watch(
       _data.value = {...cdatas}
       _rows.value = chuliRows(_data.value.data)
       _rows_back = uni.$tm.u.deepClone(_rows.value)
+     
     }, 150);
+    
   },
-  { deep: true,}
+  { deep: true }
 );
 
 
@@ -129,7 +131,7 @@ function chuliRows(bigdata: Array<{ [key: string]: any }>) {
           ptps[ielem.field] = {  }
         }
       })
-    el.opts = ptps;
+    el['opts'] = ptps;
     return el;
   })
  
@@ -157,7 +159,7 @@ function chuliRows(bigdata: Array<{ [key: string]: any }>) {
     dlen.push(pd.length)
     
   })
-  _maxrows.value = Math.max(...(dlen.length?dlen:[0,0]))
+  _maxrows.value = Math.max(...dlen)
   return d;
 }
 function getOptsCellStyle(index1: number, index2: number) {

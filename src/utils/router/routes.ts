@@ -1,12 +1,8 @@
-import {assign} from 'lodash-es';
+import { assign } from 'lodash-es';
 import pagesJson from '@/pages.json';
-import type {Route} from '@/types/router/route';
+import { Route } from '@/types/router/route';
 
-const {
-    pages,
-    subPackages,
-    tabBar
-} = pagesJson;
+const { pages, subPackages, tabBar } = pagesJson;
 
 // 将pages.json转换成Map对象,path为key
 const pagesMap = new Map<string, Route>();
@@ -32,9 +28,9 @@ if (tabBar) {
             if (pagesMap.has(el.pagePath)) {
                 const page = pagesMap.get(el.pagePath);
                 const meta = page?.meta || {};
-                // @ts-expect-error
+                // @ts-ignore
                 meta.tabBar = true;
-                // @ts-expect-error
+                // @ts-ignore
                 page.meta = assign({}, meta);
                 pagesMap.set(el.pagePath, page as Route);
             }
@@ -42,4 +38,4 @@ if (tabBar) {
     }
 }
 
-export {pagesMap};
+export { pagesMap };

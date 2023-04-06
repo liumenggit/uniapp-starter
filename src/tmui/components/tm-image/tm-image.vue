@@ -21,7 +21,6 @@
         :class="['round-' + props.round]"
         :width="img_width - props.padding[0] * 2"
         :unit="props.unit"
-		:height="img_height - props.padding[0] * 2"
       >
         <view
           :class="[

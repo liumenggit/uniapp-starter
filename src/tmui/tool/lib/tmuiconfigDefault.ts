@@ -1,12 +1,10 @@
 import { useTmRouterAfter, useTmRouterBefore } from "../router/index"
 export default {
-    autoDark: false,
+    autoDark: true,
     theme:{},
     themeConfig: {
         theme: {},
         globalFontSizeRatio:1,
-		/** 是否关闭弹层背景的模糊 */
-		overflowBlur:false,
         dark: {
             /**一般的卡片项目暗黑背景 */
             cardcolor: '#0A0A0B',
@@ -21,10 +19,7 @@ export default {
             
         },
         component:{
-            button:{
-                round:2,
-                shadow:2
-            }
+            
         }
     },
     router: { useTmRouterAfter, useTmRouterBefore },

@@ -8,19 +8,6 @@ export enum NAVIGATE_TYPE {
 
 export const NAVIGATE_TYPE_LIST = ['navigateTo', 'redirectTo', 'reLaunch', 'switchTab'];
 
-/**
- * 系统首页
- * @type {string}
- */
-export const HOME_PAGE = '/pages/index/index';
-/**
- * 系统登录页
- * @type {string}
- */
-export const LOGIN_PAGE = '/pages/login/login';
-export const AUTH_PAGE = '/pages/login/auth';
-/**
- * 公共404
- * @type {string}
- */
-export const NOT_FOUND_PAGE = '/pages/notFound/404';
+export const HOME_PAGE = '/pagesC/index/index';
+export const LOGIN_PAGE = '/pagesC/login/index';
+export const NOT_FOUND_PAGE = '/pagesC/notFound/404';

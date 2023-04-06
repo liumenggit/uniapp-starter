@@ -1,21 +1,19 @@
-import {useUserStore} from '@/state/modules/user';
-import {toast} from '@/tmui/tool/function/util';
-import {createAlova} from 'alova';
+import { createAlova } from 'alova';
 import AdapterUniapp from '@alova/adapter-uniapp';
-import {assign} from 'lodash-es';
-import {getBaseUrl, getPlatformId} from '@/utils/env';
-import {checkStatus} from '@/utils/http/checkStatus';
-import {ContentTypeEnum, ResultEnum} from '@/enums/httpEnum';
-import type {API} from '@/services/model/baseModel';
-import {Token} from '@/services/model/userModel';
+import { getBaseUrl, isDevMode } from '@/utils/env';
+import { mockAdapter } from '@/mock';
+import { assign } from 'lodash-es';
+import { useAuthStore } from '@/state/modules/auth';
+import { checkStatus } from '@/utils/http/checkStatus';
+import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
+import { Toast } from '@/utils/uniapi/prompt';
+import { API } from '@/services/model/baseModel';
 
 const BASE_URL = getBaseUrl();
-const PLATFORM_ID = getPlatformId();
 
 const HEADER = {
     'Content-Type': ContentTypeEnum.JSON,
-    'Accept': 'application/json, text/plain, */*',
-    'platform-id': PLATFORM_ID
+    Accept: 'application/json, text/plain, */*',
 };
 
 /**
@@ -25,11 +23,11 @@ const HEADER = {
 const alovaInstance = createAlova({
     baseURL: BASE_URL,
     ...AdapterUniapp({
-        // mockRequest: isDevMode() ? mockAdapter : undefined,
+        mockRequest: isDevMode() ? mockAdapter : undefined,
     }),
     timeout: 5000,
     beforeRequest: (method) => {
-        const authStore = useUserStore();
+        const authStore = useAuthStore();
         method.config.headers = assign(method.config.headers, HEADER, authStore.getAuthorization);
     },
     responsed: {
@@ -40,22 +38,11 @@ const alovaInstance = createAlova({
          * @param method
          */
         onSuccess: async (response, method) => {
-            const {config} = method;
-            const {
-                enableDownload,
-                enableUpload,
-            } = config;
-            const {
-                statusCode,
-                // @ts-ignore
-                data: rawData,
-            } = response;
-            const {
-                code,
-                message,
-                data,
-                error
-            } = rawData as API;
+            const { config } = method;
+            const { enableDownload, enableUpload } = config;
+            // @ts-ignore
+            const { statusCode, data: rawData } = response;
+            const { code, message, data } = rawData as API;
             if (statusCode === 200) {
                 if (enableDownload) {
                     // 下载处理
@@ -63,28 +50,12 @@ const alovaInstance = createAlova({
                 }
                 if (enableUpload) {
                     // 上传处理
-                    if (code === ResultEnum.UPLOAD_ERROR)
-                        return Promise.reject(rawData);
                     return rawData;
                 }
                 if (code === ResultEnum.SUCCESS) {
-                    return data;
+                    return data as any;
                 }
-                if (code === ResultEnum.UPDATE_TOKEN) {
-                    const access = alovaInstance.Get<Token>('/user_access_to_token', {
-                        params: {
-                            access: useUserStore()._token.access
-                        }
-                    });
-                    const response = await access.send();
-                    method.config.headers.token = response?.token || undefined;
-                    useUserStore().setToken(response?.token || undefined);
-                    return await method.send();
-
-                }
-
-                // message && toast(message);
-                error && toast(error);
+                message && Toast(message);
                 return Promise.reject(rawData);
             }
             checkStatus(statusCode, message || '');
@@ -99,10 +70,7 @@ const alovaInstance = createAlova({
          */
         onError: (err, method) => {
             // error('Request Error!');
-            return Promise.reject({
-                err,
-                method,
-            });
+            return Promise.reject({ err, method });
         },
     },
 });

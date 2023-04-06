@@ -11,7 +11,7 @@ export const mockAdapter = createAlovaMockAdapter(mockGroupV1, {
     httpAdapter: uniappRequestAdapter,
 
     // mock接口响应延迟，单位毫秒
-    delay: 800,
+    delay: 1500,
 
     // 是否打印mock接口请求信息
     // mockRequestLogger: false,

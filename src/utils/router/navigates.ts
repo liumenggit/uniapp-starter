@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-import {warn} from 'vue';
-import {cloneDeep} from 'lodash-es';
-import {NAVIGATE_TYPE} from '@/enums/routerEnum';
-import {deepMerge} from '@/utils';
-import {routerBeforeEach} from '@/utils/router/interceptor';
-import {useRouterStore} from '@/state/modules/router';
-import {filterPath} from '@/utils/router/constant';
+import { warn } from 'vue';
+import { cloneDeep } from 'lodash-es';
+import { NAVIGATE_TYPE } from '@/enums/routerEnum';
+import { deepMerge } from '@/utils';
+import { routerBeforeEach } from '@/utils/router/interceptor';
+import { useRouterStore } from '@/state/modules/router';
+import { filterPath } from '@/utils/router/constant';
 
 export type NavigateOptions = Partial<Omit<UniApp.NavigateToOptions, 'url'>> & {
-    delta?: number
-}
+    delta?: number;
+};
 
 export class Navigates {
     private type: string;
@@ -22,8 +21,8 @@ export class Navigates {
     }
 
     navigate(url: string, options?: NavigateOptions) {
-        const navigateOptions: UniApp.NavigateBackOptions | undefined = deepMerge(cloneDeep(this.options), options);
-        const _options: UniApp.NavigateToOptions = deepMerge({url}, navigateOptions);
+        const navigateOptions = deepMerge(cloneDeep(this.options), options);
+        const _options = deepMerge({ url }, navigateOptions);
         switch (this.type) {
             case NAVIGATE_TYPE.NAVIGATE_TO:
                 uni.navigateTo(_options);
@@ -83,12 +82,11 @@ export class Navigates {
      */
     pushTab(url: string, options?: NavigateOptions) {
         // 微信小程序端uni.switchTab拦截无效处理
-        // #ifdef MP-WEIXIN
+        /* #ifdef MP-WEIXIN */
         if (!routerBeforeEach(url)) {
             return;
         }
-
-        // #endif
+        /* #endif */
         this.type = NAVIGATE_TYPE.SWITCH_TAB;
         this.navigate(url, options);
     }

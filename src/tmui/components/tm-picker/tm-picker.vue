@@ -8,7 +8,7 @@
     <!-- #ifndef APP-NVUE -->
     <slot></slot>
     <!-- #endif -->
-    <tm-drawer :zIndex="props.zIndex" :inContent="props.inContent" :disabbleScroll="true" :round="props.round" ref="drawer" :height="dHeight"
+    <tm-drawer :inContent="props.inContent" :disabbleScroll="true" :round="props.round" ref="drawer" :height="dHeight"
       :closeable="true" :overlayClick="aniover" @open="drawerOpen" @cancel="cancel" @ok="confirm" :show="showCity"
       @close="closeDrawer"
       title="请选择" ok-text="确认">
@@ -142,7 +142,7 @@ const props = defineProps({
   },
   btnRound: {
     type: Number,
-    default: 0,
+    default: 3,
   },
   round: {
     type: Number,
@@ -165,16 +165,7 @@ const props = defineProps({
   disabled:{
     type:Boolean,
     default:false
-  },
-  zIndex: {
-    type: [Number, String],
-    default: 999,
-  },
-  //弹出的动画时间单位ms.
-  duration: {
-    type: Number,
-    default: 300,
-  },
+  }
 });
 const showCity = ref(true);
 const _colIndex: Ref<Array<number>> = ref([]);
@@ -194,7 +185,7 @@ const sysinfo = inject(
     };
   })
 );
-let tmid:any = NaN;
+let tmid = NaN;
 watchEffect(() => {
   showCity.value = props.show;
 });

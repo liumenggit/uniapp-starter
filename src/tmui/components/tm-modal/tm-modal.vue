@@ -9,7 +9,6 @@
 		<view @click="opens"><slot name="trigger"></slot></view>
 		<!-- #endif -->
 		<tm-overlay
-			:zIndex="props.zIndex"
 			ref="overlayAni"
 			blur
 			:duration="props.duration"
@@ -19,17 +18,15 @@
 			:align="align_rp"
 			:overlayClick="false"
 			v-model:show="_show"
-			:teleport="props.teleport"
 		>
 			<tm-translate :reverse="reverse_rp" :width="anwidth" :height="anheight" ref="drawerANI" :auto-play="false" :name="aniname" :duration="props.duration">
 				<view
 					@click.stop="$event.stopPropagation()"
 					:style="[
-						{ width: anwidth, height: anheight,boxSizing:'border-box'},
+						{ width: anwidth, height: anheight },
 						!props.transprent ? tmcomputed.borderCss : '',
 						!props.transprent ? tmcomputed.backgroundColorCss : '',
 						!props.transprent ? tmcomputed.shadowColor : '',
-            
 						customCSSStyle
 					]"
 					:class="[round_rp, 'flex flex-col overflow ', customClass]"
@@ -268,15 +265,6 @@ const props = defineProps({
     type: [Array, String, Object],
     default: () => [],
   },
-  zIndex: {
-    type: [Number, String],
-    default: 999,
-  },
-  /** 是否使用teleport */
-  teleport:{
-    type: Boolean,
-    default: true,
-  },
 });
 const emits = defineEmits(["click", "open", "close", "update:show", "ok", "cancel"]);
 const proxy = getCurrentInstance()?.proxy ?? null;
@@ -444,6 +432,7 @@ function overclose() {
 
 // 外部调用
 function open(arg: any = null) {
+  if (props.disabled) return;
   if (okLoading.value) return;
   if (_show.value == true) return;
   return new Promise((res,rej)=>{
@@ -465,6 +454,7 @@ function open(arg: any = null) {
 
 // 内部调用
 function opens() {
+  if (!props.overlayClick) return;
   if (props.disabled) return;
   if (okLoading.value) return;
   if (_show.value == true) return;
@@ -481,6 +471,7 @@ function opens() {
 
 //外部手动调用关闭方法
 async function close(arg: Function | null = null) {
+  if (props.disabled) return;
   reverse.value = false;
   if (!drawerANI.value) return;
   overlayAni.value?.close();

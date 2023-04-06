@@ -1,6 +1,6 @@
-import {LOGIN_PAGE} from '@/enums/routerEnum';
-import {useRouterStore} from '@/state/modules/router';
-import {useRouter} from '@/hooks/router';
+import { LOGIN_PAGE } from '@/enums/routerEnum';
+import { useRouterStore } from '@/state/modules/router';
+import { useRouter } from '@/hooks/router';
 
 /**
  * 是否忽略验证
@@ -11,9 +11,7 @@ export function isIgnoreAuth(path: string): boolean {
     const _path = filterPath(path);
     const routerStore = useRouterStore();
     const routes = routerStore.getRoutes;
-    if (!routes) {
-        return false;
-    }
+    if (!routes) return false;
     const route = routes.get(_path);
     return route === undefined ? true : !!route?.meta?.ignoreAuth;
 }
@@ -35,6 +33,6 @@ export function jumpLogin(path: string) {
  * @param prefix
  */
 export function filterPath(url: string, prefix = '') {
-    const path = url.split('?')[0];
+    const path = url.split('?')[0] || '';
     return prefix + (path.startsWith('/') ? path.substring(1) : path);
 }
