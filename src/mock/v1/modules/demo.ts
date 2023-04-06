@@ -90,5 +90,33 @@ export const indexInfo = defineMock({
             message:'发送成功',
             code:ResultEnum.ERROR
         });
+    },
+    '[POST]/api/v1/image/upload': (request) => {
+        return createMock({
+            data: {
+                url:request.data.url
+            },
+            message:'设置成功',
+            code:ResultEnum.SUCCESS
+        });
+    },
+    '[POST]/api/v1/user/set/nickname': (request) => {
+        return createMock({
+            data: {
+                userName:request.data.userName
+            },
+            message:'设置成功',
+            code:ResultEnum.SUCCESS
+        });
+    },
+    '[POST]/api/v1/phone/code/verify': (request) => {
+        console.log(request.data.code as number);
+        return createMock({
+            data: {
+                phone:request.data.phone
+            },
+            message:request.data.code as number === 404 ? '修改成功':'修改失败',
+            code:request.data.code as number === 404 ? ResultEnum.SUCCESS : ResultEnum.ERROR
+        });
     }
 });

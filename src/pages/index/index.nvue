@@ -24,7 +24,6 @@
         </view>
       </tm-sheet>
     </template>
-
     <tm-navbar title="主页" :shadow="0" hide-home color="primary">
       <template v-slot:left>
         <view class="flex flex-center flex-row">

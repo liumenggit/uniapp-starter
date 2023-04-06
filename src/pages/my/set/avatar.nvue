@@ -15,16 +15,16 @@
   </tm-app>
 </template>
 <script lang="ts" setup>
-import store from '@/store'
+import {useUserInfo} from '@/state/modules/user-info'
 import {getCurrentInstance, ref} from "vue";
 
 const proxy = getCurrentInstance()?.proxy ?? null;
-const useUserInfo = store.useUserInfo()
-const userAvatar = ref(useUserInfo.userInfo.avatar)
+const userAvatar = ref(useUserInfo().userInfo.avatar)
 
 const setAvatar = (e: any) => {
-  store.useUserInfo().setAvatar(e.detail.avatarUrl).then((res) => {
-    userAvatar.value = res.data.url
+  useUserInfo().setAvatar(e.detail.avatarUrl).then((res) => {
+    console.log('setAvatar',res)
+    userAvatar.value = res.url
     setTimeout(() => {
       uni.navigateBack()
     }, 1300);

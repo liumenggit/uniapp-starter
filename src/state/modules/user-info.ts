@@ -26,7 +26,7 @@ export const useUserInfo = defineStore('userInfo', {
             }
         },
         token: getCache(TOKEN_KEY),
-        refreshToken: getCache(TOKEN_KEY) || undefined
+        refreshToken: getCache(TOKEN_KEY)
     }),
     getters: {},
     actions: {
@@ -91,8 +91,9 @@ export const useUserInfo = defineStore('userInfo', {
         },
         async setPhone(phone: PhoneCodeVerify) {
             try {
-                const { data } = useRequest(verifyPhoneCode(phone), { immediate: false });
-                this.userInfo.phone = data.value.phone;
+                const {  send: sendPhoneCode} = useRequest(verifyPhoneCode(phone), { immediate: false });
+                const data = await sendPhoneCode();
+                this.userInfo.phone = data.phone;
                 setCache('userInfo', this.userInfo);
                 return Promise.resolve(data);
             } catch (err: any) {

@@ -16,19 +16,18 @@
 </template>
 <script lang="ts" setup>
 import {getCurrentInstance, ref} from "vue";
-import store from '@/store'
+import {useUserInfo} from '@/state/modules/user-info'
 
 const proxy = getCurrentInstance()?.proxy ?? null;
-const useUserInfo = store.useUserInfo()
 const nickNameFrom = ref({
-  userName: useUserInfo.userInfo.userName,
+  userName: useUserInfo().userInfo.userName,
 })
 
 
 const confirm = (e: any) => {
   if (e.validate) {
-    useUserInfo.setName(e.data.userName).then((res) => {
-      nickNameFrom.value.userName = res.data.userName
+    useUserInfo().setName(e.data.userName).then((res) => {
+      nickNameFrom.value.userName = res.userName
       setTimeout(() => {
         uni.navigateBack()
       }, 1300);

@@ -59,7 +59,7 @@ function sendCode() {
 const confirm = (e: any) => {
   if (e.validate) {
     useUserInfo().setPhone(e.data).then((res) => {
-      console.log(res.phone);
+      console.log(res);
       setTimeout(() => {
         uni.navigateBack();
       }, 1300);
