@@ -76,14 +76,14 @@
             "transparentTitle": "always"
           }
         },
-    //    {
-    //      "path": "pages/my/set/card",
-    //      "style": {
-    //        "navigationBarTitleText": "实名认证",
-    //        "titlePenetrate": "YES",
-    //        "transparentTitle": "always"
-    //      }
-    //    },
+        {
+          "path": "pages/my/set/card",
+          "style": {
+            "navigationBarTitleText": "实名认证",
+            "titlePenetrate": "YES",
+            "transparentTitle": "always"
+          }
+        },
     {
       "path": "pages/message/message",
       "style": {
@@ -92,17 +92,17 @@
         "titlePenetrate": "YES",
         "transparentTitle": "always"
       }
-    }
-    //    {
-    //      "path": "pages/my/bespeak/bespeak",
-    //      "style": {
-    //        "navigationBarTitleText": "预约",
-    //        "disableScroll": true,
-    //        "navigationStyle": "custom",
-    //        "titlePenetrate": "YES",
-    //        "transparentTitle": "always"
-    //      }
-    //    },
+    },
+        {
+          "path": "pages/my/bespeak/bespeak",
+          "style": {
+            "navigationBarTitleText": "预约",
+            "disableScroll": true,
+            "navigationStyle": "custom",
+            "titlePenetrate": "YES",
+            "transparentTitle": "always"
+          }
+        },
     //    {
     //      "path": "pages/my/bespeak/bespeakList",
     //      "style": {

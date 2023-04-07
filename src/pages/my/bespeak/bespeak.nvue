@@ -1,156 +1,151 @@
 <template>
-    <tm-app ref="app">
-        <tm-navbar title="预约" color="primary">
-            <template v-slot:right>
-                <tm-icon _class="px-32" name="tmicon-plus"></tm-icon>
-            </template>
-        </tm-navbar>
-        <tm-sheet :margin="[0,0]" :padding="[32,32]" color="primary">
-            <tm-segtab @change="segChange" color="primary" activeColor="white" :width="680" :list="segList"
-                       :defaultValue="segId"></tm-segtab>
-        </tm-sheet>
-        <tm-weekbar @update:modelValue="weekChange" model="custom" :dayNumber="7" :default-value="weekbar"
-                    :model-value="weekbar"></tm-weekbar>
-        <tm-sheet :padding="[0,0]" :margin="[32,0,32,32]" :round="3" :shadow="2" class="hei overflow">
-            <tm-scrolly :round="3" @refresh="getBespeakList" :modelValue="topFresh" :width="0" :height="scrollHeight"
-                        translate="yes">
-                <tm-cell @click="openDrawer(bespeakItem)" :title="bespeakItem.title"
-                         :color="bespeakItem.status?'white':'grey-5'"
-                         :margin="[0, 0]"
-                         v-for="(bespeakItem,bespeakIndex) in bespeak" bottomBorder>
-                    <template v-slot:right>
-                        <tm-button v-if="bespeakItem.status" label="预约" size="small"></tm-button>
-                    </template>
-                    <template v-slot:label>
-                        <tm-text :label="'可预约（' + bespeakItem.label + '）人'" color="grey" :font-size="22"></tm-text>
-                    </template>
-                </tm-cell>
-            </tm-scrolly>
-        </tm-sheet>
-        <tm-drawer :height="1060" ref="calendarView" placement="bottom" v-model:show="showWin" closeable>
-            <tm-descriptions :margin="[32,0,32,0]" :column="2" transprent :round="3" text title="预约信息">
-                <tm-descriptions-item label="预约项目" :value="segName"/>
-                <tm-descriptions-item label="预约日期" :value="weekbar"/>
-                <tm-descriptions-item label="预约时间" :value="time"/>
-            </tm-descriptions>
-            <tm-form :margin="[32,0]" :padding="[0,0]" @submit="confirm" ref="form" v-model="phoneFrom"
-                     :label-width="190"
-                     layout="vertical">
-                <tm-form-item required label="姓名" :rules="[{required:true,message:'请输入姓名'}]" field="name"
-                              :border="false" showTopErrorGap>
-                    <tm-input placeholder="请输入姓名" v-model.lazy="phoneFrom.name" :showBottomBotder="false"
-                              prefix="tmicon-mobile-alt"></tm-input>
-                </tm-form-item>
-                <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
-                              :border="false" showTopErrorGap>
-                    <tm-input placeholder="请输入手机号" v-model.lazy="phoneFrom.phone" :showBottomBotder="false"
-                              prefix="tmicon-mobile-alt"></tm-input>
-                </tm-form-item>
-                <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
-                              :border="false" showTopErrorGap>
-                    <tm-input placeholder="请输入验证码" @search="sendCode" v-model.lazy="phoneFrom.code"
-                              :showBottomBotder="false"
-                              prefix="tmicon-ios-finger-print" searchLabel="获取验证码"/>
-                </tm-form-item>
-                <tm-form-item :border="false">
-                    <tm-button form-type="submit" label="预约" block></tm-button>
-                </tm-form-item>
-            </tm-form>
-        </tm-drawer>
-    </tm-app>
+  <tm-app ref="app">
+    <tm-navbar title="预约" color="primary">
+      <template v-slot:right>
+        <tm-icon _class="px-32" name="tmicon-plus"></tm-icon>
+      </template>
+    </tm-navbar>
+    <tm-sheet :margin="[0,0]" :padding="[32,32]" color="primary">
+      <tm-segtab @change="(index:number)=>{segId = index}" color="primary" activeColor="white" :width="680"
+                 :list="segList" :defaultValue="segId">
+      </tm-segtab>
+    </tm-sheet>
+    <tm-weekbar @update:modelValue="(index)=>{weekbar = index}" model="custom" :dayNumber="7" :default-value="weekbar"
+                :model-value="weekbar"></tm-weekbar>
+    <tm-sheet :padding="[0,0]" :margin="[32,0,32,32]" :round="3" :shadow="2" class="hei overflow">
+      <tm-scrolly :round="3" @refresh="()=>{refresh=!refresh}" :width="0"
+                  :height="scrollHeight" :model-value="loading"
+                  translate="yes">
+        <tm-cell @click="openDrawer(bespeakItem)" :title="bespeakItem.title"
+                 :color="bespeakItem.status?'white':'grey-5'"
+                 :margin="[0, 0]"
+                 v-for="(bespeakItem,bespeakIndex) in bespeak" bottomBorder>
+          <template v-slot:right>
+            <tm-button v-if="bespeakItem.status" label="预约" size="small"></tm-button>
+          </template>
+          <template v-slot:label>
+            <tm-text :label="'可预约（' + bespeakItem.label + '）人'" color="grey" :font-size="22"></tm-text>
+          </template>
+        </tm-cell>
+      </tm-scrolly>
+    </tm-sheet>
+    <tm-drawer :height="1060" ref="calendarView" placement="bottom" v-model:show="showWin" closeable>
+      <tm-descriptions :margin="[32,0,32,0]" :column="2" transprent :round="3" text title="预约信息">
+        <tm-descriptions-item label="预约项目" :value="segName" />
+        <tm-descriptions-item label="预约日期" :value="weekbar" />
+        <tm-descriptions-item label="预约时间" :value="time" />
+      </tm-descriptions>
+      <tm-form :margin="[32,0]" :padding="[0,0]" @submit="confirm" ref="form" v-model="phoneFrom"
+               :label-width="190"
+               layout="vertical">
+        <tm-form-item required label="姓名" :rules="[{required:true,message:'请输入姓名'}]" field="name"
+                      :border="false" showTopErrorGap>
+          <tm-input placeholder="请输入姓名" v-model.lazy="phoneFrom.name" :showBottomBotder="false"
+                    prefix="tmicon-mobile-alt"></tm-input>
+        </tm-form-item>
+        <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
+                      :border="false" showTopErrorGap>
+          <tm-input placeholder="请输入手机号" v-model.lazy="phoneFrom.phone" :showBottomBotder="false"
+                    prefix="tmicon-mobile-alt"></tm-input>
+        </tm-form-item>
+        <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+                      :border="false" showTopErrorGap>
+          <tm-input placeholder="请输入验证码" @search="sendCode" v-model.lazy="phoneFrom.code"
+                    :showBottomBotder="false"
+                    prefix="tmicon-ios-finger-print" searchLabel="获取验证码" />
+        </tm-form-item>
+        <tm-form-item :border="false">
+          <tm-button form-type="submit" label="预约" block></tm-button>
+        </tm-form-item>
+      </tm-form>
+    </tm-drawer>
+  </tm-app>
 </template>
 <script lang="ts" setup>
-import {computed, getCurrentInstance, Ref, ref} from "vue";
-import {onLoad, onReady} from "@dcloudio/uni-app";
-import {getWindow, isPhone, toast, torpx} from "@/tmui/tool/function/util";
-import * as dayjs from "@/tmui/tool/dayjs/esm/index"
-import {userBespeak} from "@/services/api/user/bespeak";
-import {sendPhoneCode} from "@/services/api/phone-verify";
+import { computed, getCurrentInstance, Ref, ref } from "vue";
+import { onReady } from "@dcloudio/uni-app";
+import { getWindow, isPhone, toast, torpx } from "@/tmui/tool/function/util";
+import * as dayjs from "@/tmui/tool/dayjs/esm/index";
+import { userBespeak } from "@/services/api/user/bespeak";
+import { sendPhoneCode } from "@/services/api/phone-verify";
+import { useWatcher } from "alova";
 
 const proxy = getCurrentInstance()?.proxy ?? null;
 const DayJs = dayjs.default;
-const nowDate = DayJs().format('YYYY-MM-DD')
-const scrollHeight = ref(0)
-const showWin = ref(false)
+const nowDate = DayJs().format("YYYY-MM-DD") as string;
+const scrollHeight = ref(0);
+const showWin = ref(false);
 //切换器
 const segList = ref([
-    {text: '祭祀', id: 1},
-    {text: '祭扫', id: 5}
-])
-const segId = ref(1)
-const segName = computed(() => segList.value.find(ele => ele.id === segId.value)?.text)
-
-function segChange(listItem: number) {
-    segId.value = listItem
-    getBespeakList()
-}
-
-
-//日期
-let weekbar: string = nowDate as string
-
-function weekChange(date: string) {
-    weekbar = date
-    getBespeakList()
-}
-
-//时间列表
-let bespeak: UserBespeakItemModel[] = []
-const topFresh = ref(false)
-
-function getBespeakList() {
-    topFresh.value = true
-    userBespeak({type: segId.value, date: weekbar}).then((res) => {
-        topFresh.value = false
-        bespeak = res.data.data.list
-    })
-}
-
-//时间
-let time: string = ''
+  { text: "祭祀", id: 1 },
+  { text: "祭扫", id: 5 }
+]);
+//切换器id
+const segId = ref(segList.value[0].id);
+//选择的切换器名称
+const segName = computed(() => segList.value.find(ele => ele.id === segId.value)?.text);
+//选择的日期
+let weekbar = ref(nowDate);
+//下拉刷新
+let refresh = ref(false);
+//请求
+const {
+  loading,
+  data: bespeak,
+  error
+} = useWatcher(
+  () => userBespeak({ type: segId.value, date: weekbar.value }),
+  [segId, weekbar, refresh],
+  {
+    force: true,
+    debounce: 500,
+    immediate: true,
+    initialData: []
+  }
+);
+//预约的时间
+let time: string = "";
 
 function openDrawer(cellItem: UserBespeakItemModel) {
-    showWin.value = true
-    time = cellItem.title
+  showWin.value = true;
+  time = cellItem.title;
 
 }
 
-//发送验证码
+//发送验证码表单
 const phoneFrom = ref({
-    phone: null,
-    code: null,
-    name: null
-})
+  phone: null,
+  code: null,
+  name: null
+});
 
+//发送验证码
 function sendCode() {
-    if (phoneFrom.value.phone) {
-        if (!isPhone(phoneFrom.value.phone as number)) {
-            toast('请输入正确的手机号')
-        } else {
-            sendPhoneCode(phoneFrom.value.phone).then(function (res: any) {
-                toast(res.data.msg)
-            })
-        }
+  if (phoneFrom.value.phone) {
+    if (!isPhone(phoneFrom.value.phone as number)) {
+      toast("请输入正确的手机号");
     } else {
-        toast('请输入手机号')
+      sendPhoneCode(phoneFrom.value.phone).then(function(res: any) {
+        toast(res.data.msg);
+      });
     }
+  } else {
+    toast("请输入手机号");
+  }
 }
 
 //提交预约
 const confirm = (e: any) => {
-    if (e.validate) {
-        console.log('提交预约')
-    }
-}
-onLoad(() => {
-    getBespeakList()
-})
+  if (e.validate) {
+    console.log("提交预约");
+  }
+};
 onReady(() => {
-    const query = uni.createSelectorQuery().in(proxy);
-    query.select('.hei').boundingClientRect((result: any) => {
-        scrollHeight.value = torpx(getWindow().height - result.top - 32)
-    }).exec();
-})
+  const query = uni.createSelectorQuery().in(proxy);
+  query.select(".hei").boundingClientRect((result: any) => {
+    scrollHeight.value = torpx(getWindow().height - result.top - 32);
+  }).exec();
+});
 </script>
 
 <style>

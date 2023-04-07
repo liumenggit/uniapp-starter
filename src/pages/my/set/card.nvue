@@ -19,20 +19,19 @@
     </tm-app>
 </template>
 <script lang="ts" setup>
-import store from '@/store'
+import {useUserInfo} from '@/state/modules/user-info'
 import {getCurrentInstance, Ref, ref} from "vue";
 
 const proxy = getCurrentInstance()?.proxy ?? null;
-const useUserInfo = store.useUserInfo()
 const cardForm: Ref<UserCardVerifyParams> = ref({
-    name: useUserInfo.userInfo.auth.card.name,
-    cardId: useUserInfo.userInfo.auth.card.cardId
+    name: useUserInfo().userInfo.auth.card.name,
+    cardId: useUserInfo().userInfo.auth.card.cardId
 })
 
 
 const confirm = (e: any) => {
     if (e.validate) {
-        useUserInfo.setAuthCard(e.data).then(() => {
+        useUserInfo().setAuthCard(e.data).then(() => {
             setTimeout(() => {
                 console.log('延迟执行')
                 uni.navigateBack()

@@ -1,7 +1,7 @@
 import { defineMock } from '@alova/mock';
 import { createMock } from '@/mock/utils';
 import { ResultEnum } from '@/enums/httpEnum';
-// import Mock from 'better-mock';
+import Mock from 'mockjs'
 
 export const indexInfo = defineMock({
     '/api/v1/index/commend': () => {
@@ -88,7 +88,7 @@ export const indexInfo = defineMock({
         return createMock({
             data: {},
             message:'发送成功',
-            code:ResultEnum.ERROR
+            code:ResultEnum.SUCCESS
         });
     },
     '[POST]/api/v1/image/upload': (request) => {
@@ -110,13 +110,46 @@ export const indexInfo = defineMock({
         });
     },
     '[POST]/api/v1/phone/code/verify': (request) => {
-        console.log(request.data.code as number);
         return createMock({
             data: {
                 phone:request.data.phone
             },
-            message:request.data.code as number === 404 ? '修改成功':'修改失败',
-            code:request.data.code as number === 404 ? ResultEnum.SUCCESS : ResultEnum.ERROR
+            message:request.data.code as number !== 404 ? '修改成功':'修改失败',
+            code:request.data.code as number !== 404 ? ResultEnum.SUCCESS : ResultEnum.ERROR
         });
+    },
+    '[POST]/api/v1/user/card/verify': (request) => {
+        return createMock({
+            data: {
+                name: request.data.name,
+                cardId: request.data.cardId,
+            },
+            message:'修改成功',
+            code:ResultEnum.SUCCESS
+        });
+    },
+    '/api/v1/user/bespeak': () => {
+        return createMock(
+            Mock.mock({
+                'data|10': [{
+                    'title|+1': [
+                        '08:00-09:00',
+                        '09:00-10:00',
+                        '10:00-11:00',
+                        '11:00-12:00',
+                        '12:00-13:00',
+                        '13:00-14:00',
+                        '14:00-15:00',
+                        '15:00-16:00',
+                        '16:00-17:00',
+                        '17:00-18:00'
+                    ],
+                    'label|0-100': 1,
+                    'status|1': [true, false]
+                }],
+                message:'修改成功',
+                code:ResultEnum.SUCCESS
+            })
+        );
     }
 });
