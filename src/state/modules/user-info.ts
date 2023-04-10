@@ -21,12 +21,12 @@ export const useUserInfo = defineStore('userInfo', {
             auth: {
                 card: {
                     name: '',
-                    cardId: ''
-                }
-            }
+                    cardId: '',
+                },
+            },
         },
         token: getCache(TOKEN_KEY),
-        refreshToken: getCache(TOKEN_KEY)
+        refreshToken: getCache(TOKEN_KEY),
     }),
     getters: {},
     actions: {
@@ -45,7 +45,7 @@ export const useUserInfo = defineStore('userInfo', {
                 return Promise.reject(err);
             }
         },
-        async refreshToken(token: string) {
+        async refreshToken2(token: string) {
             try {
                 const { send: sendRefreshUserToken } = useRequest(refreshUserToken(token), { immediate: false });
                 const data = await sendRefreshUserToken();
@@ -91,7 +91,7 @@ export const useUserInfo = defineStore('userInfo', {
         },
         async setPhone(phone: PhoneCodeVerify) {
             try {
-                const {  send: sendPhoneCode} = useRequest(verifyPhoneCode(phone), { immediate: false });
+                const { send: sendPhoneCode } = useRequest(verifyPhoneCode(phone), { immediate: false });
                 const data = await sendPhoneCode();
                 this.userInfo.phone = data.phone;
                 setCache('userInfo', this.userInfo);
@@ -107,6 +107,6 @@ export const useUserInfo = defineStore('userInfo', {
         async setUserInfos(userInfos: ILogin) {
             setCache('userInfo', userInfos);
             this.userInfo = userInfos;
-        }
-    }
+        },
+    },
 });

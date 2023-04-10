@@ -16,5 +16,5 @@ src/pages.json
 *.ttf
 *.yaml
 .husky
-.local!/src/tmui/
-/src/tmui/
+.local
+/vite.config.ts

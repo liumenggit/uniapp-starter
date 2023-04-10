@@ -1,10 +1,7 @@
 // 参考：https://eslint.bootcss.com/docs/rules/
 // 参考：https://blog.csdn.net/x550392236/article/details/89497202
 // 参考：https://blog.csdn.net/brokenkay/article/details/111106266
-/**
- * ceshi
- * @type {{parserOptions: {ecmaVersion: string, parser: string, sourceType: string}, parser: string, extends: string[], ignorePatterns: string[], plugins: string[], root: boolean, globals: {defineEmits: string, uni: string, defineProps: string, defineExpose: string, withDefaults: string}, rules: {'linebreak-style': string[], 'no-undef': string, indent: [string,number,{SwitchCase: number}], eqeqeq: [string,string,{null: string}], '@typescript-eslint/no-unused-vars': [string,{argsIgnorePattern: string, varsIgnorePattern: string}], 'vue/multi-word-component-names': string, '@typescript-eslint/no-non-null-assertion': string, 'vue/html-indent': (string|number)[], 'vue/singleline-html-element-content-newline': string, 'vue/max-attributes-per-line': string, camelcase: string, '@typescript-eslint/ban-types': string, quotes: string[], 'vue/html-self-closing': string, '@typescript-eslint/no-explicit-any': string, '@typescript-eslint/no-empty-function': string, 'no-unused-vars': string, semi: string[], 'no-var': string, '@typescript-eslint/ban-ts-comment': string}, env: {node: boolean, browser: boolean}}}
- */
+
 module.exports = {
     root: true,
     /**环境提供预定义的全局变量 */
@@ -27,11 +24,11 @@ module.exports = {
     rules: {
         'no-var': 'error', //要求使用 let 或 const 而不是 var
         camelcase: 'error', // 双峰驼命名格式
-        indent: ['error', 4, {SwitchCase: 1}], //代码缩进2个空格
+        indent: ['error', 4, { SwitchCase: 1 }], //代码缩进2个空格
         semi: ['error', 'always'], //行尾需要有分号
         quotes: ['error', 'single'], //强制使用一致的反勾号、双引号或单引号
         'linebreak-style': ['error', 'windows'], //强制使用一致的换行风格,"unix"：\n 表示 LF , "windows"：\r\n 表示 CRLF
-        eqeqeq: ['error', 'always', {null: 'ignore'}], //比较时强制使用 === 或者 !==,但对null作比较时可以不用全等
+        eqeqeq: ['error', 'always', { null: 'ignore' }], //比较时强制使用 === 或者 !==,但对null作比较时可以不用全等
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
             'warn',
@@ -66,7 +63,6 @@ module.exports = {
         '/public',
         '/src/public',
         '/src/static',
-        '/src/tmui',
         '/node_modules',
         // # 忽略文件
         '**/*-min.js',
@@ -79,4 +75,3 @@ module.exports = {
         '/src/manifest.json',
     ],
 };
-

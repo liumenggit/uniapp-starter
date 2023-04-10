@@ -60,30 +60,30 @@
         "transparentTitle": "always"
       }
     },
-        {
-          "path": "pages/my/set/nickname",
-          "style": {
-            "navigationBarTitleText": "昵称",
-            "titlePenetrate": "YES",
-            "transparentTitle": "always"
-          }
-        },
-        {
-          "path": "pages/my/set/avatar",
-          "style": {
-            "navigationBarTitleText": "头像",
-            "titlePenetrate": "YES",
-            "transparentTitle": "always"
-          }
-        },
-        {
-          "path": "pages/my/set/card",
-          "style": {
-            "navigationBarTitleText": "实名认证",
-            "titlePenetrate": "YES",
-            "transparentTitle": "always"
-          }
-        },
+    {
+      "path": "pages/my/set/nickname",
+      "style": {
+        "navigationBarTitleText": "昵称",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      }
+    },
+    {
+      "path": "pages/my/set/avatar",
+      "style": {
+        "navigationBarTitleText": "头像",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      }
+    },
+    {
+      "path": "pages/my/set/card",
+      "style": {
+        "navigationBarTitleText": "实名认证",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      }
+    },
     {
       "path": "pages/message/message",
       "style": {
@@ -93,129 +93,17 @@
         "transparentTitle": "always"
       }
     },
-        {
-          "path": "pages/my/bespeak/bespeak",
-          "style": {
-            "navigationBarTitleText": "预约",
-            "disableScroll": true,
-            "navigationStyle": "custom",
-            "titlePenetrate": "YES",
-            "transparentTitle": "always"
-          }
-        },
-    //    {
-    //      "path": "pages/my/bespeak/bespeakList",
-    //      "style": {
-    //        "navigationBarTitleText": "记录查询",
-    //        "titlePenetrate": "YES",
-    //        "transparentTitle": "always"
-    //      }
-    //    },
-    //    {
-    //      "path": "pages/Demo/README",
-    //      "style": {
-    //        "navigationBarTitleText": "Demo",
-    //        "titlePenetrate": "YES",
-    //        "transparentTitle": "always"
-    //      }
-    //    }
+    {
+      "path": "pages/my/bespeak/bespeak",
+      "style": {
+        "navigationBarTitleText": "预约",
+        "disableScroll": true,
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      }
+    }
   ],
-  //  "subPackages": [
-  //    {
-  //      "root": "pagesA",
-  //      "pages": [
-  //        {
-  //          "path": "list/test1/index",
-  //          "style": {
-  //            "navigationBarTitleText": "test1"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        },
-  //        {
-  //          "path": "list/test2/index",
-  //          "style": {
-  //            "navigationBarTitleText": "test2",
-  //            "navigationStyle": "custom"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        }
-  //      ]
-  //    },
-  //    {
-  //      "root": "pagesB",
-  //      "pages": [
-  //        {
-  //          "path": "detail/index",
-  //          "style": {
-  //            "navigationBarTitleText": "Detail"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        }
-  //      ]
-  //    },
-  //    {
-  //      "root": "pagesC",
-  //      "pages": [
-  //        {
-  //          "path": "index/index",
-  //          "style": {
-  //            "navigationBarTitleText": "Home"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        },
-  //        {
-  //          "path": "demo/index",
-  //          "style": {
-  //            "navigationBarTitleText": "Demo"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        },
-  //        {
-  //          "path": "about/index",
-  //          "style": {
-  //            "navigationBarTitleText": "关于"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        },
-  //        {
-  //          "path": "login/index",
-  //          "style": {
-  //            "navigationBarTitleText": "登录"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        },
-  //        {
-  //          "path": "log/index",
-  //          "style": {
-  //            "navigationBarTitleText": "日志"
-  //          }
-  //        },
-  //        {
-  //          "path": "notFound/404",
-  //          "style": {
-  //            "navigationBarTitleText": "Not Found"
-  //          },
-  //          "meta": {
-  //            "ignoreAuth": true
-  //          }
-  //        }
-  //      ]
-  //    }
-  //  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
