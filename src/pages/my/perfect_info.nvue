@@ -1,0 +1,84 @@
+<template>
+    <tm-app>
+        <tm-form @submit="confirm" ref="form" v-model="userPerfectParams">
+            <tm-form-item required label="姓名" :rules="[{required:true,message:'请输入姓名'}]" field="realname"
+                          :border="false" showTopErrorGap
+            >
+                <tm-input placeholder="请输入姓名" v-model.lazy="userPerfectParams.realname" :showBottomBotder="false"
+                          prefix="tmicon-mobile-alt"
+                ></tm-input>
+            </tm-form-item>
+            <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
+                          :border="false" showTopErrorGap
+            >
+                <tm-input placeholder="请输入手机号" v-model.lazy="userPerfectParams.phone" :showBottomBotder="false"
+                          prefix="tmicon-mobile-alt"
+                ></tm-input>
+            </tm-form-item>
+            <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+                          :border="false" showTopErrorGap
+            >
+                <tm-input placeholder="请输入验证码" @search="sendPhoneCode" v-model.lazy="userPerfectParams.code"
+                          :showBottomBotder="false"
+                          prefix="tmicon-ios-finger-print" searchLabel="获取验证码"
+                />
+            </tm-form-item>
+            <tm-form-item :border="false">
+                <tm-button form-type="submit" label="提交" block></tm-button>
+            </tm-form-item>
+        </tm-form>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {useRequest} from 'alova';
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {useUserInfo} from '@/state/modules/user-info';
+import {sendCode} from '@/services/api/common';
+import {userPerfect} from '@/services/api/user';
+import {isPhone, toast} from '@/tmui/tool/function/util';
+
+const {send: sendCodes} = useRequest(phone => sendCode(phone), {immediate: false});
+const {send: sendUserPerfectParams} = useRequest(userPerfectParams => userPerfect(userPerfectParams), {immediate: false});
+
+const userPerfectParams = ref({
+    open_id: useUserInfo().user_info.open_id,
+    realname: '刘老六',
+    phone: 18647012056,
+    code: 2056
+});
+const confirm = (e: any) => {
+    if (e.validate) {
+        console.log('提交预约', e);
+        sendUserPerfectParams(e.data).then((res) => {
+            console.log('res', res.user_info);
+            useUserInfo().setUserInfo(res.user_info);
+        }).catch((err) => {
+            console.log('err', err);
+        });
+    }
+};
+
+const sendPhoneCode = () => {
+    if (userPerfectParams.value.phone) {
+        if (!isPhone(userPerfectParams.value.phone as number)) {
+            toast('请输入正确的手机号');
+        } else {
+            sendCodes(userPerfectParams.value.phone).then((res) => {
+                console.log('发送成功', res);
+            }).catch((error) => {
+                console.log('发送错误', error);
+            });
+        }
+    } else {
+        toast('请输入手机号');
+    }
+};
+
+</script>
+<style>
+</style>

@@ -1,0 +1,113 @@
+import {useUserInfo} from '@/state/modules/user-info';
+import {toast} from '@/tmui/tool/function/util';
+import {createAlova, useRequest} from 'alova';
+import AdapterUniapp from '@alova/adapter-uniapp';
+import {assign} from 'lodash-es';
+import {mockAdapter} from '@/mock';
+import {getBaseUrl, isDevMode, getPlatformId} from '@/utils/env';
+import {checkStatus} from '@/utils/http/checkStatus';
+import {ContentTypeEnum, ResultEnum} from '@/enums/httpEnum';
+import type {API} from '@/services/model/baseModel';
+
+const BASE_URL = getBaseUrl();
+const PLATFORM_ID = getPlatformId();
+
+const HEADER = {
+    'Content-Type': ContentTypeEnum.JSON,
+    'Accept': 'application/json, text/plain, */*',
+    'platform-id': PLATFORM_ID
+};
+
+/**
+ * alova 请求实例
+ * @link https://github.com/alovajs/alova
+ */
+const alovaInstance = createAlova({
+    baseURL: BASE_URL,
+    ...AdapterUniapp({
+        // mockRequest: isDevMode() ? mockAdapter : undefined,
+    }),
+    timeout: 5000,
+    beforeRequest: (method) => {
+        const authStore = useUserInfo();
+        method.config.headers = assign(method.config.headers, HEADER, authStore.getAuthorization);
+    },
+    responsed: {
+        /**
+         * 请求成功的拦截器
+         * 第二个参数为当前请求的method实例，你可以用它同步请求前后的配置信息
+         * @param response
+         * @param method
+         */
+        onSuccess: async (response, method) => {
+            const {config} = method;
+            const {
+                enableDownload,
+                enableUpload,
+            } = config;
+            // @ts-ignore
+            const {
+                statusCode,
+                data: rawData,
+            } = response;
+            const {
+                code,
+                message,
+                data,
+                error
+            } = rawData as API;
+            if (statusCode === 200) {
+                if (enableDownload) {
+                    // 下载处理
+                    return rawData;
+                }
+                if (enableUpload) {
+                    // 上传处理
+                    return rawData;
+                }
+                if (code === ResultEnum.SUCCESS) {
+                    return data;
+                }
+                if (code === 200302) {
+                    console.log('更新token', method);
+                    const access = alovaInstance.Get('/user_access_to_token', {
+                        params: {
+                            access: useUserInfo()._token.access
+                        }
+                    });
+                    const response = await access.send();
+                    console.log('更新后信息', response);
+                    method.config.headers.token = response?.token || undefined;
+                    useUserInfo().setToken(response?.token || undefined);
+
+                    const res = await method.send();
+                    console.log('修改后', res);
+                    return res;
+
+                }
+
+                // message && toast(message);
+                error && toast(error);
+                return Promise.reject(rawData);
+            }
+            checkStatus(statusCode, message || '');
+            return Promise.reject(rawData);
+        },
+
+        /**
+         * 请求失败的拦截器，请求错误时将会进入该拦截器。
+         * 第二个参数为当前请求的method实例，你可以用它同步请求前后的配置信息
+         * @param err
+         * @param method
+         */
+        onError: (err, method) => {
+            // error('Request Error!');
+            return Promise.reject({
+                err,
+                method,
+            });
+        },
+    },
+});
+
+export const request = alovaInstance;

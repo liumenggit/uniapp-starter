@@ -1,0 +1,163 @@
+{
+  "easycom": {
+    "custom": {
+      "^tm-(.*)": "@/tmui/components/tm-$1/tm-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "业务办理",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/business/business",
+      "style": {
+        "navigationBarTitleText": "业务查询",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/my/account",
+      "style": {
+        "navigationBarTitleText": "我的账号",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/my/account-add",
+      "style": {
+        "navigationBarTitleText": "添加新账号",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/my/perfect_info",
+      "style": {
+        "navigationBarTitleText": "完善用户信息",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/login/auth",
+      "style": {
+        "navigationBarTitleText": "授权",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/notFound/404",
+      "style": {
+        "navigationBarTitleText": "404",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F2F2F2",
+    "backgroundColor": "#F2F2F2",
+    "navigationStyle": "default",
+    "renderingMode": "seperated",
+    "pageOrientation": "portrait"
+  },
+  "tabBar": {
+    "color": "#9a9a9a",
+    "selectedColor": "#3E7DFE",
+    "borderStyle": "black",
+    "backgroundColor": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tabar/compass-of.png",
+        "selectedIconPath": "static/tabar/compass-on.png",
+        "text": "业务办理"
+      },
+      {
+        "pagePath": "pages/business/business",
+        "iconPath": "static/tabar/compass-of.png",
+        "selectedIconPath": "static/tabar/compass-on.png",
+        "text": "业务查询"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/tabar/compass-of.png",
+        "selectedIconPath": "static/tabar/compass-on.png",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "condition": {
+    "current": 1,
+    "list": [
+      {
+        "name": "个人中心",
+        "path": "pages/my/my",
+        "query": ""
+      }
+    ]
+  }
+}
+

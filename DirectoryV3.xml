@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <trees>
+     <tree path="/src/services/api/common.ts" title="公共api" extension="" presentableText="" tooltipTitle="" icon=""
+           textColor="" backgroundColor=""/>
+     <tree path="/src/utils/common" title="公共方法"/>
+     <tree path="/src/utils/common/send-code.ts" title="发送验证码"/>
+ </trees>

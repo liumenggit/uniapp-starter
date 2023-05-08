@@ -1,0 +1,31 @@
+<template>
+    <tm-app>
+        <tm-carousel autoplay :margin="[0,0]" :width="0" :height="300" :list="listimg"></tm-carousel>
+        <tm-roll-notice :margin="[0,0]" :padding="[0,0]" :width="0" list="测试滚动测试滚动测试滚动测试滚动测试滚动"/>
+        <tm-grid :width="750" :col="2">
+            <tm-grid-item v-for="(item,index) in 12" :key="index">
+                <tm-text :height="100" :label="item"></tm-text>
+            </tm-grid-item>
+        </tm-grid>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import * as dayjs from '@/tmui/tool/dayjs/esm/index';
+import relativeTime from '@/tmui/tool/dayjs/esm/plugin/relativeTime';
+
+const listimg = ref([
+    'https://picsum.photos/720/300',
+    'https://picsum.photos/720/300',
+    'https://picsum.photos/720/300',
+    'https://picsum.photos/720/300',
+    'https://picsum.photos/720/300',
+]);
+</script>
+<style>
+</style>

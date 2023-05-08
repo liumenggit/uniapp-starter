@@ -1,0 +1,152 @@
+<template>
+    <tm-app>
+        <tm-sheet :padding="[0,0]">
+            <tm-form @submit="confirm" ref="form" v-model="accountParams" layout="vertical">
+                <tm-switch :label="['没有燃气号','已有燃气号']" :width="400" :height="58" :round="2"
+                           :defaultValue="gasRequired" v-model:model-value="gasRequired"
+                ></tm-switch>
+                <tm-form-item :required="gasRequired" v-if="gasRequired" label="燃气号"
+                              :rules="[{message:'请输入燃气号'}]"
+                              field="bind_name"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入燃气号" v-model.lazy="accountParams.bind_gas"
+                              :showBottomBotder="false"
+                    ></tm-input>
+                </tm-form-item>
+                <tm-form-item required label="户主名" :rules="[{required:true,message:'请输入户主名'}]"
+                              field="bind_name"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入户主名" v-model.lazy="accountParams.bind_name"
+                              :showBottomBotder="false"
+
+                    ></tm-input>
+                </tm-form-item>
+                <tm-form-item required label="身份账号码" :rules="[{required:true,message:'请输入身份账号码'}]"
+                              field="bind_idcard"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入身份账号码" v-model.lazy="accountParams.bind_idcard"
+                              :showBottomBotder="false"
+
+                    ></tm-input>
+                </tm-form-item>
+                <tm-form-item required label="电话号码" :rules="[{required:true,message:'请输入电话号码'}]"
+                              field="bind_phone"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入电话号码" v-model.lazy="accountParams.bind_phone"
+                              :showBottomBotder="false"
+
+                    ></tm-input>
+                </tm-form-item>
+                <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入验证码" v-model.lazy="accountParams.code"
+                              :showBottomBotder="false" :padding="[0,0]"
+                    >
+                        <template v-slot:right>
+                            <tm-button @click="sendPhoneCode(accountParams.bind_phone as number, sendCodes)"
+                                       :loading="sendCodeLoading" size="mini" :width="150"
+                                       label="获取验证码"
+                            ></tm-button>
+                            <!--                            sendCodeLoad-->
+                        </template>
+                    </tm-input>
+                </tm-form-item>
+                <tm-form-item required label="小区选择" field="bind_village" :border="false"
+                              :rules="[{required:true,message:'请选择小区'}]"
+                >
+                    <tm-input placeholder="请输入小区信息进行搜索"
+                              :ready-only="true"
+                              @click="showPicker=!showPicker"
+                              :userInteractionEnabled="false"
+                              :model-value="villageList ? villageList.find(item => item.id === Array.isArray(accountParams.bind_village) ? accountParams.bind_village[0]:accountParams.bind_village)?.title : ''"
+                              :showBottomBotder="false"
+                    />
+                </tm-form-item>
+                <tm-form-item required label="地址信息" :rules="[{required:true,message:'请输入地址信息'}]"
+                              field="bind_village"
+                              :border="false" showTopErrorGap
+                >
+                    <tm-input placeholder="请输入详细地址"
+                              v-model.lazy="accountParams.bind_address"
+                              :showBottomBotder="false"
+                    />
+                </tm-form-item>
+                <tm-form-item :border="false">
+                    <tm-button :loading="sendLoading" form-type="submit" label="提交" block></tm-button>
+                </tm-form-item>
+            </tm-form>
+        </tm-sheet>
+        <tm-picker :columns="villageList" v-model:show="showPicker" selected-model="id" map-key="title"
+                   v-model:model-value="accountParams.bind_village"
+        ></tm-picker>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {sendPhoneCode} from '@/utils/common/send-code';
+import {postAccountAdd} from '@/services/api/account';
+import {getVillageList} from '@/services/api/common';
+import {sendCode} from '@/services/api/common';
+import {onLoad} from '@dcloudio/uni-app';
+import {useRequest, useWatcher} from 'alova';
+import {
+    ref,
+    Ref
+} from 'vue';
+
+onLoad((query: any) => {
+    console.log('query', query);
+});
+
+const showPicker = ref(false);
+const gasRequired = ref(false);
+const accountParams: Ref<AccountParams> = ref({
+    bind_address: '测试西悉尼',
+    bind_village: 2,
+    bind_gas: null,
+    bind_name: '刘老六',
+    bind_phone: 18647012056,
+    bind_idcard: '152104199312251914'
+});
+
+// 发送验证码
+const {
+    send: sendCodes,
+    loading: sendCodeLoading
+} = useRequest(phone => sendCode(phone), {immediate: false});
+
+//获取小区列表
+const {
+    loading,
+    data: villageList
+} = useRequest(() => getVillageList(), {
+    initialData: [],
+    immediate: true,
+});
+
+// 添加账户
+const {
+    send: sendAccountAdd,
+    loading: sendLoading
+} = useRequest(accountParams => postAccountAdd(accountParams), {immediate: false});
+
+// 添加账户
+const confirm = (e: any) => {
+    console.log('提交', e);
+    if (e.validate) {
+        sendAccountAdd(e.data).then((res) => {
+            console.log('then', res);
+        }).catch((err) => {
+            console.log('err', err);
+        });
+    }
+};
+
+</script>
+<style>
+</style>

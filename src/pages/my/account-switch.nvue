@@ -1,0 +1,71 @@
+<template>
+    <tm-app>
+        <tm-scrolly :height="1200" class="overflow ma-20">
+            <tm-result :showBtn="false" sub-title=" " v-if="accountList.length > 0 ? false:true"></tm-result>
+            <tm-slide-switch v-for="(accountItem,accountIndex) in accountList" :key="accountIndex" :width="710"
+                             :height="230" :rightWidth="80" transprent :round="4"
+            >
+                <tm-card :title="accountItem.bind_name" :status="accountItem.bind_phone" :margin="[0,0]" :round="4" :height="230">
+                    <template v-slot:content>
+                        {{ accountItem.bind_address }}
+                    </template>
+                    <template v-slot:action>
+                        {{ accountItem.bind_createtime }}
+                    </template>
+                </tm-card>
+                <template v-slot:right>
+                    <view class="flex flex-row flex-row-center-end">
+                        <tm-sheet _class="flex flex-row flex-row-center-center"
+                                  :width="90" :height="230" color="red" no-level :margin="[0]" :padding="[0]"
+                        >
+                            <tm-text :userInteractionEnabled="false" label="删除"></tm-text>
+                        </tm-sheet>
+                        <tm-sheet _class="flex flex-row flex-row-center-center" :width="80" :height="230" color="primary"
+                                  no-level :margin="[0]" :padding="[0]" class="round-r-4"
+                        >
+                            <tm-text :userInteractionEnabled="false" label="编辑"></tm-text>
+                        </tm-sheet>
+                    </view>
+                </template>
+            </tm-slide-switch>
+        </tm-scrolly>
+        <tm-button :padding="[16]" @click="router.go('/pages/my/account-add')" block label="添加新账号"></tm-button>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {useRouter} from '@/hooks/router';
+import {getAccountList} from '@/services/api/account';
+import {useRequest, useWatcher} from 'alova';
+
+const router = useRouter();
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+
+const action = ref([
+    {
+        text: '操作',
+        color: 'black'
+    },
+    {
+        text: '删除按钮',
+        color: 'green',
+        icon: 'tmicon-delete'
+    },
+]);
+
+const {
+    loading,
+    data: accountList
+} = useRequest(() => getAccountList(), {
+    initialData: [],
+    immediate: true,
+});
+
+
+</script>
+<style>
+</style>

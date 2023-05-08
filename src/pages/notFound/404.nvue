@@ -1,0 +1,10 @@
+<template>
+    <tm-app>
+        <tm-result color="green" status="success"></tm-result>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+</script>
+<style>
+</style>

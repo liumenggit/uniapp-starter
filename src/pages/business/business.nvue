@@ -1,0 +1,17 @@
+<template>
+    <tm-app>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from "vue";
+import * as dayjs from "@/tmui/tool/dayjs/esm/index";
+import relativeTime from "@/tmui/tool/dayjs/esm/plugin/relativeTime";
+
+</script>
+<style>
+</style>

@@ -1,0 +1,64 @@
+<template>
+    <tm-app>
+        <tm-scrolly :height="1200" class="overflow my-20">
+            <tm-result :showBtn="false" sub-title=" " v-if="accountList.length > 0 ? false:true"></tm-result>
+            <tm-card v-for="(accountItem,accountIndex) in accountList" :key="accountIndex"
+                     :title="accountItem.bind_name" :status="accountItem.bind_phone" :round="4"
+            >
+                <template v-slot:content>
+                    <tm-descriptions-item label="居住小区" :value="accountItem.bind_village_name" :font-size="26"/>
+                    <tm-descriptions-item label="详细地址" :value="accountItem.bind_address" :font-size="26"/>
+                    <tm-descriptions-item label="身份证号" :value="accountItem.bind_idcard" :font-size="26"/>
+                </template>
+                <template v-slot:action>
+                    <view class="flex flex-row flex-row-center-end flex-1 border-t-2">
+                        <!--                        <tm-button @click="router.go('/pages/my/account-add?data=' + JSON.stringify(accountItem))" label="编辑" size="small" :round="24" :margin="[24,0]" :width="120"/>-->
+                        <tm-button
+                            @click="router.go('/pages/my/account-add?' +  encodeURIComponent(JSON.stringify(accountItem)))"
+                            label="编辑" size="small" :round="24" :margin="[24,0]" :width="120"
+                        />
+                        <tm-button label="删除" size="small" :round="24" color="red" :width="120"/>
+                    </view>
+                </template>
+            </tm-card>
+        </tm-scrolly>
+        <tm-button :margin="[24]" :padding="[16]" @click="router.go('/pages/my/account-add')" block label="添加新账号"/>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {useRouter} from '@/hooks/router';
+import {getAccountList} from '@/services/api/account';
+import {useRequest, useWatcher} from 'alova';
+
+const router = useRouter();
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+
+const action = ref([
+    {
+        text: '操作',
+        color: 'black'
+    },
+    {
+        text: '删除按钮',
+        color: 'green',
+        icon: 'tmicon-delete'
+    },
+]);
+
+const {
+    loading,
+    data: accountList
+} = useRequest(() => getAccountList(), {
+    initialData: [],
+    immediate: true,
+});
+
+
+</script>
+<style>
+</style>

@@ -1,0 +1,53 @@
+<template>
+    <tm-app>
+        <tm-result color="green" status="success"></tm-result>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {useRouter} from '@/hooks/router';
+import {useUserInfo} from '@/state/modules/user-info';
+import {onLoad} from '@dcloudio/uni-app';
+import {Ref, ref} from 'vue';
+import {useRequest} from 'alova';
+import {userWxlogin} from '@/services/api/auth';
+
+const router = useRouter();
+// 微信登录
+const {send: wxLogin} = useRequest(userWxlogin, {immediate: false});
+const redirect = ref<string | undefined>(undefined);
+onLoad((query: any) => {
+    console.log('code', getParameterByName('code'));
+    redirect.value = query.redirect ? decodeURIComponent(query.redirect) : undefined;
+    console.log('成功后需要返回', redirect.value);
+    const code = getParameterByName('code');
+    if (code) {
+        wxLogin({code: code}).then((userInfoState) => {
+            console.log('微信登录成功', userInfoState);
+            useUserInfo().setUserInfo(userInfoState.user_info);
+            useUserInfo().setToken(userInfoState._token.token);
+            useUserInfo().setTokenRefresh(userInfoState._token.access);
+            if (redirect.value) {
+                router.go(redirect.value!, {replace: true});
+                return;
+            }
+        }).catch((e) => {
+            console.log('微信登录失败', e);
+        });
+
+    }
+
+});
+
+const getParameterByName = (name: string, url?: string) => {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+</script>
+<style>
+</style>
