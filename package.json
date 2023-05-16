@@ -81,7 +81,8 @@
     "unocss-preset-weapp": "^0.5.1",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.2.1",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-replace-json": "^1.0.1"
   },
   "husky": {
     "hooks": {

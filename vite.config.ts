@@ -1,15 +1,17 @@
-import {resolve} from 'path'
-import type {ConfigEnv, UserConfig} from 'vite'
-import {loadEnv} from 'vite'
-import uni from '@dcloudio/vite-plugin-uni'
-import Unocss from 'unocss/vite'
+import {resolve} from 'path';
+import type {ConfigEnv, UserConfig} from 'vite';
+import {loadEnv} from 'vite';
+import uni from '@dcloudio/vite-plugin-uni';
+import Unocss from 'unocss/vite';
+import replaceJson from 'vite-plugin-replace-json';
+import {getAppid} from '@/utils/env';
 
 // https://vitejs.cn/config/
 export default ({mode}: ConfigEnv): UserConfig => {
-    const root = process.cwd()
-    const env = loadEnv(mode, root)
+    const root = process.cwd();
+    const env = loadEnv(mode, root);
     // 在控制台输出环境变量
-    console.log('当前环境：', env)
+    console.log('当前环境：', env);
     return {
         base: './',
         // 设置路径别名
@@ -40,6 +42,15 @@ export default ({mode}: ConfigEnv): UserConfig => {
             },
         },
         plugins: [
+            replaceJson([{
+                path: './src/manifest.json',
+                replace: {
+                    name: `"${env.VITE_APP_TITLE}"`,
+                    versionName: `"${env.VITE_VERSION}"`,
+                    'mp-weixin.appid': `"${env.VITE_APP_ID}"`,
+                    'h5.router.base': `"${Boolean(env.VITE_DEV) ? '/' : '/modules/chinaranqi/'}"`,
+                }
+            }]),
             uni(),
             Unocss(),
         ],
@@ -50,5 +61,5 @@ export default ({mode}: ConfigEnv): UserConfig => {
                 },
             },
         },
-    }
+    };
 }

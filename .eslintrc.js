@@ -66,6 +66,7 @@ module.exports = {
         '/public',
         '/src/public',
         '/src/static',
+        '/src/tmui',
         '/node_modules',
         // # 忽略文件
         '**/*-min.js',

@@ -12,10 +12,10 @@ export const config: Tmui.tmuiConfig = {
   },
   router: {
     useTmRouterBefore(arg) {
-      console.log('tmui.config.route.useTmRouterBefore', arg)
+      // console.log('tmui.config.route.useTmRouterBefore', arg)
     },
     useTmRouterAfter(arg) {
-      console.log('tmui.config.route.useTmRouterAfter', arg)
+      // console.log('tmui.config.route.useTmRouterAfter', arg)
     },
   },
 }

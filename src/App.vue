@@ -9,14 +9,26 @@ import {useRouterStore} from '@/state/modules/router';
 const platform = CURRENT_PLATFORM;
 const isVue3 = judgePlatform(PLATFORMS.VUE3);
 const apiUrl = import.meta.env.VITE_BASE_URL;
+const platformId = import.meta.env.VITE_PLATFORM_ID;
+const appid = import.meta.env.VITE_APP_ID;
+const version = import.meta.env.VITE_VERSION;
+const appTitle = import.meta.env.VITE_APP_TITLE;
 onLaunch(() => {
     console.log(
-        `\n%cUNIAPP%c${platform}%cVUE%c${isVue3 ? '3' : '2'}%cAPI%c${apiUrl}%c\n`,
+        `\n%cTITLE%c${appTitle}%cUNIAPP%c${platform}%cVUE%c${isVue3 ? '3' : '2'}%cVERSION%c${version}%cAPP_ID%c${appid}%cPLATFORM_ID%c${platformId}%cAPI%c${apiUrl}%c\n`,
+        'background:black;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
         'background:#2b993a;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
         'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
-        'background:#42d392;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#41B883;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
         'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
-        'background:orange;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#007ec6;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
+        'background:#5CC928;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
+        'background:#e05d44;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
+        'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
+        'background:#A97BFF;color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;',
         'background:#fff;padding:3px 6px;color:#000;margin-right:1em;border-radius:0 4px 4px 0;',
         '',
     );

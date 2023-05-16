@@ -55,7 +55,6 @@ export function uploadOssFile(file: File) {
 export function getBannerList() {
     return request.Get<[Banner]>('banner_list', {
         transformData(rawData) {
-            console.log('rawData', rawData);
             // @ts-ignore
             return rawData.map((item: any) => {
                 // eslint-disable-next-line camelcase
