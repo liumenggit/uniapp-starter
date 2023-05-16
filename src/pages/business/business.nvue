@@ -1,17 +1,45 @@
 <template>
     <tm-app>
+        <tm-carousel :height="300" rangKey="banner_img" :list="bannerList"></tm-carousel>
+        <tm-roll-notice :margin="[0,0]" list="测试滚动测试滚动测试滚动测试滚动测试滚动"/>
+        <tm-grid :width="750" :col="3" showBorder>
+            <tm-grid-item @click="router.go(gridItem.url)" v-for="gridItem in gridList" :height="150">
+                <tm-icon :name="gridItem.icon" :font-size="50" color="primary"></tm-icon>
+                <tm-text :label="gridItem.title"></tm-text>
+            </tm-grid-item>
+        </tm-grid>
     </tm-app>
 </template>
-
 <script lang="ts" setup>
 import {
     computed,
     ref,
     Ref
-} from "vue";
-import * as dayjs from "@/tmui/tool/dayjs/esm/index";
-import relativeTime from "@/tmui/tool/dayjs/esm/plugin/relativeTime";
+} from 'vue';
 
+const gridList = [
+    {title: '价格公示', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '优化营商环境', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '营业网点', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '停气信息', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '燃气常识', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '我要留言', url: '/pages/message/message-create', icon: 'td-bug'},
+    {title: '办事指南', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+];
+
+const router = useRouter();
+import {useRouter} from '@/hooks/router';
+import {useRequest} from 'alova';
+import {getBannerList} from '@/services/api/common';
+
+const {
+    data: bannerList,
+} = useRequest(
+    () => getBannerList(),
+    {
+        immediate: true
+    }
+);
 </script>
 <style>
 </style>

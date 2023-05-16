@@ -1,0 +1,35 @@
+<template>
+    <tm-app>
+        <tm-sheet :margin="[0,0]">
+            <tm-text :label="noticeInfo.title" :font-size="32"></tm-text>
+            <tm-text :label="dateFormat(noticeInfo.create_time as number)" :font-size="26"></tm-text>
+            <tm-divider></tm-divider>
+            <tm-html :content="noticeInfo.content"></tm-html>
+        </tm-sheet>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {onLoad} from '@dcloudio/uni-app';
+import {getNoticeInfo} from '@/services/api/notice';
+import {dateFormat} from '@/utils/common/date-format';
+
+const noticeInfo: Ref<NoticeModel> = ref({});
+
+onLoad((query: any) => {
+    console.log('onload');
+    if (query?.id) {
+        getNoticeInfo(query.id).send().then((res) => {
+            noticeInfo.value = res;
+        });
+    }
+});
+
+</script>
+<style>
+</style>

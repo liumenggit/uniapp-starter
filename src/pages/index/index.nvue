@@ -1,31 +1,57 @@
 <template>
     <tm-app>
-        <tm-carousel autoplay :margin="[0,0]" :width="0" :height="300" :list="listimg"></tm-carousel>
-        <tm-roll-notice :margin="[0,0]" :padding="[0,0]" :width="0" list="测试滚动测试滚动测试滚动测试滚动测试滚动"/>
-        <tm-grid :width="750" :col="2">
-            <tm-grid-item v-for="(item,index) in 12" :key="index">
-                <tm-text :height="100" :label="item"></tm-text>
+        <tm-carousel dot-position="right" model="rect" :height="300" rangKey="banner_img"
+                     :list="bannerList"></tm-carousel>
+        <tm-roll-notice :margin="[0,0]" list="测试滚动测试滚动测试滚动测试滚动测试滚动"/>
+        <tm-grid :width="750" :col="2" showBorder>
+            <tm-grid-item @click="router.go(gridItem.url)" v-for="gridItem in gridList">
+                <view class="flex-wrap flex-row-center-center">
+                    <tm-icon :name="gridItem.icon" :font-size="50" class="pr-40" color="primary"></tm-icon>
+                    <tm-text :label="gridItem.title"></tm-text>
+                </view>
             </tm-grid-item>
         </tm-grid>
     </tm-app>
 </template>
-
 <script lang="ts" setup>
 import {
     computed,
     ref,
     Ref
 } from 'vue';
-import * as dayjs from '@/tmui/tool/dayjs/esm/index';
-import relativeTime from '@/tmui/tool/dayjs/esm/plugin/relativeTime';
+import {useRouter} from '@/hooks/router';
+import {useRequest} from 'alova';
+import {getBannerList} from '@/services/api/common';
 
-const listimg = ref([
-    'https://picsum.photos/720/300',
-    'https://picsum.photos/720/300',
-    'https://picsum.photos/720/300',
-    'https://picsum.photos/720/300',
-    'https://picsum.photos/720/300',
-]);
+const router = useRouter();
+const gridList = [
+    {title: '我的账号', url: '/pages/account/account-list', icon: 'td-bug'},
+    {title: '充值缴费', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '账单信息', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '预约办理', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '在线开户', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '在线过户', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '在线销户', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '意见建议', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '配件商城', url: '/pages/goods/goods-after-list', icon: 'td-bug'},
+    {title: '开户商城', url: '/pages/goods/goods-open-list', icon: 'td-bug'},
+    {title: '燃气保险', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '开具发票', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '停气信息', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '错误url', url: '/pages/booking/booking-create22', icon: 'td-bug'},
+    {title: '文章', url: '/pages/article/article-list', icon: 'td-bug'},
+];
+
+
+const {
+    data: bannerList,
+} = useRequest(
+    () => getBannerList(),
+    {
+        immediate: true
+    }
+);
+
 </script>
 <style>
 </style>

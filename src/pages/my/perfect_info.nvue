@@ -1,27 +1,36 @@
 <template>
     <tm-app>
-        <tm-form @submit="confirm" ref="form" v-model="userPerfectParams">
+        <tm-form @submit="confirm" ref="form" v-model="userPerfectParams" layout="vertical">
             <tm-form-item required label="姓名" :rules="[{required:true,message:'请输入姓名'}]" field="realname"
                           :border="false" showTopErrorGap
             >
-                <tm-input placeholder="请输入姓名" v-model.lazy="userPerfectParams.realname" :showBottomBotder="false"
-                          prefix="tmicon-mobile-alt"
+                <tm-input placeholder="请输入姓名" type="text" v-model.lazy="userPerfectParams.realname" :showBottomBotder="false"
+                          prefix="td-user"
                 ></tm-input>
             </tm-form-item>
             <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
                           :border="false" showTopErrorGap
             >
-                <tm-input placeholder="请输入手机号" v-model.lazy="userPerfectParams.phone" :showBottomBotder="false"
+                <tm-input placeholder="请输入手机号" type="number" v-model.lazy="userPerfectParams.phone" :showBottomBotder="false"
                           prefix="tmicon-mobile-alt"
                 ></tm-input>
             </tm-form-item>
             <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
                           :border="false" showTopErrorGap
             >
-                <tm-input placeholder="请输入验证码" @search="sendPhoneCode" v-model.lazy="userPerfectParams.code"
+                <tm-input placeholder="请输入验证码" type="number" v-model.lazy="userPerfectParams.code"
                           :showBottomBotder="false"
-                          prefix="tmicon-ios-finger-print" searchLabel="获取验证码"
-                />
+                          :input-padding="[24,0,0,0]"
+                          prefix="tmicon-ios-finger-print"
+                >
+                    <template v-slot:right>
+                        <tm-button @click="sendPhoneCode(userPerfectParams.phone as number, sendCodes)"
+                                   :loading="sendCodeLoading" size="small" :width="150" :round="4"
+                                   :disabled="codeButtonState"
+                                   :label="codeButtonLabel"
+                        ></tm-button>
+                    </template>
+                </tm-input>
             </tm-form-item>
             <tm-form-item :border="false">
                 <tm-button form-type="submit" label="提交" block></tm-button>
@@ -40,44 +49,53 @@ import {
 import {useUserInfo} from '@/state/modules/user-info';
 import {sendCode} from '@/services/api/common';
 import {userPerfect} from '@/services/api/user';
-import {isPhone, toast} from '@/tmui/tool/function/util';
+import {toast} from '@/tmui/tool/function/util';
+import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyCode';
+import {sendPhoneCode} from '@/utils/common/send-code';
+import {UserPerfectParams} from '@/services/model/userModel';
+import {useRouter} from '@/hooks/router';
 
-const {send: sendCodes} = useRequest(phone => sendCode(phone), {immediate: false});
+const router = useRouter();
 const {send: sendUserPerfectParams} = useRequest(userPerfectParams => userPerfect(userPerfectParams), {immediate: false});
 
-const userPerfectParams = ref({
-    open_id: useUserInfo().user_info.open_id,
-    realname: '刘老六',
-    phone: 18647012056,
-    code: 2056
-});
+const userPerfectParams: Ref<UserPerfectParams> = ref({});
 const confirm = (e: any) => {
     if (e.validate) {
-        console.log('提交预约', e);
+        e.data.open_id = useUserInfo().user_info.open_id;
         sendUserPerfectParams(e.data).then((res) => {
-            console.log('res', res.user_info);
             useUserInfo().setUserInfo(res.user_info);
-        }).catch((err) => {
-            console.log('err', err);
+            toast('完善信息成功');
+            setTimeout(() => {
+                router.back();
+            }, 1500);
         });
     }
 };
 
-const sendPhoneCode = () => {
-    if (userPerfectParams.value.phone) {
-        if (!isPhone(userPerfectParams.value.phone as number)) {
-            toast('请输入正确的手机号');
+// 发送验证码
+let codeButtonState = ref(false);
+let codeButtonLabel = ref(VERIFY_CODE_TEXT);
+const {
+    send: sendCodes,
+    loading: sendCodeLoading,
+    onSuccess: sendCodeSuccess
+} = useRequest(phone => sendCode(phone), {immediate: false});
+
+
+sendCodeSuccess(() => {
+    codeButtonState.value = true;
+    let countDown = VERIFY_CODE_TIME;
+    const timer = setInterval(function () {
+        countDown--;
+        if (countDown <= 0) {
+            clearInterval(timer);
+            codeButtonLabel.value = VERIFY_CODE_TEXT;
+            codeButtonState.value = false;
         } else {
-            sendCodes(userPerfectParams.value.phone).then((res) => {
-                console.log('发送成功', res);
-            }).catch((error) => {
-                console.log('发送错误', error);
-            });
+            codeButtonLabel.value = countDown + VERIFY_CODE_TIME_TEXT;
         }
-    } else {
-        toast('请输入手机号');
-    }
-};
+    }, 1000);
+});
 
 </script>
 <style>

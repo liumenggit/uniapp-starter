@@ -1,0 +1,16 @@
+<template>
+    <tm-app>
+
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from "vue";
+
+</script>
+<style>
+</style>

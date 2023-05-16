@@ -1,0 +1,22 @@
+<template>
+    <tm-app>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {onLoad} from '@dcloudio/uni-app';
+
+onLoad((query: any) => {
+    if (query?.id) {
+        console.log('查看', query.id);
+    }
+});
+
+</script>
+<style>
+</style>

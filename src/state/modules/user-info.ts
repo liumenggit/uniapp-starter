@@ -22,6 +22,7 @@ export const useUserInfo = defineStore('userInfo', {
     },
     actions: {
         async updateUserInfo() {
+            console.log('更新用户信息');
             const {send: sendGetUserInfo} = useRequest(getUserInfo(), {immediate: false});
             const userInfo = await sendGetUserInfo();
             setCache(USER_INFO_KEY, userInfo);

@@ -1,0 +1,78 @@
+<template>
+    <tm-app>
+        <tm-spin :load="loading" tip="努力加载中……" @click="loading=false">
+            <tm-card :title="'预约编号：' + userBookingInfo.reserve_id" :status="userBookingInfo.status_name"
+                     :margin="[32,32]" :round="3">
+                <template v-slot:content>
+                    <tm-descriptions-item label="用户" :value="userBookingInfo.realname"></tm-descriptions-item>
+                    <tm-descriptions-item label="手机" :value="userBookingInfo.phone"></tm-descriptions-item>
+                    <tm-descriptions-item label="地址" :value="userBookingInfo.address"></tm-descriptions-item>
+                    <tm-descriptions-item label="时间" :value="userBookingInfo.create_time"></tm-descriptions-item>
+                </template>
+            </tm-card>
+            <tm-card title="身份证" :round="3">
+                <template v-slot:content>
+                    <view class="flex-row-center-between flex-wrap">
+                        <tm-image :width="300" :src="userBookingInfo.idcard_z" preview></tm-image>
+                        <tm-image :width="300" :src="userBookingInfo.idcard_f" preview></tm-image>
+                    </view>
+                </template>
+            </tm-card>
+
+            <tm-card title="房产证" :round="3">
+                <template v-slot:content>
+                    <view class="flex-row-top-start flex-wrap">
+                        <tm-image :width="160" :margin="[12,12]" v-for="houseItem in userBookingInfo.house"
+                                  :src="houseItem"
+                                  preview></tm-image>
+                    </view>
+                </template>
+            </tm-card>
+
+            <tm-card title="支付明细" :round="3">
+                <template v-slot:content>
+                    <tm-descriptions-item label="用户" :value="userBookingInfo.realname"></tm-descriptions-item>
+                    <tm-descriptions-item label="手机" :value="userBookingInfo.phone"></tm-descriptions-item>
+                    <tm-descriptions-item label="地址" :value="userBookingInfo.address"></tm-descriptions-item>
+                    <tm-descriptions-item label="时间" :value="userBookingInfo.create_time"></tm-descriptions-item>
+                </template>
+            </tm-card>
+
+            <tm-card title="审核详情" :round="3">
+                <template v-slot:content>
+                    <tm-descriptions-item label="提交时间" :value="userBookingInfo.realname"></tm-descriptions-item>
+                    <tm-descriptions-item label="审核时间" :value="userBookingInfo.phone"></tm-descriptions-item>
+                    <tm-descriptions-item label="支付时间" :value="userBookingInfo.address"></tm-descriptions-item>
+                    <tm-descriptions-item label="完成时间" :value="userBookingInfo.create_time"></tm-descriptions-item>
+                </template>
+            </tm-card>
+        </tm-spin>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {getUserBookingInfo} from '@/services/api/booking';
+import {useRoute, useRouter} from '@/hooks/router';
+import {useRequest} from 'alova';
+const router = useRouter();
+
+const {
+    data: userBookingInfo,
+    loading
+} = useRequest(
+    () => getUserBookingInfo({id: useRoute().query.id, type: useRoute().query.type}),
+    {
+        immediate: true,
+        initialData: {}
+    }
+);
+
+
+</script>
+<style>
+</style>

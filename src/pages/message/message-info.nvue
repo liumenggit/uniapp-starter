@@ -1,0 +1,34 @@
+<template>
+    <tm-app>
+        <tm-spin :load="loading">
+            {{ messageInfo }}
+        </tm-spin>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {useRequest} from 'alova';
+import {useRoute} from '@/hooks/router';
+import {getMessageInfo, getMessageList} from '@/services/api/message';
+
+
+const {
+    data: messageInfo,
+    loading
+} = useRequest(
+    () => getMessageInfo(useRoute().query.id as number),
+    {
+        force: true,
+        immediate: true,
+        initialData: {}
+    }
+);
+
+</script>
+<style>
+</style>

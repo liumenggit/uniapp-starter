@@ -1,0 +1,42 @@
+<template>
+    <tm-app>
+        <tm-form @submit="confirm" ref="form" v-model="feedbackParams" layout="vertical">
+            <tm-form-item label="留言内容" field="content" :border="false">
+                <tm-input v-model.lazy="feedbackParams.content"
+                          :showBottomBotder="false" type="textarea" :inputPadding="[12]" confirm-hold showCharNumber
+                          :maxlength="500" :height="400"
+                ></tm-input>
+            </tm-form-item>
+            <tm-form-item :border="false">
+                <tm-button form-type="submit" label="提交" block></tm-button>
+            </tm-form-item>
+        </tm-form>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {createFeedback} from '@/services/api/feedback';
+import {toast} from '@/tmui/tool/function/util';
+import {useRouter} from '@/hooks/router';
+
+const router = useRouter();
+const feedbackParams: Ref<FeedbackParams> = ref({content: ''});
+
+const confirm = (e: any) => {
+    if (e.validate) {
+        createFeedback(feedbackParams.value).send().then((res) => {
+            toast('意见提交成功');
+            router.back();
+        }).catch((err) => {
+            toast('意见提交失败');
+        });
+    }
+};
+</script>
+<style>
+</style>

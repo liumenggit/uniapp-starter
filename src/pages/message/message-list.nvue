@@ -1,0 +1,49 @@
+<template>
+    <tm-app>
+        <tm-scrolly @refresh="()=>{refresh=!refresh}" :width="0"
+                    :model-value="loading">
+            <tm-cell v-for="messageItem in messageList"
+                     @click="router.go('/pages/message/message-info?id=' +  messageItem.id)"
+                     bottomBorder :margin="[0,0]"
+                     :title="messageItem.realname"
+                     :label="dateFormat(messageItem.create_time as number)"
+            >
+                <template v-slot:rightText>
+                    <tm-tag :label="MessageEnum[messageItem.status]" size="xs"></tm-tag>
+                </template>
+            </tm-cell>
+        </tm-scrolly>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {useRequest, useWatcher} from 'alova';
+import {useRouter} from '@/hooks/router';
+import {getMessageList} from '@/services/api/message';
+import {MessageEnum} from '@/enums/messageEnum';
+import {dateFormat} from '@/utils/common/date-format';
+
+
+const router = useRouter();
+const refresh = ref(false);
+const {
+    data: messageList,
+    loading
+} = useWatcher(
+    () => getMessageList(),
+    [refresh],
+    {
+        force:true,
+        immediate: true,
+        initialData: []
+    }
+);
+
+</script>
+<style>
+</style>

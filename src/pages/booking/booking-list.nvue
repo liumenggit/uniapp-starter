@@ -1,0 +1,82 @@
+<template>
+    <tm-app>
+        <tm-sticky>
+            <template v-slot:sticky>
+                <tm-tabs :list="bookingTypeList" :width="750" v-model:active-name="activeBookingType"
+                         :default-name="activeBookingType"/>
+            </template>
+            <view class="hei"></view>
+            <tm-scrolly :width="0" :height="scrollHeight" @refresh="()=>{refresh=!refresh}" :model-value="userBookingLoading"
+                        translate="yes">
+                <tm-result title="没有数据" :showBtn="false" sub-title=" "
+                           v-if="(userBookingList?.length == 0 && userBookingLoading == false)"></tm-result>
+                <tm-card :title="userBookingItem.reserve_id" :status="userBookingItem.status_name"
+                         :content="userBookingItem.address"
+                         @click="router.go('/pages/booking/booking-info?id=' + userBookingItem.id + '&type=' + activeBookingType)"
+                         v-for="userBookingItem in userBookingList" :round="3" :margin="[26,26,26,0]"
+                >
+                    <template v-slot:content>
+                        <tm-descriptions-item label="用户" :value="userBookingItem.realname"></tm-descriptions-item>
+                        <tm-descriptions-item label="手机" :value="userBookingItem.phone"></tm-descriptions-item>
+                        <tm-descriptions-item label="地址" :value="userBookingItem.address"></tm-descriptions-item>
+                        <tm-descriptions-item label="时间"
+                                              :value="userBookingItem.create_time"></tm-descriptions-item>
+                    </template>
+                </tm-card>
+            </tm-scrolly>
+        </tm-sticky>
+
+
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed, getCurrentInstance,
+    ref,
+    Ref
+} from 'vue';
+import {useRequest, useWatcher} from 'alova';
+import {getBookingTypeList, getUserBookingList} from '@/services/api/booking';
+import {onReady} from '@dcloudio/uni-app';
+import {getWindow, torpx} from '@/tmui/tool/function/util';
+import {useRoute, useRouter} from '@/hooks/router';
+
+const router = useRouter();
+const scrollHeight = ref(0);
+let refresh = ref(false);
+let activeBookingType: Ref<string> = ref(useRoute().query.type as string);
+const proxy = getCurrentInstance()?.proxy ?? null;
+const {
+    data: bookingTypeList,
+} = useRequest(
+    () => getBookingTypeList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+
+const {
+    loading: userBookingLoading,
+    data: userBookingList,
+    error
+} = useWatcher(
+    () => getUserBookingList(activeBookingType.value as string),
+    [activeBookingType, refresh],
+    {
+        force: true,
+        debounce: 500,
+        immediate: true
+    }
+);
+
+onReady(() => {
+    const query = uni.createSelectorQuery().in(proxy);
+    query.select('.hei').boundingClientRect((result: any) => {
+        scrollHeight.value = torpx(getWindow().height - result.top - 32);
+    }).exec();
+});
+</script>
+<style>
+</style>

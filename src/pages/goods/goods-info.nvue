@@ -1,0 +1,40 @@
+<template>
+    <tm-app>
+        <tm-skeleton model="chat" v-if="articleInfo === {}"></tm-skeleton>
+        <tm-sheet :margin="[0,0]" :width="0" _class="fulled fulled-height">
+            <tm-text :label="articleInfo.title" :font-size="32"></tm-text>
+            <tm-text :label="articleInfo.create_time" :font-size="26" color="grey"></tm-text>
+            <tm-divider></tm-divider>
+            <tm-html :content="articleInfo.content"></tm-html>
+        </tm-sheet>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {useRequest} from 'alova';
+import {useRoute} from '@/hooks/router';
+import {getMessageInfo, getMessageList} from '@/services/api/message';
+import {getArticleInfo} from '../../services/api/article';
+import {dateFormat} from '../../utils/common/date-format';
+
+
+const {
+    data: articleInfo,
+    loading
+} = useRequest(
+    () => getArticleInfo(useRoute().query.id as number),
+    {
+        force: true,
+        immediate: true,
+        initialData: {}
+    }
+);
+
+</script>
+<style>
+</style>

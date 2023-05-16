@@ -1,13 +1,13 @@
 import {useUserInfo} from '@/state/modules/user-info';
 import {toast} from '@/tmui/tool/function/util';
-import {createAlova, useRequest} from 'alova';
+import {createAlova} from 'alova';
 import AdapterUniapp from '@alova/adapter-uniapp';
 import {assign} from 'lodash-es';
-import {mockAdapter} from '@/mock';
-import {getBaseUrl, isDevMode, getPlatformId} from '@/utils/env';
+import {getBaseUrl, getPlatformId} from '@/utils/env';
 import {checkStatus} from '@/utils/http/checkStatus';
 import {ContentTypeEnum, ResultEnum} from '@/enums/httpEnum';
 import type {API} from '@/services/model/baseModel';
+import {Token} from '@/services/model/userModel';
 
 const BASE_URL = getBaseUrl();
 const PLATFORM_ID = getPlatformId();
@@ -45,9 +45,9 @@ const alovaInstance = createAlova({
                 enableDownload,
                 enableUpload,
             } = config;
-            // @ts-ignore
             const {
                 statusCode,
+                // @ts-ignore
                 data: rawData,
             } = response;
             const {
@@ -63,26 +63,23 @@ const alovaInstance = createAlova({
                 }
                 if (enableUpload) {
                     // 上传处理
+                    if (code === ResultEnum.UPLOAD_ERROR)
+                        return Promise.reject(rawData);
                     return rawData;
                 }
                 if (code === ResultEnum.SUCCESS) {
                     return data;
                 }
-                if (code === 200302) {
-                    console.log('更新token', method);
-                    const access = alovaInstance.Get('/user_access_to_token', {
+                if (code === ResultEnum.UPDATE_TOKEN) {
+                    const access = alovaInstance.Get<Token>('/user_access_to_token', {
                         params: {
                             access: useUserInfo()._token.access
                         }
                     });
                     const response = await access.send();
-                    console.log('更新后信息', response);
                     method.config.headers.token = response?.token || undefined;
                     useUserInfo().setToken(response?.token || undefined);
-
-                    const res = await method.send();
-                    console.log('修改后', res);
-                    return res;
+                    return await method.send();
 
                 }
 

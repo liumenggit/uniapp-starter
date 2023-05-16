@@ -1,0 +1,66 @@
+<template>
+    <tm-app>
+        <tm-text label="12313"/>
+        <view v-if="loading">上传中...</view>
+        <view>上传进度：{{ uploading.loaded }}/{{ uploading.total }}</view>
+        <tm-sign-board class="border" :lineWidth="3" lineColor="#4ec752" ref="board" :width="638"
+                       :height="400"></tm-sign-board>
+        <button @click="handleImageChoose">上传图片</button>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import * as dayjs from '@/tmui/tool/dayjs/esm/index';
+import relativeTime from '@/tmui/tool/dayjs/esm/plugin/relativeTime';
+import {uploadOssFile} from '../../services/api/common';
+import {useRequest, useWatcher} from 'alova';
+import {request} from '@/utils/http';
+import tmSignBoard from '@/tmui/components/tm-sign-board/tm-sign-board.vue';
+import {base64ToFile} from '@/utils/common/base64-to-file';
+
+const board = ref<InstanceType<typeof tmSignBoard> | null>(null);
+
+const uploadFile = (file: File) =>
+    request.Post(
+        'http://cnsaas.hlbrr.com/api/upload_oss_file',
+        {
+            name: 'file',
+            file
+        },
+        {
+            // 设置请求方式为上传，适配器内将调用uni.uploadFile
+            requestType: 'upload',
+            fileType: 'image',
+
+            // 开启上传进度
+            enableUpload: true
+        }
+    );
+
+const {loading, data, uploading, send} = useRequest(uploadFile, {
+    immediate: false
+});
+
+const handleImageChoose = async () => {
+    // uni.chooseImage({
+    //     success: chooseImageRes => {
+    //         const tempFilePaths = chooseImageRes.tempFilePaths;
+    //
+    //
+    //     }
+    // });
+    let base64Data = await board.value?.save();
+    console.log('base64Data', base64Data);
+    const file = base64ToFile(base64Data);
+    console.log('file', file);
+
+    send(file);
+};
+</script>
+<style>
+</style>

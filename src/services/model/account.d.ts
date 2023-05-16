@@ -1,3 +1,6 @@
+/*
+账户参数
+ */
 declare interface AccountParams {
     /**
      * 地址
@@ -33,6 +36,9 @@ declare interface AccountParams {
     code: number;
 }
 
+/**
+ * 账户模型
+ */
 declare interface AccountModel {
     bind_address?: string;
     bind_createtime?: string;

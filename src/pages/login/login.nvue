@@ -1,39 +1,55 @@
 <template>
-    <tm-app ref="app" bg-img="https://picsum.photos/750/1448">
-        <tm-navbar title="" transprent>
-        </tm-navbar>
+  <!--    bg-img="https://picsum.photos/750/1448"-->
+    <tm-app ref="app" color="grey-5">
         <tm-sheet transprent>
-            <tm-text label="TMUI3.0" font-size="40"></tm-text>
-            <tm-text label="欢迎您登录，使用TMUI3.0登录模板" parent-class="my-20"></tm-text>
-            <tm-form @submit="confirm" v-model="phoneLoginParams" ref="form" transprent :margin="[0,0]" :padding="[0,0]"
-                     :border="false"
-            >
-                <tm-form-item required field="realname" :margin="[0,0]">
-                    <tm-input :margin="[0,0]" v-model.lazy="phoneLoginParams.realname" placeholder="输入用户名"
-                              height="80" round="25"
-                              color="rgba(255, 255, 255, 0.5)"
-                              prefix="td-user" prefixColor="white" showClear
-                    />
-                </tm-form-item>
+            <tm-text label="晟丰燃气" font-size="40"></tm-text>
+            <tm-text label="欢迎您登录，使用TMUI3.0" parent-class="my-20"></tm-text>
+            <tm-segtab :width="636" :list="segtabList" defaultValue="wechat"
+                       v-model:model-value="segtabValue"></tm-segtab>
 
-                <tm-form-item required field="phone" :margin="[0,0]">
-                    <tm-input :margin="[0,0]" v-model.lazy="phoneLoginParams.phone" placeholder="输入手机号" height="80"
-                              round="25"
-                              color="rgba(255, 255, 255, 0.5)"
-                              prefix="td-user" prefixColor="white" showClear
-                    />
-                </tm-form-item>
-                <tm-button form-type="submit" :loading="phoneLoading" block label="登录" icon="apple" round="25"
-                           :margin="[0,20,0,0]"
-                ></tm-button>
-            </tm-form>
+            <tm-sheet :margin="[0,20]" :round="3" v-if="segtabValue === 'wechat'">
+                <view class="flex-col-center-center wrap ma-n24">
+                    <tm-avatar @click="wxLogin" icon="tmicon-weixin" color="primary" :round="26"></tm-avatar>
+                </view>
+                <tm-button @click="wxLogin" icon="tmicon-weixin" label="微信登录" v-if="segtabValue === 'wechat'"
+                           block :round="4"/>
+            </tm-sheet>
+            <tm-sheet :margin="[0,20]" :round="3" v-if="segtabValue === 'phone'">
+                <tm-form @submit="confirm" v-model="phoneLoginParams" ref="form" transprent :margin="[0,0]"
+                         :padding="[0,0]"
+                         :border="false"
+                >
+                    <tm-form-item required field="phone" :margin="[0,0]">
+                        <tm-input :margin="[0,0]" v-model.lazy="phoneLoginParams.phone" placeholder="输入手机号"
+                                  :height="80" :round="4"
+                                  color="rgba(255, 255, 255, 0.5)"
+                                  prefix="tmicon-md-phone-portrait" showClear
+                        />
+                    </tm-form-item>
+                    <tm-form-item required field="code" :margin="[0,0]">
+                        <tm-input :margin="[0,0]" v-model.lazy="phoneLoginParams.code" placeholder="输入验证码"
+                                  :height="80" :round="4"
+                                  color="rgba(255, 255, 255, 0.5)"
+                                  prefix="tmicon-md-phone-portrait" showClear
+                        >
+                            <template v-slot:right>
+                                <tm-button @click="sendPhoneCode(phoneLoginParams.phone as number, sendCodes)"
+                                           :loading="sendCodeLoading" size="small" :width="180" :round="4"
+                                           :disabled="codeButtonState"
+                                           :label="codeButtonLabel"
+                                ></tm-button>
+                            </template>
+                        </tm-input>
+                    </tm-form-item>
+                    <tm-button form-type="submit" :loading="phoneLoading" block label="手机登录"
+                               icon="tmicon-md-phone-portrait"
+                               :round="4"
+                    ></tm-button>
+                </tm-form>
+            </tm-sheet>
 
         </tm-sheet>
         <tm-sheet transprent class="fixed b-10 fulled">
-            <tm-text label="其他方式登录" color="white"></tm-text>
-            <view class="flex-row flex-item-top-start py-30">
-                <tm-icon @click="login" :font-size="50" name="tmicon-weixin"></tm-icon>
-            </view>
             <view class="flex-row flex-row-center-start">
                 <tm-checkbox v-model="policy" :round="10" :size="32" label="我已经阅读并同意"
                              style="margin-left: -10rpx"
@@ -48,21 +64,60 @@
 </template>
 
 <script lang="ts" setup>
-import {toast} from '@/tmui/tool/function/util';
 import {
     computed,
     ref,
     reactive,
     Ref
 } from 'vue';
+// import { useSQRequest } from '@alova/scene-*';
 import {onLoad} from '@dcloudio/uni-app';
-import {useRouter} from '@/hooks/router';
 import {useRequest} from 'alova';
-import {userPhonelogin, userWxlogin} from '@/services/api/auth';
+import {httpUrlAddKey, toast} from '@/tmui/tool/function/util';
+import {useRoute, useRouter} from '@/hooks/router';
+import {userPhonelogin} from '@/services/api/auth';
+import {AUTH_PAGE} from '@/enums/routerEnum';
+import {escapeRegExp} from '@/utils/common/get-path';
+import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyCode';
+import {sendCode} from '@/services/api/common';
+import {sendPhoneCode} from '@/utils/common/send-code';
+import {getAppid, getAuthUrl, isDevMode} from '@/utils/env';
 
 const router = useRouter();
-//读取来源
+const {currentRoute, currentPages} = useRoute();
 const redirect = ref<string | undefined>(undefined);
+
+const segtabList = ref([
+    {text: '快捷登录', id: 'wechat'},
+    {text: '手机登录', id: 'phone'},
+]);
+const segtabValue = ref('wechat');
+// 发送验证码
+let codeButtonState = ref(false);
+let codeButtonLabel = ref(VERIFY_CODE_TEXT);
+const {
+    send: sendCodes,
+    loading: sendCodeLoading,
+    onSuccess: sendCodeSuccess
+} = useRequest(phone => sendCode(phone), {immediate: false});
+
+
+sendCodeSuccess(() => {
+    codeButtonState.value = true;
+    let countDown = VERIFY_CODE_TIME;
+    const timer = setInterval(function () {
+        countDown--;
+        if (countDown <= 0) {
+            clearInterval(timer);
+            codeButtonLabel.value = VERIFY_CODE_TEXT;
+            codeButtonState.value = false;
+        } else {
+            codeButtonLabel.value = countDown + VERIFY_CODE_TIME_TEXT;
+        }
+    }, 1000);
+});
+
+//读取来源
 onLoad((query: any) => {
     redirect.value = query.redirect ? decodeURIComponent(query.redirect) : undefined;
     console.log(redirect.value);
@@ -76,51 +131,50 @@ const rx = `<div class="content_area" id="content_area">
              <!--repaste.body.begin--><p><strong>　　央视网消息：</strong>在安徽中稻迎来了丰收季。在肥东县相邻的两块地景象大不相同，农机作业的进度和效率也不同。<br></p><p style="text-align: center;" class="photo_img_20190808"><img src="//p4.img.cctvpic.com/photoworkspace/contentimg/2022/10/14/2022101414244666208.jpg" alt=""></p><p style="text-align: center;" class="photo_img_20190808"><img src="//p5.img.cctvpic.com/photoworkspace/contentimg/2022/10/14/2022101414244671910.jpg" alt=""></p><p>　　<strong>总台记者 吴俊：</strong>这里是肥东县古城镇，今天天气晴好，收割机已经进入高标准农田作业。去年秋季，肥东县有7.8万亩田地进行高标准农田改造。改造后的农田，可以说是田成方、林成网、渠相通、路相连。这里一路之隔，一侧是改造过的农田，不仅有了机耕路，农机可以直接到田边，而且修建了标准的灌渠，灌溉和排涝不愁。而路的一侧是还没改造的地块，只有窄窄的杂草丛生的田埂，灌渠也是这种土渠。另外从航拍画面对比来看，改造过的农田，通过小田变大田，打破了田埂，非常适合农机作业。而没有改造过的，田块大小不均、高低不平，农机也没办法下田作业。<br></p><p style="text-align: center;" class="photo_img_20190808"><img src="//p3.img.cctvpic.com/photoworkspace/contentimg/2022/10/14/2022101414250079300.jpg" alt=""></p><p style="text-align: center;" class="photo_img_20190808"><img src="//p3.img.cctvpic.com/photoworkspace/contentimg/2022/10/14/2022101414250072259.jpg" alt=""></p><p>　　改造后的高标准农田，配套了机械深耕、增施有机肥和土壤调理等综合措施，改善了土壤板结度、有机质含量以及酸碱平衡，这为眼前的好收成打下了基础。稻谷颗粒非常饱满，尽管今年水稻在抽穗扬花期遭遇了持续高温，但是高标准农田改造后，能够及时引水灌溉，而且今年当地还种植了抗病新品种，应用了绿色防控等新技术，水稻产量不仅没受太大影响，比去年每亩还高了100斤左右。<br></p><!--repaste.body.end-->
             </div>`;
 // 手机登录
-const phoneLoginParams: Ref<PhoneLoginParams> = ref({
-    phone: null,
-    realname: ''
-});
+const phoneLoginParams: Ref<PhoneLoginParams> = ref({});
 const {
     send: phoneLogin,
     loading: phoneLoading
 } = useRequest(userPhonelogin, {immediate: false});
 
 const confirm = (e: any) => {
-    console.log('提交', e);
     if (e.validate) {
         if (!policy.value) {
-            toast('请同意用户隐私政策');
+            toast('请阅读并同意用户隐私政策');
             return;
         }
         phoneLogin(e.data).then((res) => {
-            console.log('登录成功', res);
+            toast('登录成功');
             setTimeout(() => {
-                if (redirect.value) {
-                    router.go(redirect.value!, {replace: true});
-                    return;
-                }
-                // router.pushTab('/pages/about/index');
+                router.back();
             }, 1500);
         }).catch((e) => {
-            console.log('登录失败', e);
+            toast('登录失败');
         });
     }
 
 };
-const login = () => {
-    console.log('微信登录');
+
+const authorize = ref({
+    appid: getAppid(),
+    redirect_uri: '',
+    response_type: 'code',
+    scope: 'snsapi_userinfo',
+    state: 'STATE '
+});
+/**
+ * 微信登录
+ */
+const wxLogin = () => {
     if (!policy.value) {
-        toast('请同意用户隐私政策');
+        toast('请阅读并同意用户隐私政策');
         return;
     }
-    // let uri = encodeURIComponent('https://wx.hlbrr.com/index');
-
-    let newStr = window.location.href.replace(/localhost:3000/, 'wx.hlbrr.com');
-    console.log('newStr', newStr);
-    // let uri = encodeURIComponent(newStr);
-    let uri = encodeURIComponent('http://wx.hlbrr.com/#/pages/login/auth?redirect=/pages/my/my');
-    console.log(uri);
-    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7da8016ea034cd0c&redirect_uri=${uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+    const href = isDevMode() ? getAuthUrl() : escapeRegExp(window.location.href);
+    authorize.value.redirect_uri = href + AUTH_PAGE + '?redirect=' + redirect.value;
+    const url = new URLSearchParams(authorize.value).toString();
+    console.log('url', url);
+    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?${url}`;
 };
 </script>
 <style>

@@ -1,29 +1,25 @@
 <template>
     <tm-app>
-        <tm-sheet :round="3">
-            <view class="flex-col-center-center nowrap">
-                <tm-avatar :img="useUserInfo().user_info.avatar"></tm-avatar>
-                <tm-text :label="useUserInfo().user_info.nickname"/>
-            </view>
-        </tm-sheet>
+        <tm-cell :title="userInfo.nickname" :avatar="userInfo.avatar" :label="userInfo.phone as string" :avatarRound="2"
+                 showAvatar :margin="[32,16]" :round="3" url="/pages/account/account-list"></tm-cell>
         <tm-card title="我的预约" :round="3">
             <template v-slot:content>
                 <tm-grid col="4" :width="638">
-                    <tm-grid-item :height="120">
-                        <tm-icon color="blue" name="tmicon-lightbulb-fill" :font-size="42"></tm-icon>
+                    <tm-grid-item :height="120" url="/pages/booking/booking-list?type=open">
+                        <tm-icon color="red" name="td-bug" :font-size="50"></tm-icon>
                         <tm-text _class="pt-10" :font-size="22" label="开户预约"></tm-text>
                     </tm-grid-item>
-                    <tm-grid-item :height="120">
-                        <tm-icon color="blue" name="tmicon-lightbulb-fill" :font-size="42"></tm-icon>
+                    <tm-grid-item :height="120" url="/pages/booking/booking-list?type=change">
+                        <tm-icon color="blue" name="td-bug" :font-size="50"></tm-icon>
                         <tm-text _class="pt-10" :font-size="22" label="过户预约"></tm-text>
                     </tm-grid-item>
-                    <tm-grid-item :height="120">
-                        <tm-icon color="blue" name="tmicon-lightbulb-fill" :font-size="42"></tm-icon>
+                    <tm-grid-item :height="120" url="/pages/booking/booking-list?type=cancel">
+                        <tm-icon color="primary" name="td-bug" :font-size="50"></tm-icon>
                         <tm-text _class="pt-10" :font-size="22" label="销户预约"></tm-text>
                     </tm-grid-item>
-                    <tm-grid-item :height="120">
-                        <tm-icon color="blue" name="tmicon-lightbulb-fill" :font-size="42"></tm-icon>
-                        <tm-text _class="pt-10" :font-size="22" label="预约办理"></tm-text>
+                    <tm-grid-item :height="120" url="/pages/booking/booking-list?type=after">
+                        <tm-icon color="blue" name="td-bug" :font-size="50"></tm-icon>
+                        <tm-text _class="pt-10" :font-size="22" label="售后预约"></tm-text>
                     </tm-grid-item>
                 </tm-grid>
             </template>
@@ -46,15 +42,20 @@
                 </tm-grid>
             </template>
         </tm-card>
-        <tm-cell title="我的账号" url="/pages/my/account" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
-        <tm-cell title="我要留言" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
-        <tm-cell title="留言列表" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
-        <tm-cell title="意见建议" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
-        <tm-cell title="通知列表" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
-        <tm-cell title="关于我们" :margin="[32,16]" :round="3" :titleFontSize="30"></tm-cell>
+        <tm-cell title="我的账号" url="/pages/account/account-list" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
+        <tm-cell title="我要留言" url="/pages/message/message-create" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
+        <tm-cell title="留言列表" url="/pages/message/message-list" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
+        <tm-cell title="意见建议" url="/pages/feedback/feedback-create" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
+        <tm-cell title="通知列表" url="/pages/notice/notice-list" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
+        <tm-cell title="关于我们" url="/pages/notice/notice-list" :margin="[32,16]" :round="3"
+                 :titleFontSize="30"></tm-cell>
         <tm-cell title="完善用户信息" url="/pages/my/perfect_info" :margin="[32,16]" :round="3" :titleFontSize="30"
         ></tm-cell>
-        {{ useUserInfo().user_info }}
     </tm-app>
 </template>
 
@@ -64,19 +65,11 @@ import {
     onLoad
 } from '@dcloudio/uni-app';
 import {useUserInfo} from '@/state/modules/user-info';
+const userInfo = useUserInfo().user_info;
 
-onLoad(() => {
-    useUserInfo().updateUserInfo();
-});
-import {
-    computed,
-    ref,
-    Ref
-} from 'vue';
-import * as dayjs from '@/tmui/tool/dayjs/esm/index';
-import relativeTime from '@/tmui/tool/dayjs/esm/plugin/relativeTime';
-// useUserInfo().user_info
-
+// onShow(() => {
+//     useUserInfo().updateUserInfo();
+// });
 
 </script>
 <style>

@@ -1,0 +1,81 @@
+<template>
+    <tm-app>
+        <tm-scrolly class="overflow my-20" @refresh="()=>{refresh=!refresh}" :model-value="loading">
+            <tm-result :showBtn="false" sub-title=" "
+                       v-if="(accountList?.length == 0 && loading == false)"></tm-result>
+            <tm-card v-for="(accountItem,accountIndex) in accountList" :key="accountIndex"
+                     :title="accountItem.bind_name" :status="accountItem.bind_phone" :round="4"
+            >
+                <template v-slot:content>
+                    <tm-descriptions-item label="居住小区" :value="accountItem.bind_village_name" :font-size="26"/>
+                    <tm-descriptions-item label="详细地址" :value="accountItem.bind_address" :font-size="26"/>
+                    <tm-descriptions-item label="身份证号" :value="accountItem.bind_idcard" :font-size="26"/>
+                </template>
+                <template v-slot:action>
+                    <view class="flex flex-row flex-row-center-end flex-1 border-t-2">
+                        <tm-button
+                            @click="router.go('/pages/account/account-add?id='+accountItem.id)"
+                            label="编辑" size="small" :round="24" :margin="[24,0]" :width="120"
+                        />
+                        <tm-button @click="modal?.open(accountItem.id)" label="删除"
+                                   size="small"
+                                   :round="24" color="red"
+                                   :width="120"/>
+                    </view>
+                </template>
+            </tm-card>
+        </tm-scrolly>
+        <tm-float-button @click="router.go('/pages/account/account-add')" position="br"></tm-float-button>
+<!--        <tm-button :margin="[24,0]" block label="添加新账号"/>-->
+        <tm-modal title="是否确认删除此账户" content="关闭后会延迟关闭窗体" okText="删除" ok-color="red" ref='modal'
+                  splitBtn
+                  @ok="removeSend" closeable
+        ></tm-modal>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {useRouter} from '@/hooks/router';
+import {deleteAccount, getAccountList} from '@/services/api/account';
+import {useRequest, useWatcher} from 'alova';
+import tmModal from '@/tmui/components/tm-modal/tm-modal.vue';
+
+const router = useRouter();
+let refresh = ref(false);
+const modal = ref<InstanceType<typeof tmModal> | null>(null);
+/**
+ * 下拉刷新自动加载
+ */
+const {
+    loading,
+    data: accountList,
+    error
+} = useWatcher(
+    () => getAccountList(),
+    [refresh],
+    {
+        force: true,
+        debounce: 500,
+        immediate: true,
+    }
+);
+
+/**
+ * 删除账户
+ */
+const {send: removeSend} = useRequest((accountId) => deleteAccount(accountId), {
+    immediate: false,
+});
+
+// onRemoveSuccess(({sendArgs: [removeId], silentMethod}) => {
+//     console.log('onRemoveSuccess', removeId, silentMethod);
+// });
+
+</script>
+<style>
+</style>

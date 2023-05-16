@@ -1,0 +1,72 @@
+<template>
+    <tm-app>
+        <tm-tabs :list="goodsTypeList" :default-name="goodsTypeActice" v-model:active-name="goodsTypeActice"
+                 :width="750"></tm-tabs>
+        <tm-scrolly @refresh="()=>{refresh=!refresh}" :modelValue="flushedLoading" :width="0" :height="1000">
+            <tm-result title="没有数据" :showBtn="false" sub-title=" "
+                       v-if="(goodAfterList?.length == 0 && flushedLoading == false)"></tm-result>
+            <tm-waterfall ref="wall" :width="750">
+                <tm-waterfall-item :img="goodAfterItem.cover" v-for="goodAfterItem in goodAfterList"
+                                   :key="goodAfterItem.id">
+                    <view class="pt-12 pb-12 px-12">
+                        <tm-text :label="goodAfterItem.title" _class="text-overflow-2"></tm-text>
+                        <view class="flex flex-row flex-row-bottom-start mt-24">
+                            <tm-text color="orange" :font-size="24" label='¥'></tm-text>
+                            <tm-text color="orange" _class="px-10" :font-size="36"
+                                     :label='goodAfterItem.price'></tm-text>
+                        </view>
+                    </view>
+                </tm-waterfall-item>
+            </tm-waterfall>
+        </tm-scrolly>
+    </tm-app>
+</template>
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+
+
+const router = useRouter();
+import {useRouter} from '@/hooks/router';
+import {useRequest, useWatcher} from 'alova';
+import {getGoodsAfterList, getGoodsTypeList} from '@/services/api/goods';
+
+const refresh = ref(false);
+let goodsTypeActice: Ref<number> = ref(0);
+const {
+    data: goodsTypeList,
+    onSuccess: getGoodsSuccess,
+} = useRequest(
+    () => getGoodsTypeList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+
+getGoodsSuccess((e) => {
+    goodsTypeActice.value = e.data[1].id;
+});
+const {
+    loading: flushedLoading,
+    data: goodAfterList,
+    onSuccess: getGoodsAfterListonSuccess,
+    error
+} = useWatcher(
+    () => getGoodsAfterList(goodsTypeActice.value),
+    [refresh, goodsTypeActice],
+    {
+        force: true,
+        immediate: false
+    }
+);
+
+getGoodsAfterListonSuccess((e) => {
+
+});
+</script>
+<style>
+</style>

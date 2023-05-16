@@ -1,0 +1,69 @@
+<template>
+    <tm-app>
+        <tm-spin :load="loading">
+            <tm-sheet :padding="[0,0]" :margin="[0,0]" class="hei overflow">
+                <tm-scrolly @refresh="()=>{refresh=!refresh}" :width="0"
+                            :height="scrollHeight" :model-value="loading"
+                            translate="yes">
+                    <tm-cell v-for="noticeItem in noticeList" :key="noticeItem.id" :margin="[0,0]"
+                             @click="router.go('/pages/notice/notice-info?id=' + noticeItem.id)"
+                             :title="stringLengthLimit(noticeItem.title,15)"
+                             :label="DayJs(noticeItem.create_time * 1000).format('YYYY-MM-DD HH:mm:ss')"
+                             showAvatar
+                    >
+                        <template v-slot:avatar>
+                            <tm-icon name="tmicon-md-chatbubbles" color="primary"></tm-icon>
+                        </template>
+                    </tm-cell>
+
+                </tm-scrolly>
+            </tm-sheet>
+        </tm-spin>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed, getCurrentInstance,
+    ref,
+    Ref
+} from 'vue';
+import * as dayjs from '@/tmui/tool/dayjs/esm/index';
+import {useRequest, useWatcher} from 'alova';
+import {useRouter} from '@/hooks/router';
+import {getNoticeList} from '@/services/api/notice';
+import {stringLengthLimit} from '@/utils/common/string-length-limit';
+import {getWindow, torpx} from '@/tmui/tool/function/util';
+import {onReady} from '@dcloudio/uni-app';
+
+const scrollHeight = ref(0);
+const DayJs = dayjs.default;
+const proxy = getCurrentInstance()?.proxy ?? null;
+const router = useRouter();
+const refresh = ref(false);
+
+
+const {
+    data: noticeList,
+    loading,
+} = useWatcher(
+    () => getNoticeList(),
+    [refresh],
+    {
+        force: true,
+        debounce: 500,
+        immediate: true,
+        initialData: []
+    }
+);
+
+
+onReady(() => {
+    const query = uni.createSelectorQuery().in(proxy);
+    query.select('.hei').boundingClientRect((result: any) => {
+        scrollHeight.value = torpx(getWindow().height - result.top - 32);
+    }).exec();
+});
+</script>
+<style>
+</style>

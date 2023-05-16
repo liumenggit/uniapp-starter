@@ -3,8 +3,8 @@ declare interface WxLoginParams {
 }
 
 declare interface PhoneLoginParams {
-    realname: string;
     phone: number;
+    code: number;
 }
 
 declare interface LoginModel {

@@ -1,8 +1,14 @@
+/**
+ * 用户公共公共状态
+ */
 export declare interface UserInfoState {
     user_info: UserInfo;
     _token: Token;
 }
 
+/**
+ * 完善用户参数
+ */
 declare interface UserPerfectParams {
     code: number;
     /**
@@ -19,6 +25,9 @@ declare interface UserPerfectParams {
     realname: string;
 }
 
+/**
+ * 用户模型
+ */
 declare interface UserInfo {
     avatar: string;
     create_time: number;
@@ -34,6 +43,9 @@ declare interface UserInfo {
     type: number;
 }
 
+/**
+ * Token
+ */
 declare interface Token {
     token?: string;
     access?: string;

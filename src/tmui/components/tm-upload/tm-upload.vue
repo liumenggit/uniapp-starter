@@ -182,6 +182,7 @@ import tmImage from "../tm-image/tm-image.vue";
 import tmText from "../tm-text/tm-text.vue";
 import tmIcon from "../tm-icon/tm-icon.vue";
 import tmSheet from "../tm-sheet/tm-sheet.vue";
+import {json} from 'stream/consumers';
 const proxy = getCurrentInstance()?.proxy ?? null;
 const props = defineProps({
   //是否跟随全局主题的变换而变换
@@ -294,6 +295,11 @@ const props = defineProps({
     type: Array as PropType<Array<'album' | 'camera'>>,
     default: ['album','camera'],
   },
+  /**服务器返回的状态码，默认200成功 */
+  statusCode:{
+    type: Number,
+    default: 200,
+  }
 });
 /**
  * emits 事件说明
@@ -330,7 +336,8 @@ const _uploadObj = new uploadfile({
   formData: props.formData,
   maxFile: props.maxFile,
   maxSize: props.maxSize,
-  fileType:props.fileType
+  fileType:props.fileType,
+  statusCode:props.statusCode
 });
 
 const _flist: Ref<Array<file>> = ref([]);
@@ -390,7 +397,7 @@ function addSuccess(fileList: Array<file> = []) {
       statusCode: e?.statusCode ?? statusCode.success,
       status: e?.status ?? "上传成功",
       progress: e?.progress ?? 100,
-      ..._itemfile,
+      ..._itemfile
     };
     return _itemfile;
   });
@@ -418,7 +425,7 @@ _uploadObj.beforeSuccess = async function (item: file) {
     }
     if (!p) return false;
   }
-  
+
   return true;
 };
 //开始上传前执行。

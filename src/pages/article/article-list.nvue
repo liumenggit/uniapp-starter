@@ -1,0 +1,70 @@
+<template>
+    <tm-app>
+        <tm-tabs :list="articleTypeList" :default-name="ArticleTypeActice" v-model:active-name="ArticleTypeActice"
+                 :width="750"></tm-tabs>
+        <tm-scrolly @refresh="()=>{refresh=!refresh}" :modelValue="flushedLoading" :width="0" :height="1000">
+            <tm-result title="没有数据" :showBtn="false" sub-title=" "
+                       v-if="(articleList?.length == 0 && flushedLoading == false)"></tm-result>
+            <tm-sheet @click="router.go('/pages/article/article-info?id=' + articleItem.id)"
+                      v-for="articleItem in articleList" :key="articleItem.id" :round="3" hoverClass="red"
+                      _class="flex-row-top-start flex-wrap">
+                <tm-image v-if="articleItem.cover" :src="articleItem.cover" :width="80" :height="80"
+                          _class="mr-40"></tm-image>
+                <view>
+                    <tm-text :label="articleItem.title"/>
+                    <tm-text :label="articleItem.title"/>
+                </view>
+            </tm-sheet>
+        </tm-scrolly>
+    </tm-app>
+</template>
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+
+
+const router = useRouter();
+import {useRouter} from '@/hooks/router';
+import {useRequest, useWatcher} from 'alova';
+import {getGoodsOpenList, getGoodsTypeList} from '@/services/api/goods';
+import {getArticleList, getArticleTypeList} from '@/services/api/article';
+
+const refresh = ref(false);
+let ArticleTypeActice: Ref<number> = ref(0);
+const {
+    data: articleTypeList,
+    onSuccess: getArticleTypeSuccess,
+} = useRequest(
+    () => getArticleTypeList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+
+getArticleTypeSuccess((e) => {
+    ArticleTypeActice.value = e.data[0].id;
+});
+const {
+    loading: flushedLoading,
+    data: articleList,
+    onSuccess: getGoodsOpenListonSuccess,
+    error
+} = useWatcher(
+    () => getArticleList(ArticleTypeActice.value),
+    [refresh, ArticleTypeActice],
+    {
+        force: true,
+        immediate: false
+    }
+);
+
+getGoodsOpenListonSuccess((e) => {
+
+});
+</script>
+<style>
+</style>

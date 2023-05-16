@@ -66,6 +66,30 @@ export function getBaseUrl(): string {
     return getEnvValue<string>('VITE_BASE_URL');
 }
 
+
+/**
+ * @description: 获取环境变量 VUE_APP_ID 的值
+ * @returns:
+ * @example:
+ */
+export function getAppid(): string {
+    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
+    //   return ''
+    return getEnvValue<string>('VITE_APP_ID');
+}
+
+/**
+ * @description: 获取环境变量 VITE_AUTH_URL 的值
+ * @returns:
+ * @example:
+ */
+export function getAuthUrl(): string {
+    // if (judgePlatform(PLATFORMS.H5) && isDevMode())
+    //   return ''
+    return getEnvValue<string>('VITE_AUTH_URL');
+}
+
+
 /**
  * @description: 获取环境变量 VITE_PLATFORM_ID 的值
  * @returns:
@@ -84,8 +108,8 @@ export function getPlatformId(): string {
  * @example:
  */
 export function getUploadUrl(): string {
-    if (judgePlatform(PLATFORMS.H5) && isDevMode()) {
-        return '/upload';
-    }
-    return getEnvValue<string>('VITE_UPLOAD_URL')
+    // if (judgePlatform(PLATFORMS.H5) && isDevMode()) {
+    //     return '/upload';
+    // }
+    return getEnvValue<string>('VITE_UPLOAD_URL');
 }

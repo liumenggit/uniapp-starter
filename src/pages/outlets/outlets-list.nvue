@@ -1,0 +1,59 @@
+<template>
+    <tm-app>
+        <tm-scrolly :width="0" :height="1400" @refresh="()=>{refresh=!refresh}" :model-value="loading">
+            <tm-card :title="outletsItem.title" :status="outletsItem.time" :round="3" :margin="[32,32]"
+                     v-for="outletsItem in outletsList" :border="3"
+            >
+                <template v-slot:content>
+                    <view class="flex-row-top-start flex-wrap">
+                        <tm-avatar :img="outletsItem.thumb"></tm-avatar>
+                        <view class="ml-40">
+                            <tm-text :label="outletsItem.address" color="grey"/>
+                            <tm-text :label="outletsItem.phone" color="blue"/>
+                            <tm-text :label="outletsItem.latitude" color="grey"/>
+                        </view>
+                    </view>
+                </template>
+                <template v-slot:action>
+                    <view class="flex flex-row flex-row-center-end flex-1">
+                        <tm-button label="电话" size="small" :margin="[24,0]"></tm-button>
+                        <tm-button label="导航" size="small" color="blue"></tm-button>
+                    </view>
+                </template>
+            </tm-card>
+        </tm-scrolly>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+
+import {useWatcher} from 'alova';
+import {useRouter} from '@/hooks/router';
+import {getOutletsList} from '@/services/api/outlets';
+
+const router = useRouter();
+const refresh = ref(false);
+
+const {
+    loading,
+    data: outletsList,
+    error
+} = useWatcher(
+    () => getOutletsList(),
+    [refresh],
+    {
+        force: true,
+        debounce: 500,
+        immediate: true,
+        initialData: []
+    }
+);
+
+</script>
+<style>
+</style>

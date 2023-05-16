@@ -30,6 +30,90 @@
       }
     },
     {
+      "path": "pages/booking/booking-create",
+      "style": {
+        "navigationBarTitleText": "开户预约",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/booking/booking-list",
+      "style": {
+        "navigationBarTitleText": "我的预约",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/booking/booking-info",
+      "style": {
+        "navigationBarTitleText": "预约详情",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/outlets/outlets-list",
+      "style": {
+        "navigationBarTitleText": "网点列表",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/outlets/outlets-info",
+      "style": {
+        "navigationBarTitleText": "网点信息",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/feedback/feedback-create",
+      "style": {
+        "navigationBarTitleText": "意见建议",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/feedback/feedback-list",
+      "style": {
+        "navigationBarTitleText": "意见建议列表",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
       "path": "pages/my/my",
       "style": {
         "navigationBarTitleText": "个人中心",
@@ -42,9 +126,9 @@
       }
     },
     {
-      "path": "pages/my/account",
+      "path": "pages/message/message-create",
       "style": {
-        "navigationBarTitleText": "我的账号",
+        "navigationBarTitleText": "我要留言",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
@@ -54,9 +138,93 @@
       }
     },
     {
-      "path": "pages/my/account-add",
+      "path": "pages/message/message-list",
       "style": {
-        "navigationBarTitleText": "添加新账号",
+        "navigationBarTitleText": "留言列表",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/concerning/concerning",
+      "style": {
+        "navigationBarTitleText": "关于我们",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/message/message-info",
+      "style": {
+        "navigationBarTitleText": "留言详情",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/notice/notice-list",
+      "style": {
+        "navigationBarTitleText": "通知列表",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/notice/notice-info",
+      "style": {
+        "navigationBarTitleText": "通知详情",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/demo/upload",
+      "style": {
+        "navigationBarTitleText": "上传测试",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/account/account-list",
+      "style": {
+        "navigationBarTitleText": "我的账户",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": false
+      }
+    },
+    {
+      "path": "pages/account/account-add",
+      "style": {
+        "navigationBarTitleText": "添加新账户",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
@@ -81,6 +249,66 @@
       "path": "pages/login/login",
       "style": {
         "navigationBarTitleText": "登录",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/goods/goods-after-list",
+      "style": {
+        "navigationBarTitleText": "配件商城",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/article/article-list",
+      "style": {
+        "navigationBarTitleText": "文章列表",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/article/article-info",
+      "style": {
+        "navigationBarTitleText": "文章详情",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/goods/goods-open-list",
+      "style": {
+        "navigationBarTitleText": "开户商城",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/goods/goods-info",
+      "style": {
+        "navigationBarTitleText": "商品信息",
         "navigationStyle": "custom",
         "titlePenetrate": "YES",
         "transparentTitle": "always"
@@ -125,7 +353,7 @@
   },
   "tabBar": {
     "color": "#9a9a9a",
-    "selectedColor": "#3E7DFE",
+    "selectedColor": "#4ec752",
     "borderStyle": "black",
     "backgroundColor": "white",
     "list": [

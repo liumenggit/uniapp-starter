@@ -42,6 +42,8 @@ onHide(() => {
 @import './tmui/scss/nvue.css';
 /* #endif */
 /* #ifndef APP-NVUE */
+//自定义图标
+@import '@/static/icon/custom.css';
 @import './tmui/scss/noNvue.css';
 /* #endif */
 

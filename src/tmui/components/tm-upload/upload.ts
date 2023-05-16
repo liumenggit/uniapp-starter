@@ -33,8 +33,8 @@ export interface fileConfig {
 	autoUpload?:Boolean,
 	header?:Object,//头部参数。
 	formData?:Object,//额外的表单数据。
-	formName?:string
-
+	formName?:string,
+	statusCode?:number,//服务返回成功的状态码标志，默认200表示成功。
 }
 export function getUid (length=3){
 	return Number(Number(Math.random().toString().substr(3,length) + Date.now()).toString(8));
@@ -79,11 +79,11 @@ export class uploadfile {
 		return true;
 	}
 	async chooesefileAfter(fileList:Array<file>){
-		
+
 		return fileList;
 	}
 	async chooesefileSuccess(fileList:Array<file>){
-		
+
 		return fileList;
 	}
 	delete(item:file){
@@ -93,7 +93,7 @@ export class uploadfile {
 			p.splice(index,1)
 			this.filelist = [...p];
 		}
-		 
+
 		return this.filelist;
 	}
 	async clear(){
@@ -114,7 +114,7 @@ export class uploadfile {
 	 */
 	async chooesefile():Promise<Array<file>>{
 		let t = this;
-		
+
 		return new Promise(async (rs,rj)=>{
 			let isready = await t.beforeChooesefile();
 			if(!isready){
@@ -128,12 +128,12 @@ export class uploadfile {
 					rj("取消选择");
 				},
 				success: async (res) => {
-					
+
 					if(res.tempFilePaths.length==0){
 						rj("未选择")
 						return;
 					}
-					
+
 					let imgarray = res.tempFilePaths;
 					let fielist= res.tempFiles;
 					let jgsk:Array<file> = [];
@@ -152,14 +152,14 @@ export class uploadfile {
 					})
 
 					let isreadyChoose = await t.chooesefileAfter(jgsk);
-					
+
 					if(!Array.isArray(isreadyChoose)||typeof isreadyChoose !='object'){
 						rj("chooesefileAfter:函数过滤，没有返回文件列表。")
 						return;
 					}
-					
+
 					t.filelist.push(...isreadyChoose)
-					
+
 					t.chooesefileSuccess(isreadyChoose);
 					rs(isreadyChoose)
 					if(t.config.autoUpload){
@@ -167,8 +167,8 @@ export class uploadfile {
 							t.start();
 						}, 500);
 					}
-					
-					
+
+
 				}
 			})
 		})
@@ -221,16 +221,16 @@ export class uploadfile {
 						})
 					})
 					t.filelist.push(...jgsk)
-					
+
 					t.selected(t.filelist);
 					if(t.config.isAuto){
 						t.start();
 					}
-					
+
 					rs(t.filelist)
 				}
 			})
-			
+
 		})
 	}
 	setConfig(config:fileConfig){
@@ -252,7 +252,7 @@ export class uploadfile {
 				progress:el?.progress??0,
 				name:el?.name??"",
 				response:el?.response??null,
-				url:el?.url??""
+				url:el?.url??"",
 			}
 		})
 		let filterFIle = cfilelist.filter(item=>!total_uid.has(item.uid)&&!total_url.has(item.url))
@@ -283,7 +283,7 @@ export class uploadfile {
 	}
 	// 开始上传。
 	async start(){
-		
+
 		if(this.filelist.length<=0){
 			console.error("未选择图片,已取消上传")
 			return;
@@ -294,15 +294,15 @@ export class uploadfile {
 		this.isStop = false;
 		async function startupload(){
 			if(t.isStop) return;
-			
+
 			let item = t.filelist[t.index];
-			
+
 			if(!item || typeof item === 'undefined'){
 				// 文件不存在。直接结束。
 				t.uploadComplete(t.filelist);
 				return;
 			}
-			
+
 			let canbleStart =  await t.beforeStart(item)
 			if(!canbleStart){
 				item.statusCode = statusCode.fail;
@@ -315,14 +315,14 @@ export class uploadfile {
 				startupload();
 				return;
 			}
-			
+
 			if(item.statusCode==3||item.statusCode==1||item.statusCode==4||item.statusCode==2){
 				// 直接跳过。至下一个文件。
 				t.index++;
 				startupload();
 				return;
 			}
-			
+
 			item.statusCode = statusCode.uploading;
 			item.status = "上传中..."
 			t.setFileStatus(item)
@@ -336,7 +336,8 @@ export class uploadfile {
 					if(t.isStop) return
 					item.response = res.data;
 					let isOksuccess = await t.beforeSuccess(item);
-					if(res.statusCode !=200||!isOksuccess){
+					const statusCode_reonese = t.config?.statusCode??200
+					if(res.statusCode !=statusCode_reonese||!isOksuccess){
 						item.statusCode = statusCode.fail;
 						item.status = "上传失败";
 						t.fail(item)
@@ -344,10 +345,11 @@ export class uploadfile {
 						t.index++;
 						return;
 					}
-					
+
 					// 上传成功。
 					item.statusCode = statusCode.success;
 					item.status = "上传成功";
+					item.url = JSON.parse(item.response).data.path
 					t.setFileStatus(item)
 					t.success(item,t.filelist)
 					t.index++;
@@ -377,10 +379,10 @@ export class uploadfile {
 					item.status = "上传中...";
 					t.setFileStatus(item)
 					t.progress(item)
-					
+
 				})
 			}
-			
+
 		}
 		await startupload();
 	}
@@ -391,5 +393,5 @@ export class uploadfile {
 			this.uploadobj.abort()
 		}
 	}
-	
+
 }

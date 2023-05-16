@@ -1,0 +1,144 @@
+<template>
+    <tm-app>
+        <tm-form @submit="confirm" ref="form" v-model="bookingAfterParams" layout="vertical">
+            <tm-form-item required label="用户" field="account_id" :border="false"
+                          :rules="[{required:true,message:'请选择用户'}]"
+            >
+                <tm-input placeholder="选择用户"
+                          :ready-only="true"
+                          @click="showAccountList=!showAccountList"
+                          :userInteractionEnabled="false"
+                          :model-value="accountText?.user_name"
+                          :showBottomBotder="false"
+                />
+                <template v-slot:desc>
+                    <view class="ma-10" v-if="accountText">
+                        <tm-descriptions-item label="居住小区" :value="accountText.bind_village_name" :font-size="26"/>
+                        <tm-descriptions-item label="详细地址" :value="accountText.bind_address" :font-size="26"/>
+                        <tm-descriptions-item label="身份证号" :value="accountText.bind_idcard" :font-size="26"/>
+                    </view>
+                </template>
+            </tm-form-item>
+            <tm-form-item required label="预约办理事项" field="category" :border="false"
+                          :rules="[{required:true,message:'请选择预约办理事项'}]"
+                          desc="办理事项需缴纳入户费0.00元"
+            >
+                <tm-input
+                    :ready-only="true"
+                    @click="showbookingAfterTypeList=!showbookingAfterTypeList"
+                    :userInteractionEnabled="false"
+                    :model-value="mattersText?.title"
+                    :showBottomBotder="false"
+                />
+            </tm-form-item>
+            <tm-form-item label="备注" field="house" :border="false" showTopErrorGap>
+                <tm-input v-model.lazy="bookingAfterParams.house"
+                          :showBottomBotder="false" type="textarea" :inputPadding="[12]" confirm-hold showCharNumber
+                          :maxlength="100" :height="200"
+
+                ></tm-input>
+            </tm-form-item>
+            <tm-form-item label="签名" required field="signature" :border="false" showTopErrorGap>
+                <tm-sign-board class="border" :lineWidth="3" lineColor="#4ec752" ref="board" :width="638"
+                               :height="400"></tm-sign-board>
+                <view class="flex-row-center-end flex-wrap">
+                    <tm-button size="mini" label="清空" color="red" :margin="[0,0,40,0]"
+                               @click="proxy.$refs.board.clear()"/>
+                    <tm-button size="mini" label="保存" @click="saveSign"/>
+                </view>
+            </tm-form-item>
+            <tm-form-item required label="上传管道口/表具图片" field="gas"
+                          :rules="{required:true,message:'请上传图片'}">
+                <!--                TODO 上传-->
+                <tm-upload :rows="3" :width="420" :defaultValue="bookingAfterParams.gas"
+                           v-model:model-value="bookingAfterParams.gas"
+                           :url="getBaseUrl() + getUploadUrl()"
+                           :form-data="{platform_id: getPlatformId()}"
+                           :on-success-after="isUploadSuccess"
+
+                ></tm-upload>
+                <template v-slot:desc>
+                    <tm-tag label="查看示例" size="xs" color="red" outlined></tm-tag>
+                </template>
+            </tm-form-item>
+            <tm-form-item :border="false">
+                <tm-button form-type="submit" label="提交" block></tm-button>
+            </tm-form-item>
+        </tm-form>
+        <tm-picker :columns="bookingAfterTypeList" v-model:show="showbookingAfterTypeList" selected-model="id" map-key="title"
+                   v-model:model-value="bookingAfterParams.category" :disabled="true"
+        ></tm-picker>
+
+        <tm-picker :columns="accountList" v-model:show="showAccountList" selected-model="id" map-key="user_name"
+                   v-model:model-value="bookingAfterParams.account_id" :disabled="true"
+        ></tm-picker>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed, getCurrentInstance,
+    ref,
+    Ref
+} from 'vue';
+import {useRequest, useWatcher} from 'alova';
+import {getBookingAfterTypeList} from '@/services/api/booking';
+import {getAccountList} from '@/services/api/account';
+import {uploadOssFile} from '@/services/api/common';
+import {getBaseUrl, getPlatformId, getUploadUrl} from '@/utils/env';
+import {isUploadSuccess} from '@/utils/common/upload-file';
+import tmSignBoard from '@/tmui/components/tm-sign-board/tm-sign-board.vue';
+import {base64ToFile} from '@/utils/common/base64-to-file';
+import {toast} from '@/tmui/tool/function/util';
+
+const {proxy} = getCurrentInstance();
+const board = ref<InstanceType<typeof tmSignBoard> | null>(null);
+
+
+const showbookingAfterTypeList = ref(false);
+const showAccountList = ref(false);
+const bookingAfterParams: Ref<ApplyBookingAfterParams> = ref({});
+
+const {
+    data: bookingAfterTypeList,
+} = useRequest(
+    () => getBookingAfterTypeList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+const mattersText = computed(() => bookingAfterTypeList?.value.find(item => item.id === (bookingAfterParams.value?.category ? bookingAfterParams.value?.category[0] : 0)));
+
+const {
+    data: accountList,
+} = useRequest(
+    () => getAccountList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+const accountText = computed(() => accountList?.value.find(item => item.id === (bookingAfterParams.value?.account_id ? bookingAfterParams.value?.account_id[0] : 0)));
+
+
+const saveSign = async () => {
+    const base64Data = await board.value?.save();
+    const file = base64ToFile(base64Data);
+    uploadOssFile(file).then((signUrl) => {
+        console.log('签名链接', signUrl);
+        toast('保存成功');
+        bookingAfterParams.value.signature = signUrl;
+    }).catch((err) => {
+        toast('保存失败');
+        console.log('err', err);
+    });
+};
+
+const confirm = async (e: any) => {
+    console.log('tiji', e);
+
+};
+</script>
+<style>
+</style>

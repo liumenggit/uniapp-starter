@@ -1,53 +1,55 @@
 <template>
     <tm-app>
-        <tm-result color="green" status="success"></tm-result>
+        <tm-spin :load="loading" transprent>
+            <tm-result @click="router.go(useRoute().query.redirect as string)" :color="result.color"
+                       :status="result.status"
+                       :subTitle="result.subTitle" :showBtn="result.showBtn" btnText="返回"></tm-result>
+        </tm-spin>
     </tm-app>
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from '@/hooks/router';
+import {useRoute, useRouter} from '@/hooks/router';
 import {useUserInfo} from '@/state/modules/user-info';
-import {onLoad} from '@dcloudio/uni-app';
-import {Ref, ref} from 'vue';
 import {useRequest} from 'alova';
 import {userWxlogin} from '@/services/api/auth';
+import {ref} from 'vue';
 
+const {send: wxLogin, error, loading} = useRequest(userWxlogin, {immediate: false});
 const router = useRouter();
-// 微信登录
-const {send: wxLogin} = useRequest(userWxlogin, {immediate: false});
-const redirect = ref<string | undefined>(undefined);
-onLoad((query: any) => {
-    console.log('code', getParameterByName('code'));
-    redirect.value = query.redirect ? decodeURIComponent(query.redirect) : undefined;
-    console.log('成功后需要返回', redirect.value);
-    const code = getParameterByName('code');
-    if (code) {
-        wxLogin({code: code}).then((userInfoState) => {
-            console.log('微信登录成功', userInfoState);
-            useUserInfo().setUserInfo(userInfoState.user_info);
-            useUserInfo().setToken(userInfoState._token.token);
-            useUserInfo().setTokenRefresh(userInfoState._token.access);
-            if (redirect.value) {
-                router.go(redirect.value!, {replace: true});
-                return;
-            }
-        }).catch((e) => {
-            console.log('微信登录失败', e);
-        });
-
+const result = ref(
+    {
+        status: '',
+        subTitle: '',
+        showBtn: false,
+        color: 'green'
     }
+);
+// 微信登录
+if (useRoute().query.code) {
+    wxLogin({code: useRoute().query.code}).then((userInfoState) => {
+        useUserInfo().setUserInfo(userInfoState.user_info);
+        useUserInfo().setToken(userInfoState._token.token);
+        useUserInfo().setTokenRefresh(userInfoState._token.access);
+        result.value = {
+            status: 'success',
+            subTitle: '',
+            showBtn: false,
+            color: 'green'
+        };
+        setTimeout(function () {
+            router.go(useRoute().query.redirect as string);
+        }, 3000);
+    }).catch((e) => {
+        result.value = {
+            status: 'error',
+            subTitle: e.error,
+            showBtn: true,
+            color: 'red'
+        };
+    });
+}
 
-});
-
-const getParameterByName = (name: string, url?: string) => {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-};
 </script>
 <style>
 </style>

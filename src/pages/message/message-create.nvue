@@ -1,0 +1,42 @@
+<template>
+    <tm-app>
+        <tm-form @submit="confirm" ref="form" v-model="messageParams" layout="vertical">
+            <tm-form-item required label="留言内容" field="content" :border="false">
+                <tm-input v-model.lazy="messageParams.content"
+                          :showBottomBotder="false" type="textarea" :inputPadding="[12]" confirm-hold showCharNumber
+                          :maxlength="500" :height="400"
+                ></tm-input>
+            </tm-form-item>
+            <tm-form-item :border="false">
+                <tm-button form-type="submit" label="提交" block></tm-button>
+            </tm-form-item>
+        </tm-form>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {
+    computed,
+    ref,
+    Ref
+} from 'vue';
+import {toast} from '@/tmui/tool/function/util';
+import {useRouter} from '@/hooks/router';
+import {createMessage} from '@/services/api/message';
+
+const router = useRouter();
+const messageParams: Ref<MessageParams> = ref({content: ''});
+
+const confirm = (e: any) => {
+    if (e.validate) {
+        createMessage(messageParams.value).send().then((res) => {
+            toast('留言提交成功');
+            router.back();
+        }).catch((err) => {
+            toast('留言提交失败');
+        });
+    }
+};
+</script>
+<style>
+</style>
