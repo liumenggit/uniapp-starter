@@ -29,7 +29,6 @@ import {
 const router = useRouter();
 import {useRouter} from '@/hooks/router';
 import {useRequest, useWatcher} from 'alova';
-import {getGoodsOpenList, getGoodsTypeList} from '@/services/api/goods';
 import {getArticleList, getArticleTypeList} from '@/services/api/article';
 
 const refresh = ref(false);

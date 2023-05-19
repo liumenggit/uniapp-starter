@@ -26,7 +26,7 @@ import {getBannerList} from '@/services/api/common';
 const router = useRouter();
 const gridList = [
     {title: '我的账号', url: '/pages/account/account-list', icon: 'td-bug'},
-    {title: '充值缴费', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '充值缴费', url: '/pages/info/info?key=price', icon: 'td-bug'},
     {title: '账单信息', url: '/pages/booking/booking-create', icon: 'td-bug'},
     {title: '预约办理', url: '/pages/booking/booking-create', icon: 'td-bug'},
     {title: '在线开户', url: '/pages/booking/booking-create', icon: 'td-bug'},
@@ -35,9 +35,9 @@ const gridList = [
     {title: '意见建议', url: '/pages/booking/booking-create', icon: 'td-bug'},
     {title: '配件商城', url: '/pages/goods/goods-after-list', icon: 'td-bug'},
     {title: '开户商城', url: '/pages/goods/goods-open-list', icon: 'td-bug'},
-    {title: '燃气保险', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '燃气保险', url: '/pages/info/info?key=stop', icon: 'td-bug'},
     {title: '开具发票', url: '/pages/booking/booking-create', icon: 'td-bug'},
-    {title: '停气信息', url: '/pages/booking/booking-create', icon: 'td-bug'},
+    {title: '停气信息', url: '/pages/info/info?key=stop', icon: 'td-bug'},
     {title: '错误url', url: '/pages/booking/booking-create22', icon: 'td-bug'},
     {title: '文章', url: '/pages/article/article-list', icon: 'td-bug'},
 ];

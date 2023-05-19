@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from '@/hooks/router';
-import {useUserInfo} from '@/state/modules/user-info';
+import {useUserStore} from '@/state/modules/user';
 import {useRequest} from 'alova';
 import {userWxlogin} from '@/services/api/auth';
 import {ref} from 'vue';
@@ -28,9 +28,9 @@ const result = ref(
 // 微信登录
 if (useRoute().query.code) {
     wxLogin({code: useRoute().query.code}).then((userInfoState) => {
-        useUserInfo().setUserInfo(userInfoState.user_info);
-        useUserInfo().setToken(userInfoState._token.token);
-        useUserInfo().setTokenRefresh(userInfoState._token.access);
+        useUserStore().setUserInfo(userInfoState.user_info);
+        useUserStore().setToken(userInfoState._token.token);
+        useUserStore().setTokenRefresh(userInfoState._token.access);
         result.value = {
             status: 'success',
             subTitle: '',

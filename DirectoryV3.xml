@@ -44,4 +44,5 @@
     <tree path="/src/goods" title="商城"/>
     <tree path="/src/pages/goods" title="商城"/>
     <tree path="/src/pages/article" title="文章"/>
+    <tree path="/src/enums/verifyEnum.ts" title="验证"/>
 </trees>

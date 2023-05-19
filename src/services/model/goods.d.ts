@@ -13,10 +13,23 @@ declare interface GoodsItem {
     create_time?: string;
     id?: number;
     is_must?: number;
-    price?: string;
+    item?: GoodsSku[];
+    price?: number;
     sass_id?: number;
     status?: number;
     title?: string;
     type?: number;
     type_title?: string;
+}
+
+
+interface GoodsSku {
+    create_time: string;
+    goods_id: number;
+    id: number;
+    price: number;
+    sass_id: number;
+    status: number;
+    title: string;
+    type: string;
 }

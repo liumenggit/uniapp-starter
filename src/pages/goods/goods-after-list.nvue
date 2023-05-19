@@ -6,7 +6,8 @@
             <tm-result title="没有数据" :showBtn="false" sub-title=" "
                        v-if="(goodAfterList?.length == 0 && flushedLoading == false)"></tm-result>
             <tm-waterfall ref="wall" :width="750">
-                <tm-waterfall-item :img="goodAfterItem.cover" v-for="goodAfterItem in goodAfterList"
+                <tm-waterfall-item @click="router.go('/pages/goods/goods-info?id=' + goodAfterItem.id)"
+                                   :img="goodAfterItem.cover" v-for="goodAfterItem in goodAfterList"
                                    :key="goodAfterItem.id">
                     <view class="pt-12 pb-12 px-12">
                         <tm-text :label="goodAfterItem.title" _class="text-overflow-2"></tm-text>
@@ -27,7 +28,6 @@ import {
     ref,
     Ref
 } from 'vue';
-
 
 const router = useRouter();
 import {useRouter} from '@/hooks/router';

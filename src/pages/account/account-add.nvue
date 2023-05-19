@@ -13,7 +13,7 @@
                               :showBottomBotder="false"
                     ></tm-input>
                 </tm-form-item>
-                <tm-form-item required label="户主名" :rules="[{required:true,message:'请输入户主名'}]"
+                <tm-form-item required label="户主名" :rules="[{required:true,message:'请输入户主名',validator:(val)=>isChina(val)}]"
                               field="bind_name"
                               :border="false" showTopErrorGap
                 >
@@ -22,7 +22,7 @@
 
                     ></tm-input>
                 </tm-form-item>
-                <tm-form-item required label="身份账号码" :rules="[{required:true,message:'请输入身份账号码'}]"
+                <tm-form-item required label="身份账号码" :rules="[{required:true,message:'请输入身份账号码',validator:(val)=>isIdCar(val)}]"
                               field="bind_idcard"
                               :border="false" showTopErrorGap
                 >
@@ -31,7 +31,7 @@
 
                     ></tm-input>
                 </tm-form-item>
-                <tm-form-item required label="电话号码" :rules="[{required:true,message:'请输入电话号码'}]"
+                <tm-form-item required label="电话号码" :rules="[{required:true,message:'请输入电话号码',validator:(val)=>isPhone(val)}]"
                               field="bind_phone"
                               :border="false" showTopErrorGap
                 >
@@ -40,7 +40,7 @@
 
                     ></tm-input>
                 </tm-form-item>
-                <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+                <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码',validator:(val)=>{return val && val.length === VERIFY_CODE_LENGTH}}]" field="code"
                               :border="false" showTopErrorGap
                 >
                     <tm-input placeholder="请输入验证码" type="number" v-model.lazy="accountParams.code"
@@ -95,10 +95,10 @@ import {sendPhoneCode} from '@/utils/common/send-code';
 import {getVillageList} from '@/services/api/common';
 import {sendCode} from '@/services/api/common';
 import {useRequest, useWatcher} from 'alova';
-import {toast} from '@/tmui/tool/function/util';
+import {isChina, isIdCar, isPhone, toast} from '@/tmui/tool/function/util';
 import {getAccountInfo, putAccount} from '@/services/api/account';
 import {useRoute, useRouter} from '@/hooks/router';
-import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyCode';
+import {VERIFY_CODE_LENGTH, VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyEnum';
 import {TOACT_SUCCESS} from '@/enums/toastEnum';
 
 const router = useRouter();

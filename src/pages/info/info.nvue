@@ -1,0 +1,28 @@
+<template>
+    <tm-app>
+        <tm-html :content="data[key]"></tm-html>
+    </tm-app>
+</template>
+
+<script lang="ts" setup>
+import {useRequest} from 'alova';
+import {useRoute, useRouter} from '@/hooks/router';
+import {getPageInfo} from '@/services/api/page';
+
+const key = useRoute().query.key;
+console.log('key', key);
+const {
+    data,
+} = useRequest(
+    () => getPageInfo(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+
+</script>
+
+<style scoped>
+
+</style>

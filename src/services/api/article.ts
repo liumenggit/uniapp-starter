@@ -3,7 +3,6 @@ import {dateFormat} from '@/utils/common/date-format';
 
 /**
  * 文章分类
- * @returns {Method<unknown, unknown, MessageListModel, unknown, {requestType?: "upload" | "download"} & UniappRequestConfig & UniappUploadConfig & UniappDownloadConfig, UniNamespace.RequestSuccessCallbackResult | UniNamespace.UploadFileSuccessCallbackResult | UniNamespace.DownloadSuccessData, any>}
  */
 export function getArticleTypeList() {
     return request.Get<[ArticleType]>('article_category');
@@ -25,7 +24,10 @@ export function getArticleList(type: number) {
  */
 export function getArticleInfo(id: number) {
     return request.Get<ArticleItem>('article_info', {
-        params: {id}, transformData<ArticleItem>(rawData: ArticleItem) {
+        params: {id},
+        // @ts-ignore
+        transformData<ArticleItem>(rawData: ArticleItem) {
+            // @ts-ignore
             rawData.create_time = dateFormat(rawData.create_time);
             return rawData;
         }

@@ -4,7 +4,7 @@ import {
     VERIFY_CODE_PHONE_ERROR,
     VERIFY_CODE_PHONE_NULL,
     VERIFY_CODE_SUCCESS
-} from '@/enums/verifyCode';   // 显示信息
+} from '@/enums/verifyEnum';   // 显示信息
 
 // 发送验证码
 const sendPhoneCode = (phone: number, sendCode: (...args: any[]) => Promise<any>) => {

@@ -52,7 +52,7 @@
                  :titleFontSize="30"></tm-cell>
         <tm-cell title="通知列表" url="/pages/notice/notice-list" :margin="[32,16]" :round="3"
                  :titleFontSize="30"></tm-cell>
-        <tm-cell title="关于我们" url="/pages/notice/notice-list" :margin="[32,16]" :round="3"
+        <tm-cell title="关于我们" url="/pages/info/info?key=about" :margin="[32,16]" :round="3"
                  :titleFontSize="30"></tm-cell>
         <tm-cell title="完善用户信息" url="/pages/my/perfect_info" :margin="[32,16]" :round="3" :titleFontSize="30"
         ></tm-cell>
@@ -64,11 +64,11 @@ import {
     onShow,
     onLoad
 } from '@dcloudio/uni-app';
-import {useUserInfo} from '@/state/modules/user-info';
-const userInfo = useUserInfo().user_info;
+import {useUserStore} from '@/state/modules/user';
+const userInfo = useUserStore().user_info;
 
 // onShow(() => {
-//     useUserInfo().updateUserInfo();
+//     useUserStore().updateUserInfo();
 // });
 
 </script>

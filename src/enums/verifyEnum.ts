@@ -3,11 +3,8 @@
  * @type {number}
  */
 export const VERIFY_CODE_TIME = 20;
-/**
- * 延迟获取提醒
- * @type {number}
- */
 export const VERIFY_CODE_TIME_TEXT = '秒后获取';
+export const VERIFY_CODE_LENGTH = 4;
 export const VERIFY_CODE_TEXT = '获取验证码';
 export const VERIFY_CODE_SUCCESS = '发送成功';
 export const VERIFY_CODE_FAIL = '发送失败';

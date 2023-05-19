@@ -7,7 +7,7 @@
 <template>
   <view
     :hover-class="(props.url ? ' opacity-7 ' : '  ') + props.hoverClass"
-    
+
     v-if="_blue_sheet"
     :blurEffect="_blurEffect"
     @click="onClick"
@@ -44,7 +44,7 @@
     ]"
   >
     <view
-      
+
       :class="['flex noNvueBorder flex-col flex-1', customClass]"
       :style="contStyle_p"
     >
@@ -243,7 +243,7 @@ watch(
       nextTick(() => (_blue_sheet.value = true));
     }
     // #endif
-    
+
   }
 );
 const _bgcolor = computed(() => {
@@ -251,7 +251,7 @@ const _bgcolor = computed(() => {
   if (props.darkBgColor !== "" && isDark.value === true) {
     return `background-color:${props.darkBgColor};`;
   }
-  
+
   if (props.linearColor.length==2) {
     return { 'background-image': `linear-gradient(${tmcomputed.value.linearDirectionStr},${props.linearColor[0]},${props.linearColor[1]})` }
   }

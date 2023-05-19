@@ -1,21 +1,27 @@
 <template>
     <tm-app>
         <tm-form @submit="confirm" ref="form" v-model="userPerfectParams" layout="vertical">
-            <tm-form-item required label="姓名" :rules="[{required:true,message:'请输入姓名'}]" field="realname"
+            <tm-form-item required label="姓名"
+                          :rules="[{required:true,message:'请输入姓名',validator:(val)=>isChina(val)}]" field="realname"
                           :border="false" showTopErrorGap
             >
-                <tm-input placeholder="请输入姓名" type="text" v-model.lazy="userPerfectParams.realname" :showBottomBotder="false"
+                <tm-input placeholder="请输入姓名" type="text" v-model.lazy="userPerfectParams.realname"
+                          :showBottomBotder="false"
                           prefix="td-user"
                 ></tm-input>
             </tm-form-item>
-            <tm-form-item required label="手机号" :rules="[{required:true,message:'请输入手机号'}]" field="phone"
+            <tm-form-item required label="手机号"
+                          :rules="[{required:true,message:'请输入手机号',validator:(val)=>isPhone(val)}]" field="phone"
                           :border="false" showTopErrorGap
             >
-                <tm-input placeholder="请输入手机号" type="number" v-model.lazy="userPerfectParams.phone" :showBottomBotder="false"
+                <tm-input placeholder="请输入手机号" type="number" v-model.lazy="userPerfectParams.phone"
+                          :showBottomBotder="false"
                           prefix="tmicon-mobile-alt"
                 ></tm-input>
             </tm-form-item>
-            <tm-form-item required label="验证码" :rules="[{required:true,message:'请输入验证码'}]" field="code"
+            <tm-form-item required label="验证码"
+                          :rules="[{required:true,message:'请输入验证码',validator:(val)=>{return val && val.length === VERIFY_CODE_LENGTH}}]"
+                          field="code"
                           :border="false" showTopErrorGap
             >
                 <tm-input placeholder="请输入验证码" type="number" v-model.lazy="userPerfectParams.code"
@@ -46,24 +52,24 @@ import {
     ref,
     Ref
 } from 'vue';
-import {useUserInfo} from '@/state/modules/user-info';
+import {useUserStore} from '@/state/modules/user';
 import {sendCode} from '@/services/api/common';
 import {userPerfect} from '@/services/api/user';
-import {toast} from '@/tmui/tool/function/util';
-import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyCode';
+import {isChina, isPhone, toast} from '@/tmui/tool/function/util';
+import {VERIFY_CODE_LENGTH, VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyEnum';
 import {sendPhoneCode} from '@/utils/common/send-code';
 import {UserPerfectParams} from '@/services/model/userModel';
 import {useRouter} from '@/hooks/router';
 
 const router = useRouter();
-const {send: sendUserPerfectParams} = useRequest(userPerfectParams => userPerfect(userPerfectParams), {immediate: false});
+const {send: sendUserPerfectParams} = useRequest(perfectParams => userPerfect(perfectParams), {immediate: false});
 
-const userPerfectParams: Ref<UserPerfectParams> = ref({});
+const userPerfectParams: Ref<UserPerfectParams> = ref({open_id: useUserStore().user_info.open_id});
 const confirm = (e: any) => {
     if (e.validate) {
-        e.data.open_id = useUserInfo().user_info.open_id;
+        e.data.open_id = useUserStore().user_info.open_id;
         sendUserPerfectParams(e.data).then((res) => {
-            useUserInfo().setUserInfo(res.user_info);
+            useUserStore().setUserInfo(res.user_info);
             toast('完善信息成功');
             setTimeout(() => {
                 router.back();

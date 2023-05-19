@@ -90,6 +90,18 @@
       }
     },
     {
+      "path": "pages/info/info",
+      "style": {
+        "navigationBarTitleText": "信息",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
       "path": "pages/feedback/feedback-create",
       "style": {
         "navigationBarTitleText": "意见建议",

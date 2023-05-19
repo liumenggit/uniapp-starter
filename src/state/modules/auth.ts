@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {getCache, removeCache, setCache} from '@/utils/cache';
-import {TOKEN_KEY} from '@/enums/cacheEnum';
+import {TOKEN_KEY, TOKEN_REFRESH_KEY} from '@/enums/cacheEnum';
 
 // import { logout } from '@/services/api/auth';
 
@@ -16,10 +16,11 @@ export const useAuthStore = defineStore({
         access: undefined
     }),
     getters: {
-        // getToken: (state) => state.token,
+        getToken: (state) => state.token || '',
         isLogin: (state): boolean => !!state.token,
         getAuthorization: (state) => {
-            return state.token ? {authorization: `Bearer ${state.token}`} : {};
+            // return state.token ? {authorization: `Bearer ${state.token}`} : {};
+            return state.token ? {token: state.token} : {};
         },
     },
     actions: {
@@ -29,6 +30,10 @@ export const useAuthStore = defineStore({
         setToken(token: string | undefined) {
             setCache(TOKEN_KEY, token);
             this.token = token;
+        },
+        setTokenRefresh(token: string | undefined) {
+            setCache(TOKEN_REFRESH_KEY, token);
+            this.access = token;
         },
         // /**
         //  * @description 登出

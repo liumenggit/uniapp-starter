@@ -1,6 +1,6 @@
 <template>
-  <!--    bg-img="https://picsum.photos/750/1448"-->
-    <tm-app ref="app" color="grey-5">
+  <!--    -->
+    <tm-app ref="app" >
         <tm-sheet transprent>
             <tm-text label="晟丰燃气" font-size="40"></tm-text>
             <tm-text label="欢迎您登录，使用TMUI3.0" parent-class="my-20"></tm-text>
@@ -78,7 +78,7 @@ import {useRoute, useRouter} from '@/hooks/router';
 import {userPhonelogin} from '@/services/api/auth';
 import {AUTH_PAGE} from '@/enums/routerEnum';
 import {escapeRegExp} from '@/utils/common/get-path';
-import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyCode';
+import {VERIFY_CODE_TEXT, VERIFY_CODE_TIME, VERIFY_CODE_TIME_TEXT} from '@/enums/verifyEnum';
 import {sendCode} from '@/services/api/common';
 import {sendPhoneCode} from '@/utils/common/send-code';
 import {getAppid, getAuthUrl, isDevMode} from '@/utils/env';

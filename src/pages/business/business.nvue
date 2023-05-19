@@ -18,11 +18,11 @@ import {
 } from 'vue';
 
 const gridList = [
-    {title: '价格公示', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
-    {title: '优化营商环境', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '价格公示', url: '/pages/info/info?key=price', icon: 'td-bug'},
+    {title: '优化营商环境', url: '/pages/info/info?key=optimize_content', icon: 'td-bug'},
     {title: '营业网点', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
-    {title: '停气信息', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
-    {title: '燃气常识', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
+    {title: '停气信息', url: '/pages/info/info?key=stop', icon: 'td-bug'},
+    {title: '燃气常识', url: '/pages/article/article-list', icon: 'td-bug'},
     {title: '我要留言', url: '/pages/message/message-create', icon: 'td-bug'},
     {title: '办事指南', url: '/pages/outlets/outlets-list', icon: 'td-bug'},
 ];

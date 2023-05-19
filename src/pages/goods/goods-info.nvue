@@ -1,12 +1,15 @@
 <template>
     <tm-app>
-        <tm-skeleton model="chat" v-if="articleInfo === {}"></tm-skeleton>
+        <tm-skeleton model="chat" v-if="goodsInfo === {}"></tm-skeleton>
         <tm-sheet :margin="[0,0]" :width="0" _class="fulled fulled-height">
-            <tm-text :label="articleInfo.title" :font-size="32"></tm-text>
-            <tm-text :label="articleInfo.create_time" :font-size="26" color="grey"></tm-text>
+            <tm-text :label="goodsInfo.title" :font-size="32"></tm-text>
+            <tm-text :label="goodsInfo.create_time" :font-size="26" color="grey"></tm-text>
             <tm-divider></tm-divider>
-            <tm-html :content="articleInfo.content"></tm-html>
+            <tm-html :content="goodsInfo.content"></tm-html>
         </tm-sheet>
+        <tm-sku :num="num" @buy="buy" @add="goodsAdd"
+                :height="900"
+                :list="list" :show="true"></tm-sku>
     </tm-app>
 </template>
 
@@ -16,18 +19,23 @@ import {
     ref,
     Ref
 } from 'vue';
+
+const num = ref(1);
+
+const list = ref({});
+
 import {useRequest} from 'alova';
 import {useRoute} from '@/hooks/router';
-import {getMessageInfo, getMessageList} from '@/services/api/message';
-import {getArticleInfo} from '../../services/api/article';
-import {dateFormat} from '../../utils/common/date-format';
+import {getGoodsInfo} from '@/services/api/goods';
+import TmSku from '@/tmui/components/tm-sku/tm-sku.vue';
 
 
 const {
-    data: articleInfo,
+    data: goodsInfo,
+    onSuccess,
     loading
 } = useRequest(
-    () => getArticleInfo(useRoute().query.id as number),
+    () => getGoodsInfo(useRoute().query.id as number),
     {
         force: true,
         immediate: true,
@@ -35,6 +43,45 @@ const {
     }
 );
 
+onSuccess((e) => {
+    console.log('e');
+    const children = goodsInfo.value.item.map(item => {
+        return {
+            title: item.title,
+            id: item.id,
+            num: 5
+        };
+    });
+    const product = goodsInfo.value.item.map(item => {
+        return {
+            ...item,
+            num: 100,
+            max_buy: 100,
+            img: goodsInfo.value.cover,
+            goods_name: goodsInfo.value.title
+        };
+    });
+    console.log('product', product);
+    list.value = {
+        data: [
+            {
+                title: '规格',
+                children: children
+            }
+        ],
+        product: product
+    };
+});
+
+
+function goodsAdd(e: any) {
+    console.log('加入购物车', e);
+}
+
+function buy(e: any) {
+    console.log(e);
+
+}
 </script>
 <style>
 </style>

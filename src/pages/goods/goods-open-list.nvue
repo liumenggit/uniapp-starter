@@ -6,7 +6,8 @@
             <tm-result title="没有数据" :showBtn="false" sub-title=" "
                        v-if="(goodOpenList.length == 0 && flushedLoading == false)"></tm-result>
             <tm-waterfall ref="wall" :width="750">
-                <tm-waterfall-item :img="goodOpenItem.cover" v-for="goodOpenItem in goodOpenList"
+                <tm-waterfall-item @click="router.go('/pages/goods/goods-info?id=' + goodOpenItem.id)"
+                                   :img="goodOpenItem.cover" v-for="goodOpenItem in goodOpenList"
                                    :key="goodOpenItem.id">
                     <view class="pt-12 pb-12 px-12">
                         <tm-text :label="goodOpenItem.title" _class="text-overflow-2"></tm-text>
@@ -33,6 +34,7 @@ const router = useRouter();
 import {useRouter} from '@/hooks/router';
 import {useRequest, useWatcher} from 'alova';
 import {getGoodsOpenList, getGoodsTypeList} from '@/services/api/goods';
+
 const refresh = ref(false);
 let goodsTypeActice: Ref<number> = ref(0);
 const {

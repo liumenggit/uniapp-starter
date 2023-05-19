@@ -40,6 +40,9 @@ declare interface AccountParams {
  * 账户模型
  */
 declare interface AccountModel {
+    /**
+     * 地址
+     */
     bind_address?: string;
     bind_createtime?: string;
     bind_gas?: string;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {HOME_PAGE, NAVIGATE_TYPE_LIST, NOT_FOUND_PAGE} from '@/enums/routerEnum';
-import {useUserInfo} from '@/state/modules/user-info';
+import {useUserStore} from '@/state/modules/user';
 import {isIgnoreAuth, jumpLogin} from '@/utils/router/constant';
 
 /**
@@ -14,7 +14,7 @@ export function routerBeforeEach(path: string): boolean {
     if (isIgnore) {
         return true;
     }
-    const authStore = useUserInfo();
+    const authStore = useUserStore();
     if (authStore.isLogin) {
         return true;
     }

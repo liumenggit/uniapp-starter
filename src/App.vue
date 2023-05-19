@@ -2,7 +2,7 @@
 import {onHide, onLaunch, onShow} from '@dcloudio/uni-app';
 import {judgePlatform} from './utils/platform';
 import {CURRENT_PLATFORM, PLATFORMS} from './enums/platformEnum';
-import {useUserInfo} from '@/state/modules/user-info';
+import {useUserStore} from '@/state/modules/user';
 import {removeInterceptor, setupInterceptors} from '@/utils/interceptors';
 import {useRouterStore} from '@/state/modules/router';
 
@@ -40,7 +40,7 @@ onLaunch(() => {
     appStore.initialize();
 });
 onShow(() => {
-    const authStore = useUserInfo();
+    const authStore = useUserStore();
     authStore.initToken();
     console.log('App Show');
 });

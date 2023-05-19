@@ -1,4 +1,4 @@
-import {useUserInfo} from '@/state/modules/user-info';
+import {useUserStore} from '@/state/modules/user';
 import {toast} from '@/tmui/tool/function/util';
 import {createAlova} from 'alova';
 import AdapterUniapp from '@alova/adapter-uniapp';
@@ -29,7 +29,7 @@ const alovaInstance = createAlova({
     }),
     timeout: 5000,
     beforeRequest: (method) => {
-        const authStore = useUserInfo();
+        const authStore = useUserStore();
         method.config.headers = assign(method.config.headers, HEADER, authStore.getAuthorization);
     },
     responsed: {
@@ -73,12 +73,12 @@ const alovaInstance = createAlova({
                 if (code === ResultEnum.UPDATE_TOKEN) {
                     const access = alovaInstance.Get<Token>('/user_access_to_token', {
                         params: {
-                            access: useUserInfo()._token.access
+                            access: useUserStore()._token.access
                         }
                     });
                     const response = await access.send();
                     method.config.headers.token = response?.token || undefined;
-                    useUserInfo().setToken(response?.token || undefined);
+                    useUserStore().setToken(response?.token || undefined);
                     return await method.send();
 
                 }
