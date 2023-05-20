@@ -90,3 +90,17 @@ declare interface BookingOpenParams {
      */
     signature: string;
 }
+
+/**
+ * 预约须知
+ */
+declare interface BookingNotice {
+    content?: string;
+    create_time?: string;
+    id?: number;
+    sass_id?: number;
+    time?: number;
+    title?: string;
+    type?: string;
+}
+

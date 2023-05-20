@@ -11,22 +11,26 @@
                 </tm-sheet>
             </template>
             <view v-if="stepsCurrent == 0">
-                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0" model="widthFix"></tm-image>
+                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0"
+                          model="widthFix"></tm-image>
                 <tm-button :margin="[32,32]" block @click="stepsCurrent = 1 ; stepsList[0].start = true"
                            label="下一步"></tm-button>
             </view>
             <view v-if="stepsCurrent == 1">
-                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0" model="widthFix"></tm-image>
+                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0"
+                          model="widthFix"></tm-image>
                 <tm-button :margin="[40,40]" block @click="stepsCurrent = 2; stepsList[1].start = true"
                            label="已经阅读并同意签订1"></tm-button>
             </view>
             <view v-if="stepsCurrent == 2">
-                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0" model="widthFix"></tm-image>
+                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0"
+                          model="widthFix"></tm-image>
                 <tm-button :margin="[40,40]" block @click="stepsCurrent = 3; stepsList[2].start = true"
                            label="已经阅读并同意签订2"></tm-button>
             </view>
             <view v-if="stepsCurrent == 3">
-                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0" model="widthFix"></tm-image>
+                <tm-image src="https://via.placeholder.com/750x1000" :width="750" :height="0"
+                          model="widthFix"></tm-image>
                 <tm-button :margin="[40,40]" block
                            @click="stepsCurrent = 4 ; stepsList[3].start = true;; stepsList[4].start = true"
                            label="已经阅读并同意签订3"></tm-button>
@@ -134,7 +138,8 @@
                 </tm-form-item>
             </tm-form>
         </tm-sticky>
-        <tm-picker :columns="bookingAfterTypeList" v-model:show="showbookingAfterTypeList" selected-model="id" map-key="title"
+        <tm-picker :columns="bookingAfterTypeList" v-model:show="showbookingAfterTypeList" selected-model="id"
+                   map-key="title"
                    v-model:model-value="bookingOpenParams.category" :disabled="true"
         ></tm-picker>
 
@@ -153,7 +158,7 @@ import {
     Ref
 } from 'vue';
 import {useRequest, useWatcher} from 'alova';
-import {createBookingOpen, getBookingAfterTypeList} from '@/services/api/booking';
+import {createBookingOpen, getBookingAfterTypeList, getBookingNotice} from '@/services/api/booking';
 import {getAccountList} from '@/services/api/account';
 import {sendCode, uploadOssFile} from '@/services/api/common';
 import {getBaseUrl, getPlatformId, getUploadUrl} from '@/utils/env';
@@ -175,6 +180,7 @@ const stepsList = ref([
     {title: '在线开户', start: false},
 ]);
 
+
 const stepsCurrent = ref(0);
 
 const showbookingAfterTypeList = ref(false);
@@ -192,6 +198,18 @@ const {
     data: bookingAfterTypeList,
 } = useRequest(
     () => getBookingAfterTypeList(),
+    {
+        immediate: true,
+        initialData: []
+    }
+);
+/**
+ * 获取预约须知
+ */
+const {
+    data: bookingNotice,
+} = useRequest(
+    () => getBookingNotice('open'),
     {
         immediate: true,
         initialData: []
@@ -251,7 +269,7 @@ const confirm = (e: any) => {
                 console.log('res', res);
             } else {
                 // 我的预约
-                router.back()
+                router.back();
             }
         }).catch((err) => {
             console.log('err', err);

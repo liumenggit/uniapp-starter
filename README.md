@@ -431,7 +431,7 @@ class TodoItem {
 | check   | 检查 | accept  | 同意 |
 | verify  | 验证 | reply   | 回复 |
 | change  | 更改 | refresh | 刷新 |
-| fetch   | 拉取 |         |    |
+| fetch   | 拉取 | clear   | 清空 |
 
 ### 注释规范
 

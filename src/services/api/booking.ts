@@ -43,3 +43,13 @@ export function getUserBookingList(type: string) {
 export function getUserBookingInfo(params: BookingInfoParams) {
     return request.Get<UserBookingInfo>('user_reserve_info', {params: params});
 }
+
+/**
+ * 预约须知
+ * @returns {Method<unknown, unknown, UserBooking, unknown, {requestType?: "upload" | "download"} & UniappRequestConfig & UniappUploadConfig & UniappDownloadConfig, UniNamespace.RequestSuccessCallbackResult | UniNamespace.UploadFileSuccessCallbackResult | UniNamespace.DownloadSuccessData, any>}
+ * @param type
+ */
+export function getBookingNotice(type: string) {
+    return request.Get<[BookingNotice]>('reserve_notice', {params: {type: type}});
+}
+

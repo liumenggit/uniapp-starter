@@ -90,6 +90,18 @@
       }
     },
     {
+      "path": "pages/cart/cart-list",
+      "style": {
+        "navigationBarTitleText": "购物车",
+        "navigationStyle": "custom",
+        "titlePenetrate": "YES",
+        "transparentTitle": "always"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
       "path": "pages/info/info",
       "style": {
         "navigationBarTitleText": "信息",

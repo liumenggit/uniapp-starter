@@ -1,15 +1,29 @@
 <template>
     <tm-app>
-        <tm-skeleton model="chat" v-if="goodsInfo === {}"></tm-skeleton>
-        <tm-sheet :margin="[0,0]" :width="0" _class="fulled fulled-height">
-            <tm-text :label="goodsInfo.title" :font-size="32"></tm-text>
-            <tm-text :label="goodsInfo.create_time" :font-size="26" color="grey"></tm-text>
-            <tm-divider></tm-divider>
+        <tm-image :src="goodsInfo.cover" :width="750" model="widthFix" :transprent="false"/>
+        <tm-sheet :margin="[0,0]" :width="0" _class="fulled fulled-height" color="grey-4">
+            <tm-text :label="goodsInfo.title" :font-size="46"></tm-text>
+            <tm-statistic prefix="¥" :endVal="100" color="red" :font-size="40" :decimals="2"
+                          :duration="100" style="justify-content: start !important"></tm-statistic>
+            <tm-divider label="商品详情"></tm-divider>
             <tm-html :content="goodsInfo.content"></tm-html>
         </tm-sheet>
+        <tm-sheet :margin="[0,0]" :padding="[40,12,40,12]" class="fixed b-0 l-0" :width="670">
+            <view class="flex-row-center-between flex-wrap">
+                <tm-badge @click="router.go('/pages/cart/cart-list')" :count="cart.cartCount" color="red" linear="top"
+                          :font-size="14" :top="-8" :right="-8">
+                    <tm-icon name="tmicon-shoppingcart" :font-size="42"></tm-icon>
+                    <tm-text label="购物车" :font-size="20"/>
+                </tm-badge>
+                <tm-button label="加入购物车" @click="showSku = !showSku" size="small" color="orange" :width="240"
+                           :height="70" :round="12" :font-size="24"/>
+                <tm-button label="立即购买" size="small" color="deep-orange" :width="240" :height="70" :round="12"
+                           :font-size="24"/>
+            </view>
+        </tm-sheet>
         <tm-sku :num="num" @buy="buy" @add="goodsAdd"
-                :height="900"
-                :list="list" :show="true"></tm-sku>
+                :height="450"
+                :list="list" :show="showSku"></tm-sku>
     </tm-app>
 </template>
 
@@ -20,16 +34,26 @@ import {
     Ref
 } from 'vue';
 
+const cart = useCartStore();
 const num = ref(1);
-
-const list = ref({});
+const showSku = ref(false);
+const list = ref({
+    data: [
+        {
+            title: '规格',
+            children: []
+        }
+    ],
+    product: []
+});
 
 import {useRequest} from 'alova';
-import {useRoute} from '@/hooks/router';
+import {useRoute, useRouter} from '@/hooks/router';
 import {getGoodsInfo} from '@/services/api/goods';
 import TmSku from '@/tmui/components/tm-sku/tm-sku.vue';
+import {useCartStore} from '@/state/modules/cart';
 
-
+const router = useRouter();
 const {
     data: goodsInfo,
     onSuccess,
@@ -57,7 +81,9 @@ onSuccess((e) => {
             ...item,
             num: 100,
             max_buy: 100,
+            price: Number(item.price),
             img: goodsInfo.value.cover,
+            checkbox: true,
             goods_name: goodsInfo.value.title
         };
     });
@@ -76,10 +102,13 @@ onSuccess((e) => {
 
 function goodsAdd(e: any) {
     console.log('加入购物车', e);
+    const res = useCartStore().addToCart({...e.data, num: e.buyNumber});
+    console.log('res', res);
 }
 
 function buy(e: any) {
     console.log(e);
+    router.go('/pages/cart/cart-list');
 
 }
 </script>

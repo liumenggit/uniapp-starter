@@ -1,0 +1,55 @@
+<template>
+    <tm-app>
+        <tm-sheet :margin="[0,0]" transprent>
+            <tm-result v-if="cart.cartCount === 0" :show-btn="false" subTitle=" " title="购物车是空的"></tm-result>
+            <tm-sheet :margin="[0,12]" v-for="goodsItem in cart.items" :title="goodsItem.goods_name">
+                <view class="flex-row-center-start flex-wrap">
+                    <tm-checkbox @click="cart.checkToGoods(goodsItem.goods_id,goodsItem.id)"
+                                 :model-value="goodsItem.checkbox" :size="32" :round="10"/>
+                    <tm-image :src="goodsItem.img" :width="120" :height="120" model="widthFix"/>
+                    <view class="flex-col-full flex-1 pl-20">
+                        <view class="flex-row-center-between flex-wrap">
+                            <tm-text :label="goodsItem.goods_name" class="text-size-g"></tm-text>
+                            <!--                            <tm-text :label="goodsItem.goods_name"></tm-text>-->
+                            <tm-icon @click="cart.deleteToCart(goodsItem.goods_id,goodsItem.id)" name="tmicon-delete"
+                                     color="grey"/>
+                        </view>
+                        <tm-text :label="goodsItem.title" color="grey"></tm-text>
+
+                        <view class="flex-row-center-between flex-wrap">
+                            <!--                            <tm-text :label="'&'+ goodsItem.price" color="red" :font-size="32"></tm-text>-->
+                            <td-text prefix-icon="tmicon-renminbi3" icon-size="24" icon-color="red"
+                                     :label="goodsItem.price * goodsItem.num" color="red"></td-text>
+                            <tm-stepper v-model="goodsItem.num" :defaultValue="goodsItem.num" :min="1"></tm-stepper>
+                        </view>
+
+                    </view>
+                </view>
+            </tm-sheet>
+        </tm-sheet>
+        <tm-sheet :margin="[0,0]" :padding="[40,12,40,12]" class="fixed b-0 l-0" :width="670">
+            <view class="flex-row-center-between flex-wrap">
+                <tm-checkbox label="全选" @change="cart.allCheckGoods"></tm-checkbox>
+                <tm-statistic prefix="合计：¥" :endVal="cart.totalPrice" color="red" :font-size="40"
+                              :duration="500"></tm-statistic>
+                <tm-button @click="pay" label="去结算"></tm-button>
+            </view>
+        </tm-sheet>
+    </tm-app>
+</template>
+
+<script setup lang="ts">
+import {useCartStore} from '@/state/modules/cart';
+import TdText from '@/components/td-text/td-text.vue';
+
+const cart = useCartStore();
+useCartStore();
+
+const pay = () => {
+    console.log(cart.getDocument);
+};
+</script>
+
+<style scoped>
+
+</style>

@@ -48,7 +48,7 @@ export default ({mode}: ConfigEnv): UserConfig => {
                     name: `"${env.VITE_APP_TITLE}"`,
                     versionName: `"${env.VITE_VERSION}"`,
                     'mp-weixin.appid': `"${env.VITE_APP_ID}"`,
-                    'h5.router.base': `"${Boolean(env.VITE_DEV) ? '/' : '/modules/chinaranqi/'}"`,
+                    'h5.router.base': `"${env.VITE_PATH_PREFIX}"`,
                 }
             }]),
             uni(),
